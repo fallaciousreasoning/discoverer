@@ -1,0 +1,4 @@
+config.json
+lastfm-details.png
+node_modules/*
+npm-debug\.log
