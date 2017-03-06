@@ -1,5 +1,5 @@
-const LastFM = require("last-fm");
-const config = require("config.json")("config.json");
+let lastfm = require("./lastfm.js");
 
-console.log(config.apiKey);
-const lastfm = new LastFM(config.apiKey, 'discoverer');
+lastfm.trackSearch("white room cream")
+.then(data => lastfm.trackGetSimilar(data.results[0]))
+.then(console.log);
