@@ -12,3 +12,5 @@ spotify-config\.json
 playlist\.json
 
 spotify-playlist\.json
+
+babel_cache/
