@@ -11,6 +11,7 @@ function initOptions(options) {
         minDepth: 0,
         maxDepth: 1,
         maxIterations: 1000,
+        progressCallback: () => {}
     }
 
     for (var prop in defaultOptions) {
@@ -44,6 +45,7 @@ module.exports = class Finder {
         }
 
         this.result.push(track);
+        this.options.progressCallback(this.result.length, this.options.limit, this.result);
     }
 
     burn(item) {

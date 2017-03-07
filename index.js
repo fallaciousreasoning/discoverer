@@ -5,14 +5,12 @@ let Finder = require("./finder.js");
 
 let jsonfile = require("jsonfile");
 
+function progress(done, total, items) {
+    var p = done / total;
+    console.log("Progress: " + Math.round(p*1000) / 10 + "%");
+}
+
 function downloadAllTracks() {
-    function progress(done, total, tracks) {
-        var p = done / total;
-        console.log("Progress: " + Math.round(p*1000) / 10 + "%");
-
-        jsonfile.writeFileSync("tmp-tracks.json", tracks);
-    }
-
     lastfm.userAllTracks("dntbrsnbl", progress)
     .then((result) => {
         jsonfile.writeFileSync("tracks.json", result);
@@ -34,7 +32,8 @@ function findTracks() {
         ],
         maxDepth: 2,
         burnUsedArtists: true,
-        limit: 30
+        limit: 30,
+        progressCallback: progress
     });
 
     finder.generate().then(() => {
@@ -44,7 +43,7 @@ function findTracks() {
 
 function matchTracks() {
     let playlist = jsonfile.readFileSync("playlist.json");
-    let spotifyTracks = spotify.getTrackIds(playlist)
+    let spotifyTracks = spotify.getTrackIds(playlist, progress)
         .then(result => {
             jsonfile.writeFileSync("spotify-playlist.json", result);
         });

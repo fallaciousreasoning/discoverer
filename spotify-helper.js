@@ -7,7 +7,9 @@ const spotify = new Spotify({
   redirectUri : config.callbackUrl
 });
 
-function getTrack(playlist, i, tracks) {
+function getTrack(playlist, i, tracks, progressCallback) {
+    progressCallback(i, playlist.length, tracks);
+    
     if (i >= playlist.length) return;
     let track = playlist[i];
 
@@ -23,11 +25,13 @@ function getTrack(playlist, i, tracks) {
 }
 
 module.exports = {
-    getTrackIds: (playlist) => {
+    getTrackIds: (playlist, progressCallback) => {
+        progressCallback = progressCallback || (() => {});
+
         var ids = [],
             i = 0;
 
-        return getTrack(playlist, 0, ids)
+        return getTrack(playlist, 0, ids, progressCallback)
             .then(() => {
                 return ids;
             });
