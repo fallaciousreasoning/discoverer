@@ -6,3 +6,7 @@ npm-debug\.log
 tmp-tracks\.json
 
 tracks\.json
+
+spotify-config\.json
+
+playlist\.json
