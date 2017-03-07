@@ -43,7 +43,9 @@ function findTracks() {
 
 function matchTracks() {
     let playlist = jsonfile.readFileSync("playlist.json");
-    let spotifyTracks = spotify.getTrackIds(playlist, progress)
+    let spotifyTracks = spotify
+        .authenticate()
+        .then(spotify.getTrackIds(playlist, progress))
         .then(result => {
             jsonfile.writeFileSync("spotify-playlist.json", result);
         });
