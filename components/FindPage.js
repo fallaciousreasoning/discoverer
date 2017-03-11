@@ -14,6 +14,7 @@ export default class FindPage extends React.Component {
         this.addTrack = this.addTrack.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
         this.onSearchChanged = this.onSearchChanged.bind(this);
+        this.nextTrackId = 0;
     }
 
     addTrack() {
@@ -21,7 +22,9 @@ export default class FindPage extends React.Component {
         items.push({
             name: this.state.query,//"We will fall together",
             artist: "Streetlight Manifesto",
-            cover: "https://lastfm-img2.akamaized.net/i/u/ar0/3f21f4b58f844afab3bbccc450a4e0bf"
+            cover: "https://lastfm-img2.akamaized.net/i/u/ar0/3f21f4b58f844afab3bbccc450a4e0bf",
+            id: this.nextTrackId,
+            key: this.nextTrackId++,            
         });
 
         this.setState({
@@ -52,10 +55,9 @@ export default class FindPage extends React.Component {
                     <ul>
                         {this.state.tracks.map(track => {
                             return (
-                               <li>
+                               <li key={track.key}>
                                     <Track {...track}></Track>
-                                    {/*TODO make this actually remove the clicked track.*/}
-                                    <button onClick={this.removeTrack}> X </button>
+                                    <button onClick={() => this.removeTrack(track)}> X </button>
                                 </li>
                             );
                         })}

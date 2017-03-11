@@ -6,7 +6,7 @@ import FindPage from './components/FindPage';
 import PlaylistPage from './components/PlaylistPage';
 
 const routes = (
-    <Route path="/" component={Layout}>
+    <Route path="/*" component={Layout}>
         <IndexRoute component={FindPage}/>
     </Route>
 )
