@@ -9,7 +9,7 @@ export default class Track extends React.Component {
 
         return (
             <span>
-                <image title={name} src={icon}/>
+                <img title={name} src={icon} width="100" height="100"/>
                 {name} by {artist}
             </span>
         );
