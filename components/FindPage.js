@@ -1,6 +1,7 @@
 import React from 'react';
 import Track from './Track';
 import TrackSearch from './TrackSearch';
+import DiscovererSettings from './DiscovererSettings';
 
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -73,6 +74,7 @@ export default class FindPage extends React.Component {
                         })}
                     </List>
                 </div>
+                <DiscovererSettings/>
             </div>
         );
     }
