@@ -2,6 +2,18 @@ import React from 'react';
 
 import AutoComplete from 'material-ui/AutoComplete';
 
+const search = (query) => {
+    return fetch('search/' + query)
+        .then(response => response.json()
+            , error => {
+                return error;
+        })
+        .then(json => {
+            console.log(json);
+            return json.response;
+        });
+};
+
 export default class TrackSearch extends React.Component {
     constructor(props) {
         super(props);
@@ -20,11 +32,7 @@ export default class TrackSearch extends React.Component {
     handleNewRequest(chosenRequest, index) {
         if (index == -1) return;
 
-        let track = {
-            name: "Dead Silence",
-            artist: "Billy Talent",
-            cover: "https://lastfm-img2.akamaized.net/i/u/174s/fcb003397a384302bde911d932f1dcca.jpg"
-        }
+        let track = this.tracks[index];
 
         if (this.props.onSelect) {
             this.props.onSelect(track);
@@ -36,12 +44,15 @@ export default class TrackSearch extends React.Component {
     }
 
     handleUpdateInput(value) {
-        this.setState({
-            dataSource: [
-                "We Will Fall Together by Streetlight Manifesto",
-                "Dead Silence by Billy Talent",
-            ]
-        });
+        search(value)
+            .then(tracks => {
+                let dataSource = tracks.map(track => {
+                    return track.name + ' by ' + track.artist;
+                });
+
+                this.tracks = tracks;
+                this.setState({dataSource: dataSource});
+            });
     }
 
     render() {

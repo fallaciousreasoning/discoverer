@@ -26,6 +26,7 @@
     "material-ui": "^0.17.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-http-request": "^1.0.3",
     "react-router": "^2.6.1",
     "react-tap-event-plugin": "^2.0.1",
     "spotify-web-api-node": "^2.3.6"
