@@ -1,4 +1,5 @@
 import React from 'react';
+import Avatar from 'material-ui/Avatar';
 
 export default class Track extends React.Component {
     render() {
@@ -9,7 +10,7 @@ export default class Track extends React.Component {
 
         return (
             <span>
-                <img title={name} src={icon} width="100" height="100"/>
+                <Avatar src={icon} size="5rem"/>
                 {name} by {artist}
             </span>
         );

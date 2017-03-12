@@ -1,5 +1,14 @@
 import React from 'react';
 import Track from './Track';
+import TrackSearch from './TrackSearch';
+
+import RaisedButton from 'material-ui/RaisedButton';
+
+import IconButton from 'material-ui/IconButton';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+
+import {List, ListItem} from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
 
 export default class FindPage extends React.Component {
     constructor(props) {
@@ -20,7 +29,7 @@ export default class FindPage extends React.Component {
     addTrack() {
         var items = this.state.tracks.slice();
         items.push({
-            name: this.state.query,//"We will fall together",
+            name: "We will fall together",
             artist: "Streetlight Manifesto",
             cover: "https://lastfm-img2.akamaized.net/i/u/ar0/3f21f4b58f844afab3bbccc450a4e0bf",
             id: this.nextTrackId,
@@ -48,20 +57,20 @@ export default class FindPage extends React.Component {
         return (
             <div className="find-page">
                 Search for a track
-                <input type="text" value={this.state.query} onChange={this.onSearchChanged}></input>
-                <button type="button" onClick={this.addTrack}>Add</button>
+                <TrackSearch/>
+                <RaisedButton type="button" onClick={this.addTrack} label="Add"/>
 
                 <div className="tracks">
-                    <ul>
+                    <List width="500" height="500">
                         {this.state.tracks.map(track => {
-                            return (
-                               <li key={track.key}>
-                                    <Track {...track}></Track>
-                                    <button onClick={() => this.removeTrack(track)}> X </button>
-                                </li>
-                            );
+                            return (<ListItem
+                                leftAvatar={<Avatar src={track.cover}/>}
+                                primaryText={track.name}
+                                secondaryText={"by " + track.artist}
+                                rightIconButton={<IconButton onClick={() => this.removeTrack(track)}><ActionDelete/></IconButton>}
+                                key={track.key}/>);
                         })}
-                    </ul>
+                    </List>
                 </div>
             </div>
         );
