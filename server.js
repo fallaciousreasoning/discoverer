@@ -1,6 +1,8 @@
 const express = require('express');
 const lastfm = require('./lastfm');
 
+const bodyParser = require('body-parser')
+
 const server = express();
 
 const createResponse = (response, code) => {
@@ -19,6 +21,7 @@ const errorResponse = (code, error) => {
 }
 
 server.use(express.static('static'));
+server.use(bodyParser.json());
  
 server.get('/search/:query', function(req, res) {
     lastfm.trackSearch(req.params.query)
@@ -36,6 +39,7 @@ server.get('/search/:query', function(req, res) {
 });
 
 server.post('/create', (req, res) => {
+    console.log(req.body);
     // TODO build playlist
     // TODO send progress updates
 });
