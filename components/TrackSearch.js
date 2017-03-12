@@ -14,6 +14,7 @@ export default class TrackSearch extends React.Component {
         this.render = this.render.bind(this);
         this.handleUpdateInput = this.handleUpdateInput.bind(this);
         this.handleNewRequest = this.handleNewRequest.bind(this);
+        this.tracks = [];
     }
 
     handleNewRequest(chosenRequest, index) {
