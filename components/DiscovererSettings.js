@@ -17,6 +17,7 @@ export default class DiscovererSettings extends React.Component {
         super(props);
 
         this.render = this.render.bind(this);
+        this.limitOptions = [10, 25, 50, 100, 200];
         this.state = {
             burnSeedTracks: false,
             burnSeedArtists: false,
@@ -85,11 +86,10 @@ export default class DiscovererSettings extends React.Component {
                         <SelectField
                             value={this.state.limit}
                             onChange={(event, index, value) => this.setState({limit: value})}>
-                            <MenuItem primaryText="10"/>
-                            <MenuItem primaryText="25"/>
-                            <MenuItem primaryText="50"/>
-                            <MenuItem primaryText="100"/>
-                            <MenuItem primaryText="200"/>
+
+                            {this.limitOptions.map(option => {
+                                return (<MenuItem primaryText={option} key={option} value={option}/>);
+                            })}
                         </SelectField>
                     </ListItem>
                 </List>
