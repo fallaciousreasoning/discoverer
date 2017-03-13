@@ -3,11 +3,11 @@ import {Route, IndexRoute } from 'react-router';
 
 import {Layout} from './components/Layout';
 import FindPage from './components/FindPage';
-import PlaylistPage from './components/PlaylistPage';
+import GeneratorPage from './components/GeneratorPage';
 
 const routes = (
     <Route path="/*" component={Layout}>
-        <IndexRoute component={FindPage}/>
+        <IndexRoute component={GeneratorPage}/>
     </Route>
 )
 
