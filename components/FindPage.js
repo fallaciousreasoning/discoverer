@@ -95,7 +95,11 @@ export default class FindPage extends React.Component {
                     </div>
                 </Paper>
                 <DiscovererSettings/>
-                <RaisedButton label="Generate" onClick={() => this.submit(null, this.state.tracks)}/>
+                <RaisedButton
+                    disabled={this.state.tracks.length == 0}
+                    label="Generate"
+                    onClick={() => this.submit(null, this.state.tracks)}
+                    style={{ marginTop: "16px"}}/>
             </div>
         );
     }
