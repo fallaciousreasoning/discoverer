@@ -3,7 +3,7 @@ const lastfm = require('./lastfm');
 
 const bodyParser = require('body-parser')
 
-const server = express();
+const app = express();
 
 const createResponse = (response, code) => {
     code = code || 200;
@@ -20,10 +20,10 @@ const errorResponse = (code, error) => {
     }
 }
 
-server.use(express.static('static'));
-server.use(bodyParser.json());
+app.use(express.static('static'));
+app.use(bodyParser.json());
  
-server.get('/search/:query', function(req, res) {
+app.get('/search/:query', function(req, res) {
     lastfm.trackSearch(req.params.query)
         .then(result => {
             let tracks = result.results.map(t => {
@@ -38,16 +38,16 @@ server.get('/search/:query', function(req, res) {
         });
 });
 
-server.post('/create', (req, res) => {
+app.post('/generate', (req, res) => {
     console.log(req.body);
     // TODO build playlist
     // TODO send progress updates
 });
 
-server.post('/link/:service', (req, res) => {
+app.post('/link/:service', (req, res) => {
     // TODO determine service
     // TODO link with service
     // TODO return for saving
 });
  
-server.listen(3000);
+app.listen(3000);
