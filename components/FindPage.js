@@ -60,6 +60,18 @@ export default class FindPage extends React.Component {
         this.setState({query: e.target.value });
     }
 
+    submit(options, tracks) {
+        fetch('/generate', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tracks)
+        })
+        .then(res => console.log("Done!"));
+    }
+
     render() {
         return (
             <div className="find-page" style={{margin: "16px 16px"}}>
@@ -83,6 +95,7 @@ export default class FindPage extends React.Component {
                     </div>
                 </Paper>
                 <DiscovererSettings/>
+                <RaisedButton label="Generate" onClick={() => this.submit(null, this.state.tracks)}/>
             </div>
         );
     }
