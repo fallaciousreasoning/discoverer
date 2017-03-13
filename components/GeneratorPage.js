@@ -54,6 +54,12 @@ export default class GeneratorPage extends React.Component {
         }
     }
 
+    canStepForward() {
+        return (this.state.stepIndex == 0 && this.state.seedTracks.length > 0)
+            || (this.state.stepIndex == 1)
+            || (this.state.stepIndex == 2);
+    }
+
     getStepContent(step) {
         step = step || this.state.stepIndex;
 
@@ -61,7 +67,7 @@ export default class GeneratorPage extends React.Component {
             case 0:
                 return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.state.seedTracks = tracks}/>);
             case 1:
-                return "Configure advanced options";
+                return (<DiscovererSettings defaultOptions={this.state.options} onChanged={(options) => this.state.options = options}/>);
             case 2:
                 return "Save playlist to spotify";
             default:
@@ -77,13 +83,13 @@ export default class GeneratorPage extends React.Component {
             <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
             <Stepper activeStep={stepIndex}>
             <Step>
-                <StepLabel>Select seed tracks</StepLabel>
+                <StepLabel>Select Seed Tracks</StepLabel>
             </Step>
             <Step>
-                <StepLabel>Configure generator</StepLabel>
+                <StepLabel>Configure Generator</StepLabel>
             </Step>
             <Step>
-                <StepLabel>Save to spotify</StepLabel>
+                <StepLabel>Generated Playlist</StepLabel>
             </Step>
             </Stepper>
             <div style={contentStyle}>

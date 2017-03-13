@@ -65,8 +65,8 @@ export default class SeedTrackPicker extends React.Component {
 
     render() {
         return (
-            <div className="seed-track-picker" style={{margin: "16px 16px"}}>
-                <Paper style={{marginBottom: 16 + "px"}}>
+            <div className="seed-track-picker">
+                <Paper>
                     <Toolbar><ToolbarTitle text="Tracks"/></Toolbar>
                     <div style={{padding: "28px 16px"}}>
                         Search for a track
