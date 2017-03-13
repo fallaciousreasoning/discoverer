@@ -22,7 +22,7 @@ export default class DiscovererSettings extends React.Component {
             burnSeedArtists: false,
             includeSeedTracks: false,
             burnUsedTracks: true,
-            burnUsedArtists: true,
+            burnUsedArtists: false,
             limit: 10,
             minDepth: 0,
             maxDepth: 1,
