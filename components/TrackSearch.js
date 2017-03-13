@@ -9,7 +9,6 @@ const search = (query) => {
                 return error;
         })
         .then(json => {
-            console.log(json);
             return json.response;
         });
 };

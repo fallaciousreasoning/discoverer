@@ -15,6 +15,8 @@ import Avatar from 'material-ui/Avatar';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import Paper from 'material-ui/Paper';
 
+import SeedTrackPicker from './SeedTrackPicker';
+
 import {
   Step,
   Stepper,
@@ -25,7 +27,7 @@ export default class GeneratorPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tracks: [],
+            seedTracks: [],
             options: {},
             finished: false,
             stepIndex: 0
@@ -57,7 +59,7 @@ export default class GeneratorPage extends React.Component {
 
         switch(step) {
             case 0:
-                return "Select tracks";
+                return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.state.seedTracks = tracks}/>);
             case 1:
                 return "Configure advanced options";
             case 2:
@@ -99,7 +101,7 @@ export default class GeneratorPage extends React.Component {
                 </p>
             ) : (
                 <div>
-                <p>{this.getStepContent(stepIndex)}</p>
+                {this.getStepContent(stepIndex)}
                 <div style={{marginTop: 12}}>
                     <FlatButton
                     label="Back"
