@@ -26,7 +26,7 @@ export default class DiscovererSettings extends React.Component {
             burnUsedArtists: false,
             limit: 10,
             minDepth: 0,
-            maxDepth: 1,
+            maxDepth: 2,
         };
 
         this.getOptions = this.getOptions.bind(this);
