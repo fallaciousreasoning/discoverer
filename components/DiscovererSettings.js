@@ -68,7 +68,16 @@ export default class DiscovererSettings extends React.Component {
                     <ListItem disableFocusRipple={true} disableTouchRipple={true} hoverColor="transparent">   
                         <div>
                             Limit
-                            <div>
+                            <div style={{
+                                    fontSize: "14px",
+                                    lineHeight: "16px",
+                                    height: "16px",
+                                    margin: "4px 0px 0px",
+                                    color: "rgba(0, 0, 0, 0.54)",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap",
+                                }}>
                                 The maximum number of tracks in the final playlist.
                             </div>
                         </div>    
