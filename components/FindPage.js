@@ -11,6 +11,9 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import {List, ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import Paper from 'material-ui/Paper';
+
 export default class FindPage extends React.Component {
     constructor(props) {
         super(props);
@@ -59,21 +62,26 @@ export default class FindPage extends React.Component {
 
     render() {
         return (
-            <div className="find-page">
-                Search for a track
-                <TrackSearch onSelect={this.addTrack}/>
-                <div className="tracks">
-                    <List height="500">
-                        {this.state.tracks.map(track => {
-                            return (<ListItem
-                                leftAvatar={<Avatar src={track.cover}/>}
-                                primaryText={track.name}
-                                secondaryText={"by " + track.artist}
-                                rightIconButton={<IconButton onClick={() => this.removeTrack(track)}><ActionDelete/></IconButton>}
-                                key={track.key}/>);
-                        })}
-                    </List>
-                </div>
+            <div className="find-page" style={{margin: "16px 16px"}}>
+                <Paper style={{marginBottom: 16 + "px"}}>
+                    <Toolbar><ToolbarTitle text="Tracks"/></Toolbar>
+                    <div style={{padding: "28px 16px"}}>
+                        Search for a track
+                        <TrackSearch onSelect={this.addTrack}/>
+                        <div className="tracks">
+                            <List height="500">
+                                {this.state.tracks.map(track => {
+                                    return (<ListItem
+                                        leftAvatar={<Avatar src={track.cover}/>}
+                                        primaryText={track.name}
+                                        secondaryText={"by " + track.artist}
+                                        rightIconButton={<IconButton onClick={() => this.removeTrack(track)}><ActionDelete/></IconButton>}
+                                        key={track.key}/>);
+                                })}
+                            </List>
+                        </div>
+                    </div>
+                </Paper>
                 <DiscovererSettings/>
             </div>
         );

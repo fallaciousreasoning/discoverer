@@ -14,3 +14,5 @@ playlist\.json
 spotify-playlist\.json
 
 babel_cache/
+
+static/js/bundle\.js
