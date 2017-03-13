@@ -33,8 +33,11 @@ export default class DiscovererSettings extends React.Component {
     }
 
     getOptions() {
-        // TODO make a shallow copy
-        return this.state;
+        const options = {};
+        for (let key in this.state) {
+            options[key] = this.state[key];
+        }
+        return options;
     }
 
     render() {
