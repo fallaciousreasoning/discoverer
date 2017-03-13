@@ -27,6 +27,8 @@ export default class FindPage extends React.Component {
         this.addTrack = this.addTrack.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
         this.onSearchChanged = this.onSearchChanged.bind(this);
+        this.submit = this.submit.bind(this);
+
         this.nextTrackId = 0;
     }
 
@@ -61,13 +63,15 @@ export default class FindPage extends React.Component {
     }
 
     submit(options, tracks) {
+        options.seeds = tracks;
+
         fetch('/generate', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(tracks)
+            body: JSON.stringify(options)
         })
         .then(res => console.log("Done!"));
     }
@@ -94,11 +98,11 @@ export default class FindPage extends React.Component {
                         </div>
                     </div>
                 </Paper>
-                <DiscovererSettings/>
+                <DiscovererSettings ref={(settings) => this.settings = settings}/>
                 <RaisedButton
                     disabled={this.state.tracks.length == 0}
                     label="Generate"
-                    onClick={() => this.submit(null, this.state.tracks)}
+                    onClick={() => this.submit(this.settings.getOptions(), this.state.tracks)}
                     style={{ marginTop: "16px"}}/>
             </div>
         );

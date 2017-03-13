@@ -28,6 +28,13 @@ export default class DiscovererSettings extends React.Component {
             minDepth: 0,
             maxDepth: 1,
         };
+
+        this.getOptions = this.getOptions.bind(this);
+    }
+
+    getOptions() {
+        // TODO make a shallow copy
+        return this.state;
     }
 
     render() {
