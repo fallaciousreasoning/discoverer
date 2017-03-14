@@ -1,11 +1,12 @@
 const Guid = require('guid');
 const request = require("request");
 const spotifyStateKey = 'spotify_auth_state';
+const config = require('config.json')('spotify-config.json');
 
 module.exports = {
-    name = () => "spotify",
+    name: () => "spotify",
 
-    login = (req, res) => {
+    login: (req, res) => {
         let state = Guid.raw();
         res.cookie(spotifyStateKey, state);
 
@@ -14,14 +15,14 @@ module.exports = {
         res.redirect('https://accounts.spotify.com/authorize?' +
             querystring.stringify({
             response_type: 'code',
-            client_id: client_id,
+            client_id: config.clientId,
             scope: scope,
-            redirect_uri: redirect_uri,
+            redirect_uri: config.callbackUrl,
             state: state
         }));
     },
 
-    callback = (req, res) => {
+    callback: (req, res) => {
         let code = req.query.code || null;
         let state = req.query.state || null;
         let storedState = req.cookies ? req.cookies[spotifyStateKey] : null;
@@ -36,11 +37,11 @@ module.exports = {
             url: 'https://accounts.spotify.com/api/token',
             form: {
                 code: code,
-                redirect_uri: redirect_uri,
+                redirect_uri: config.callbackUrl,
                 grant_type: 'authorization_code'
             },
             headers: {
-                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+                'Authorization': 'Basic ' + (new Buffer(config.clientId + ':' + config.clientSecret).toString('base64'))
             },
             json: true
         };
@@ -68,7 +69,7 @@ module.exports = {
         });
     },
 
-    refresh = (req, res) => {
+    refresh: (req, res) => {
 
     }
 }

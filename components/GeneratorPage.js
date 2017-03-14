@@ -15,6 +15,7 @@ import Paper from 'material-ui/Paper';
 import SeedTrackPicker from './SeedTrackPicker';
 import DiscovererSettings from './DiscovererSettings';
 import GeneratedTracks from './GeneratedTracks';
+import Linker from './Linker';
 
 import {
   Step,
@@ -28,9 +29,11 @@ export default class GeneratorPage extends React.Component {
         this.state = {
             seedTracks: [],
             generatedTracks: [],
+            spotifyTracks: [],
             options: {},
             finished: false,
-            stepIndex: 0
+            saved: false,
+            stepIndex: 2
         }
 
         this.nextStep = this.nextStep.bind(this);
@@ -59,12 +62,12 @@ export default class GeneratorPage extends React.Component {
         return (this.state.stepIndex == 0 && this.state.seedTracks.length > 0)
             || (this.state.stepIndex == 1)
             || (this.state.stepIndex == 2 && this.state.generatedTracks.length > 0)
-            || (this.state.stepIndex == 3);
+            || (this.state.stepIndex == 3 && this.state.saved);
     }
 
     getStepContent(step) {
         step = step || this.state.stepIndex;
-
+        console.log(step);
         switch(step) {
             case 0:
                 return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.setState({seedTracks: tracks})}/>);
@@ -74,6 +77,8 @@ export default class GeneratorPage extends React.Component {
                 const options = this.state.options;
                 options.seeds = this.state.seedTracks;
                 return (<GeneratedTracks options={options} onChanged={(tracks) => this.setState({generatedTracks: tracks})}/>);
+            case 3:
+               return (<Linker tracks={this.state.generatedTracks} onChanged={(tracks, saved) => this.setState({spotifyTracks: tracks, saved: saved})}/>);
             default:
                 return "Start over";
         }
@@ -123,7 +128,7 @@ export default class GeneratorPage extends React.Component {
                     style={{marginRight: 12}}
                     />
                     <RaisedButton
-                    label={stepIndex === 2 ? 'Finish' : 'Next'}
+                    label={stepIndex === 3 ? 'Finish' : 'Next'}
                     primary={true}
                     onTouchTap={this.nextStep}
                     disabled={!this.canStepForward()}

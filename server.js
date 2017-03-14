@@ -11,6 +11,19 @@ const spotifyLoginService = require('./services/spotify-login-service');
 const serviceNameCookie = 'service';
 const app = express();
 
+let defaultTracks = [
+    {
+        name:"Your Bones",
+        artist:"Of Monsters and Men",
+        cover:"https://lastfm-img2.akamaized…4afe4f22bf3a792cff36e87c.png",
+    },
+    {
+        name:"Colours to Life",
+        artist:"Temples",
+        cover:"https://lastfm-img2.akamaized…a7e44b01cb3cda9e87680a82.png",
+    }
+];
+
 const loginServices = [
     spotifyLoginService
 ]
@@ -50,6 +63,11 @@ app.get('/search/:query', function(req, res) {
 });
 
 app.post('/generate', (req, res) => {
+    if (defaultTracks) {
+        res.json(createResponse(defaultTracks, 200));
+        return;
+    }
+
     const options = req.body;
     options.progressCallback = (done, todo) => {
         console.log(`Progress is: ${Math.round((done/todo)*10000) / 100}`);
@@ -85,6 +103,8 @@ app.post('/generate', (req, res) => {
                     cover: track.cover || (track.image.length > 0 ? track.image[0]['#text'] : "")
                 }
             });
+
+            defaultTracks = tracks;
             res.json(createResponse(tracks, 200));
         });
     // TODO build playlist
@@ -116,7 +136,7 @@ app.get('/login/:service', (req, res) => {
 
 app.get('/callback', (req, res) => {
     const serviceName = req.cookies ? req.cookies[serviceNameCookie] : null;
-    const service = getService(name);
+    const service = getService(serviceName);
 
     if (!service) {
         res.json(errorResponse(400, `Unknown service '${req.params.service}'`));
