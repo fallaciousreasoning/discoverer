@@ -36,6 +36,9 @@ export default class GeneratorPage extends React.Component {
         this.nextStep = this.nextStep.bind(this);
         this.previousStep = this.previousStep.bind(this);
         this.getStepContent = this.getStepContent.bind(this);
+        this.canStepForward = this.canStepForward.bind(this);
+        this.getStepNextAction = this.getStepNextAction.bind(this);
+        this.submitGenerationOptions = this.submitGenerationOptions.bind(this);
         this.render = this.render.bind(this);
     }
 
@@ -65,14 +68,50 @@ export default class GeneratorPage extends React.Component {
 
         switch(step) {
             case 0:
-                return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.state.seedTracks = tracks}/>);
+                return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.setState({seedTracks: tracks})}/>);
             case 1:
-                return (<DiscovererSettings defaultOptions={this.state.options} onChanged={(options) => this.state.options = options}/>);
+                return (<DiscovererSettings defaultOptions={this.state.options} onChanged={(options) => this.setState({options: options})}/>);
             case 2:
                 return "Save playlist to spotify";
             default:
                 return "Start over";
         }
+    }
+
+    getStepNextAction(step) {
+        step = step || this.state.stepIndex;
+        console.log("Gettting next from: " + step);
+
+        switch (step) {
+            case 0:
+                return () => {
+                    this.nextStep();
+                };
+            case 1:
+                console.log("Here!");
+                return () => {
+                    this.submitGenerationOptions()
+                        .then(() => this.nextStep());
+                };
+            case 2: 
+                return () => {
+
+                };
+        }
+    }
+
+    submitGenerationOptions() {
+        const options = this.state.options;
+        options.seeds = this.state.seedTracks;
+
+        return fetch('/generate', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(options)
+        });
     }
 
     render() {
@@ -118,7 +157,8 @@ export default class GeneratorPage extends React.Component {
                     <RaisedButton
                     label={stepIndex === 2 ? 'Finish' : 'Next'}
                     primary={true}
-                    onTouchTap={this.nextStep}
+                    onTouchTap={this.getStepNextAction()}
+                    disabled={!this.canStepForward()}
                     />
                 </div>
                 </div>
