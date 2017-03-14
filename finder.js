@@ -15,7 +15,7 @@ function initOptions(options) {
     }
 
     for (var prop in defaultOptions) {
-        options[prop] = options[prop] || defaultOptions[prop];
+        options[prop] = options[prop] === undefined ? defaultOptions[prop] : options[prop];
     }
 
     if (options.minDepth < 0) options.minDepth = 0;
@@ -31,6 +31,12 @@ module.exports = class Finder {
         this.lastfm = lastfm;
         initOptions(options);
         this.options = options;
+
+        this.add = this.add.bind(this);
+        this.burn = this.burn.bind(this);
+        this.generate = this.generate.bind(this);
+        this.isBurnt = this.isBurnt.bind(this);
+        this.addSimilar = this.addSimilar.bind(this);
     }
 
     add(track) {
@@ -77,7 +83,9 @@ module.exports = class Finder {
         }
 
         if (this.options.burnUserTracks) {
-            this.options.userTracks.forEach(burn);
+            for (let i = 0; i < this.options.userTracks.length; ++i) {
+                this.burn(this.options.userTracks[i]);
+            }
         }
 
         if (this.options.burnSeedArtists) {
