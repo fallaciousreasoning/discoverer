@@ -68,7 +68,14 @@ app.post('/generate', (req, res) => {
     finder
         .generate()
         .then(() => {
-            res.json(createResponse(finder.result, 200));
+            const tracks = finder.result.map(track => {
+                return {
+                    name: track.name || track.track,
+                    artist: track.artist.name,
+                    cover: track.cover || (track.image.length > 0 ? track.image[0]['#text'] : "")
+                }
+            });
+            res.json(createResponse(tracks, 200));
         });
     // TODO build playlist
     // TODO send progress updates
