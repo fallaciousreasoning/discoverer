@@ -63,6 +63,7 @@ export default class TrackSearch extends React.Component {
                     dataSource={this.state.dataSource}
                     onUpdateInput={this.handleUpdateInput}
                     onNewRequest={this.handleNewRequest}
+                    filter={AutoComplete.caseInsensitiveFilter}
                     fullWidth={true}/>
             </div>
         );
