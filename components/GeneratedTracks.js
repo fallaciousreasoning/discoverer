@@ -26,12 +26,18 @@ export default class GeneratedTracks extends React.Component {
             throw new Error("Options must be set!");
         }
 
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
         this.getTracks = this.getTracks.bind(this);
         this.onChanged = this.props.onChanged || (() => {});
         this.onChanged([]);
 
         this.getTracks(this.props.options);
+    }
+
+    componentWillUnmount() {
+        // Destroy the event handler.
+        this.onChanged = () => {};
     }
 
     getTracks(options) {
