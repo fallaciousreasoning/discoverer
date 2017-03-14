@@ -1,10 +1,19 @@
 const express = require('express');
 const lastfm = require('./lastfm');
 const Finder = require('./finder');
+const Guid = require('guid');
 
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
+const spotifyLoginService = require('./services/spotify-login-service');
+
+const serviceNameCookie = 'service';
 const app = express();
+
+const loginServices = [
+    spotifyLoginService
+]
 
 const createResponse = (response, code) => {
     code = code || 200;
@@ -23,6 +32,7 @@ const errorResponse = (code, error) => {
 
 app.use(express.static('static'));
 app.use(bodyParser.json());
+app.use(cookieParser());
  
 app.get('/search/:query', function(req, res) {
     lastfm.trackSearch(req.params.query)
@@ -81,10 +91,39 @@ app.post('/generate', (req, res) => {
     // TODO send progress updates
 });
 
-app.post('/link/:service', (req, res) => {
-    // TODO determine service
+app.post('/link/', (req, res) => {   
     // TODO link with service
     // TODO return for saving
+});
+
+
+const getService = (name) => {
+    return loginServices.filter(service => service.name() === name)[0];
+}
+
+app.get('/login/:service', (req, res) => {
+    const service = getService(req.params.service);
+
+    if (!service) {
+        res.json(errorResponse(400, `Unknown service '${req.params.service}'`));
+        return;
+    }
+
+    res.cookie(serviceNameCookie, req.params.service);
+    
+    service.login(req, res);
+});
+
+app.get('/callback', (req, res) => {
+    const serviceName = req.cookies ? req.cookies[serviceNameCookie] : null;
+    const service = getService(name);
+
+    if (!service) {
+        res.json(errorResponse(400, `Unknown service '${req.params.service}'`));
+        return;
+    }
+
+    service.callback(req, res);
 });
  
 app.listen(3000);

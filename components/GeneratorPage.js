@@ -44,7 +44,7 @@ export default class GeneratorPage extends React.Component {
         const {stepIndex} = this.state;
         this.setState({
             stepIndex: stepIndex + 1,
-            finished: stepIndex >= 2,
+            finished: stepIndex >= 3,
         });
     }
 
@@ -58,7 +58,8 @@ export default class GeneratorPage extends React.Component {
     canStepForward() {
         return (this.state.stepIndex == 0 && this.state.seedTracks.length > 0)
             || (this.state.stepIndex == 1)
-            || (this.state.stepIndex == 2 && this.state.generatedTracks.length > 0);
+            || (this.state.stepIndex == 2 && this.state.generatedTracks.length > 0)
+            || (this.state.stepIndex == 3);
     }
 
     getStepContent(step) {
@@ -86,13 +87,16 @@ export default class GeneratorPage extends React.Component {
             <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
             <Stepper activeStep={stepIndex}>
             <Step>
-                <StepLabel>Select Seed Tracks</StepLabel>
+                <StepLabel>Seed</StepLabel>
             </Step>
             <Step>
-                <StepLabel>Configure Generator</StepLabel>
+                <StepLabel>Configure</StepLabel>
             </Step>
             <Step>
-                <StepLabel>Generated Playlist</StepLabel>
+                <StepLabel>Generate</StepLabel>
+            </Step>
+            <Step>
+                <StepLabel>Link</StepLabel>
             </Step>
             </Stepper>
             <div style={contentStyle}>
