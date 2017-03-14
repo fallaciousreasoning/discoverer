@@ -29,6 +29,7 @@ export default class GeneratedTracks extends React.Component {
         this.removeTrack = this.removeTrack.bind(this);
         this.getTracks = this.getTracks.bind(this);
         this.onChanged = this.props.onChanged || (() => {});
+        this.onChanged([]);
 
         this.getTracks(this.props.options);
     }
@@ -68,7 +69,7 @@ export default class GeneratedTracks extends React.Component {
         return (
             <div className="generated-tracks">
                 <Paper>
-                    <Toolbar><ToolbarTitle text="Generated Tracks"/></Toolbar>
+                    <Toolbar><ToolbarTitle text={this.state.fetched ? "Generated Tracks" : "Generating..."}/></Toolbar>
                     {this.state.fetched ? 
                     (<div style={{padding: "28px 16px"}} className="tracks">
                         <List height="500">

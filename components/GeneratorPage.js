@@ -58,7 +58,7 @@ export default class GeneratorPage extends React.Component {
     canStepForward() {
         return (this.state.stepIndex == 0 && this.state.seedTracks.length > 0)
             || (this.state.stepIndex == 1)
-            || (this.state.stepIndex == 2);
+            || (this.state.stepIndex == 2 && this.state.generatedTracks.length > 0);
     }
 
     getStepContent(step) {
@@ -72,7 +72,7 @@ export default class GeneratorPage extends React.Component {
             case 2:
                 const options = this.state.options;
                 options.seeds = this.state.seedTracks;
-                return (<GeneratedTracks options={options}/>);
+                return (<GeneratedTracks options={options} onChanged={(tracks) => this.setState({generatedTracks: tracks})}/>);
             default:
                 return "Start over";
         }
