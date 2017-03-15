@@ -42,8 +42,6 @@ export default class Communicator {
         const protocol = "ws://";
         const host = window.location.host;
         const uri = protocol + host + "/socket/";
-        console.log(uri);
-        console.log("token: " + getCookie('token'));
 
         this.socket = new WebSocket(uri);
         this.socket.onmessage = ev => {
