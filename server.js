@@ -12,8 +12,12 @@ const cookieParser = require('cookie-parser');
 const spotifyLoginService = require('./services/spotify-login-service');
 
 const serviceNameCookie = 'service';
+const tokenCookieName = 'token';
+
 const app = express();
 const expressWs = require('express-ws')(app);
+
+const sockets = {};
 
 let defaultTracks = [
     {
@@ -30,7 +34,7 @@ let defaultTracks = [
 
 const loginServices = [
     spotifyLoginService
-]
+];
 
 const createResponse = (response, code) => {
     code = code || 200;
@@ -38,14 +42,43 @@ const createResponse = (response, code) => {
         response: response,
         code: 200,
     };
-}
+};
 
 const errorResponse = (code, error) => {
     return {
         error: error,
         code: code
+    };
+};
+
+const loggedInMessage = (token) => {
+    return {
+        route: 'token',
+        data: token
+    };
+};
+
+const generateProgressMessage = (progress) => {
+    return {
+        route: 'generate-progress',
+        data: progress
+    };
+};
+
+const linkProgressMessage = (progress) => {
+    return {
+        route: 'link-progress',
+        data: progress
+    };
+};
+
+const sendMessage = (session, message) => {
+    if (!sockets[session]) {
+        throw new Error(`Invalid session {session}!`);
     }
-}
+
+    sockets[session].send(JSON.stringify(message));
+};
 
 app.use(express.static('static'));
 app.use(bodyParser.json());
@@ -67,6 +100,13 @@ app.get('/search/:query', function(req, res) {
 });
 
 app.post('/generate', (req, res) => {
+    const token = req.cookies ? req.cookies[tokenCookieName] : null;
+    
+    if (!token) {
+        res.json(errorResponse(400, 'Token cookie not set (you can get one by requesting /token)'));
+        return;
+    }
+
     if (defaultTracks) {
         res.json(createResponse(defaultTracks, 200));
         return;
@@ -74,7 +114,7 @@ app.post('/generate', (req, res) => {
 
     const options = req.body;
     options.progressCallback = (done, todo) => {
-        console.log(`Progress is: ${Math.round((done/todo)*10000) / 100}`);
+        //sendMessage(token, generateProgressMessage(Math.round((done/todo)*10000) / 100));
     }
 
     if (!options.seeds) {
@@ -111,13 +151,20 @@ app.post('/generate', (req, res) => {
             defaultTracks = tracks;
             res.json(createResponse(tracks, 200));
         });
-    // TODO build playlist
-    // TODO send progress updates
 });
 
-app.post('/link/', (req, res) => {   
-    // TODO link with service
-    // TODO return for saving
+app.get('/link', (req, res) => {
+
+});
+
+app.get('/token', (req, res) => {
+    if (req.cookies && req.cookies[tokenCookieName]) {
+        res.json(createResponse(req.cookies[tokenCookieName]))
+        return;
+    }
+    const token = Guid.raw();   
+    res.cookie(tokenCookieName, token)
+    res.json(createResponse(token, 200));
 });
 
 
@@ -139,6 +186,13 @@ app.get('/login/:service', (req, res) => {
 });
 
 app.get('/callback', (req, res) => {
+    const token = req.cookies ? req.cookies[tokenCookieName] : null;
+
+    if (!token) {
+        req.statusCode = 400;
+        req.json(400, 'No token specified!');
+    }
+
     const serviceName = req.cookies ? req.cookies[serviceNameCookie] : null;
     const service = getService(serviceName);
 
@@ -147,15 +201,25 @@ app.get('/callback', (req, res) => {
         return;
     }
 
-    service.callback(req, res);
+    service.callback(req, res, access_token => sendMessage(token, loggedInMessage(access_token)));
 });
 
 app.ws('/socket', (ws, req) => {
+    if (!req.cookies || !req.cookies[tokenCookieName]) {
+        ws.close();
+        return;
+    }
+
+    const sessionName = req.cookies[tokenCookieName];
+    sockets[sessionName] = ws;
+
     ws.on('message', msg => {
         console.log(msg);
     });
 
-    ws.send("Is anybody out there?");
+    ws.on('close', msg => {
+        delete sockets[sessionName];
+    });
 });
  
 app.listen(3000);

@@ -49,6 +49,7 @@ export default class GeneratedTracks extends React.Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
+            credentials: 'same-origin',
             body: JSON.stringify(options)
         })
         .then(response => {return response.json();})

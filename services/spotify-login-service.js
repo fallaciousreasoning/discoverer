@@ -23,7 +23,7 @@ module.exports = {
         }));
     },
 
-    callback: (req, res) => {
+    callback: (req, res, resultCallback) => {
         let code = req.query.code || null;
         let state = req.query.state || null;
         let storedState = req.cookies ? req.cookies[spotifyStateKey] : null;
@@ -57,6 +57,8 @@ module.exports = {
                 refresh_token = body.refresh_token;
 
             res.redirect('/close.html');
+
+            if (resultCallback) resultCallback(access_token);
         });
     },
 
