@@ -43,6 +43,12 @@ export default class TrackSearch extends React.Component {
     }
 
     handleUpdateInput(value) {
+        if (value === "") {
+            this.setState({dataSource:[]});
+            this.tracks = [];
+            return;
+        }
+        
         search(value)
             .then(tracks => {
                 let dataSource = tracks.map(track => {

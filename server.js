@@ -88,6 +88,11 @@ app.use(bodyParser.json());
 app.use(cookieParser());
  
 app.get('/search/:query', function(req, res) {
+    if (req.params.query.trim() === "") {
+        res.json(createResponse([]));
+        return;
+    }
+    
     lastfm.trackSearch(req.params.query)
         .then(result => {
             let tracks = result.results.map(t => {
