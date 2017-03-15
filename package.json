@@ -23,6 +23,8 @@
     "cookie-parser": "^1.4.3",
     "ejs": "^2.5.6",
     "express": "^4.15.2",
+    "express-redirect": "^1.2.2",
+    "express-ws": "^3.0.0",
     "guid": "0.0.12",
     "jsonfile": "^2.4.0",
     "last-fm": "^1.1.0",
@@ -32,7 +34,8 @@
     "react-http-request": "^1.0.3",
     "react-router": "^2.6.1",
     "react-tap-event-plugin": "^2.0.1",
-    "spotify-web-api-node": "^2.3.6"
+    "spotify-web-api-node": "^2.3.6",
+    "ws": "^2.2.1"
   },
   "devDependencies": {
     "babel-loader": "^6.2.10",

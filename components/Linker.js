@@ -12,7 +12,7 @@ export default class Linker extends React.Component {
         this.state = {
             tracks: [],
             saved: false,
-
+            connected: false,
         }
 
         if (!this.props.tracks) {
@@ -33,6 +33,10 @@ export default class Linker extends React.Component {
     linkTracks() {
     }
 
+    login() {
+
+    }
+
     render() {
         return (
             <div className="generated-tracks">
@@ -40,8 +44,11 @@ export default class Linker extends React.Component {
                     <Toolbar>
                         <ToolbarTitle text="Linker"/>
                     </Toolbar>
-
-                    <RaisedButton label="Link Spotify" onClick={() => window.open("/login/spotify")}/>                
+                    {
+                        this.state.connected
+                            ? (saved ? <LinearProgress mode="indeterminate"/> : "Success!")
+                            : <RaisedButton label="Connect Spotify" onClick={() => window.open("/login/spotify")}/>  
+                    }              
                 </Paper>
             </div>
         );

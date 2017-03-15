@@ -2,6 +2,9 @@ const express = require('express');
 const lastfm = require('./lastfm');
 const Finder = require('./finder');
 const Guid = require('guid');
+const http = require('http');
+const url = require('url');
+const WebSocket = require('ws');
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -10,6 +13,7 @@ const spotifyLoginService = require('./services/spotify-login-service');
 
 const serviceNameCookie = 'service';
 const app = express();
+const expressWs = require('express-ws')(app);
 
 let defaultTracks = [
     {
@@ -144,6 +148,14 @@ app.get('/callback', (req, res) => {
     }
 
     service.callback(req, res);
+});
+
+app.ws('/socket', (ws, req) => {
+    ws.on('message', msg => {
+        console.log(msg);
+    });
+
+    ws.send("Is anybody out there?");
 });
  
 app.listen(3000);

@@ -1,7 +1,8 @@
 const Guid = require('guid');
 const request = require("request");
-const spotifyStateKey = 'spotify_auth_state';
 const config = require('config.json')('spotify-config.json');
+
+const spotifyStateKey = 'spotify_auth_state';
 
 module.exports = {
     name: () => "spotify",
@@ -55,17 +56,7 @@ module.exports = {
             let access_token = body.access_token,
                 refresh_token = body.refresh_token;
 
-            // let options = {
-            //     url: 'https://api.spotify.com/v1/me',
-            //     headers: { 'Authorization': 'Bearer ' + access_token },
-            //     json: true
-            // };
-
-            // request.get(options, (error, response, body) => {
-            //     console.log(body);
-            // });
-            
-            res.json({response: {access_token: access_token, refresh_token: refresh_token}, code: 200});
+            res.redirect('/close.html');
         });
     },
 
