@@ -18,6 +18,7 @@ export default class GeneratedTracks extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            progress: 0,
             tracks: [],
             fetched: false
         }
@@ -26,13 +27,24 @@ export default class GeneratedTracks extends React.Component {
             throw new Error("Options must be set!");
         }
 
+        this.progress = this.progress.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
         this.getTracks = this.getTracks.bind(this);
+    }
+
+    progress(progress) {
+        this.setState({progress: progress});
+    }
+
+    componentWillMount() {
         this.onChanged = this.props.onChanged || (() => {});
         this.onChanged([]);
 
         this.getTracks(this.props.options);
+
+        window.comms.listenFor('generate-progress', this.progress);
     }
 
     componentWillUnmount() {
@@ -89,7 +101,7 @@ export default class GeneratedTracks extends React.Component {
                                     key={track.key}/>);
                             })}
                         </List>
-                    </div>) : <LinearProgress mode="indeterminate"/>}                 
+                    </div>) : <LinearProgress mode="determinate" value={this.state.progress}/>}                 
                 </Paper>
             </div>
         );
