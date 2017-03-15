@@ -55,6 +55,7 @@ export default class Linker extends React.Component {
     }
 
     linkTracks() {
+        this.props.lock(true);
         fetch('/link', {
             method: "POST",
             headers: {
@@ -63,7 +64,13 @@ export default class Linker extends React.Component {
             },
             credentials: 'same-origin',
             body: JSON.stringify({tracks: this.props.tracks, token: this.state.token, playlistName: this.state.playlistName}),
-        }).then(() => this.setState({saved: true}));
+        })
+            .then((result) => result.json())
+            .then(json => {
+                console.log(json);
+                this.setState({saved: true, playlistUrl: json.response.external_urls.spotify});
+            })
+            .then(() => this.props.lock(false));
     }
 
     render() {

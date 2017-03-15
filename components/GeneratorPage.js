@@ -42,7 +42,7 @@ export default class GeneratorPage extends React.Component {
             locked: false,
         }
 
-        this.lock.bind(this);
+        this.lock = this.lock.bind(this);
         this.nextStep = this.nextStep.bind(this);
         this.previousStep = this.previousStep.bind(this);
         this.getStepContent = this.getStepContent.bind(this);
@@ -80,15 +80,15 @@ export default class GeneratorPage extends React.Component {
         step = step || this.state.stepIndex;
         switch(step) {
             case 0:
-                return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.setState({seedTracks: tracks})}/>);
+                return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.setState({seedTracks: tracks})} lock={this.lock}/>);
             case 1:
-                return (<DiscovererSettings defaultOptions={this.state.options} onChanged={(options) => this.setState({options: options})}/>);
+                return (<DiscovererSettings defaultOptions={this.state.options} onChanged={(options) => this.setState({options: options})} lock={this.lock}/>);
             case 2:
                 const options = this.state.options;
                 options.seeds = this.state.seedTracks;
-                return (<GeneratedTracks options={options} onChanged={(tracks) => this.setState({generatedTracks: tracks})}/>);
+                return (<GeneratedTracks options={options} onChanged={(tracks) => this.setState({generatedTracks: tracks})} lock={this.lock}/>);
             case 3:
-               return (<Linker tracks={this.state.generatedTracks} onChanged={(tracks, saved) => this.setState({spotifyTracks: tracks, saved: saved})}/>);
+               return (<Linker tracks={this.state.generatedTracks} onChanged={(tracks, saved) => this.setState({spotifyTracks: tracks, saved: saved})} lock={this.lock}/>);
             default:
                 return "Start over";
         }

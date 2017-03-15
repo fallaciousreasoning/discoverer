@@ -60,6 +60,7 @@ export default class GeneratedTracks extends React.Component {
     getTracks(options) {
         options = options || this.props.options;
 
+        this.props.lock(true);
         fetch('/generate', {
             method: "POST",
             headers: {
@@ -77,6 +78,7 @@ export default class GeneratedTracks extends React.Component {
 
             this.setState({tracks: tracks, fetched: true});
             this.onChanged(tracks);
+            this.props.lock(false);
         });
     }
 
