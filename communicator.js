@@ -63,7 +63,7 @@ export default class Communicator {
             this.listeners[messageName] = [];
         }
 
-        this.listeners.push(handler);
+        this.listeners[messageName].push(handler);
     }
 
     sendMessage(route, data) {

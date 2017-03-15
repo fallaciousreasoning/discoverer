@@ -10,31 +10,54 @@ export default class Linker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tracks: [],
             saved: false,
-            connected: false,
+            token: null,
+            progress: 0,
         }
 
         if (!this.props.tracks) {
             throw new Error("Tracks must be set!");
         }
 
+        this.tokenReceived = this.tokenReceived.bind(this);
+        this.progress = this.progress.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
         this.linkTracks = this.linkTracks.bind(this);
         this.onChanged = this.props.onChanged || (() => {});
         this.onChanged([], false);
     }
 
+    tokenReceived(token) {
+        this.setState({token: token});
+        this.linkTracks();
+    }
+
+    progress(progress) {
+        this.setState({progress: progress});
+    }
+
+    componentWillMount() {
+        window.comms.listenFor('token', this.tokenReceived);
+        window.comms.listenFor('link-progress', this.progress);
+    }
+
     componentWillUnmount() {
         // Destroy the event handler.
         this.onChanged = () => {};
+        // TODO remove comms event listener
     }
 
     linkTracks() {
-    }
-
-    login() {
-
+        fetch('/link', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify({tracks: this.props.tracks, token: this.state.token}),
+        }).then(() => this.setState({saved: true}));
     }
 
     render() {
@@ -45,8 +68,8 @@ export default class Linker extends React.Component {
                         <ToolbarTitle text="Linker"/>
                     </Toolbar>
                     {
-                        this.state.connected
-                            ? (saved ? <LinearProgress mode="indeterminate"/> : "Success!")
+                        this.state.token !== null
+                            ? (!this.state.saved ? <LinearProgress mode="determinate" value={this.state.progress}/> : "Success!")
                             : <RaisedButton label="Connect Spotify" onClick={() => window.open("/login/spotify")}/>  
                     }              
                 </Paper>

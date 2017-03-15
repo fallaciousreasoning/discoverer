@@ -1,6 +1,9 @@
 const express = require('express');
+
 const lastfm = require('./lastfm');
 const Finder = require('./finder');
+const SpotifyLinker = require('./spotify-helper');
+
 const Guid = require('guid');
 const http = require('http');
 const url = require('url');
@@ -114,7 +117,7 @@ app.post('/generate', (req, res) => {
 
     const options = req.body;
     options.progressCallback = (done, todo) => {
-        //sendMessage(token, generateProgressMessage(Math.round((done/todo)*10000) / 100));
+        sendMessage(token, generateProgressMessage(Math.round((done/todo)*10000) / 100));
     }
 
     if (!options.seeds) {
@@ -153,8 +156,32 @@ app.post('/generate', (req, res) => {
         });
 });
 
-app.get('/link', (req, res) => {
+app.post('/link', (req, res) => {
+    if (!req.cookies || !req.cookies[tokenCookieName]) {
+        res.statusCode = 400;
+        res.json(errorResponse(400, "Token cookie not set!"));
+    }
 
+    const info = req.body;
+    console.log(info);
+
+    if (!info.tracks) {
+        res.statusCode = 400;
+        res.json(errorResponse(400, "Tracks is compulsory!"));
+    }
+
+    if (!info.token) {
+        res.statusCode = 400;
+        res.json(errorResponse(400, "Spotify token not specified!"));
+    }
+
+    const token = req.cookies[tokenCookieName];    
+    const spotify = new SpotifyLinker();
+
+    spotify.getTrackIds(info.tracks, (done, total) => sendMessage(token, Math.round(done/total * 10000)/100))
+        .then(tracks => {
+            res.json(createResponse(tracks, 200));
+        });
 });
 
 app.get('/token', (req, res) => {

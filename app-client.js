@@ -5,8 +5,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppRoutes from './components/AppRoutes';
 import Communicator from './communicator';
 
+window.comms = new Communicator();
+
 window.onload = () => {
-  let comms = new Communicator();
   ReactDOM.render(<MuiThemeProvider><AppRoutes/></MuiThemeProvider>, document.getElementById('main'));
 };
 
