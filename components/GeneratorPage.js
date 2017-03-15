@@ -67,7 +67,6 @@ export default class GeneratorPage extends React.Component {
 
     getStepContent(step) {
         step = step || this.state.stepIndex;
-        console.log(step);
         switch(step) {
             case 0:
                 return (<SeedTrackPicker defaultTracks={this.state.seedTracks} onChanged={(tracks) => this.setState({seedTracks: tracks})}/>);
