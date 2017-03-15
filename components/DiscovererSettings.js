@@ -29,14 +29,14 @@ export default class DiscovererSettings extends React.Component {
         super(props);
 
         this.render = this.render.bind(this);
-        this.limitOptions = [1, 10, 25, 50, 100, 200];
+        this.limitOptions = [10, 25, 50, 100, 200];
         this.state = {
             burnSeedTracks: false,
             burnSeedArtists: false,
             includeSeedTracks: false,
             burnUsedTracks: true,
             burnUsedArtists: false,
-            limit: 1,
+            limit: 10,
             minDepth: 0,
             maxDepth: 2,
         };

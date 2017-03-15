@@ -23,16 +23,28 @@ import {
   StepLabel,
 } from 'material-ui/Stepper';
 
+// Test track.
+const deadSilence = {
+    name:"Dead Silence",
+    artist:"Billy Talent",
+    cover:"https://lastfm-img2.akamaized…6b564d059995f3392e386b8e.png",
+    key: -1
+}
+
+const clone = (obj) => {
+    let result = {};
+    for (let key in obj) {
+        result[key] = obj[key]
+    }
+
+    return result;
+}
+
 export default class GeneratorPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            seedTracks: [{
-                name:"Dead Silence",
-                artist:"Billy Talent",
-                cover:"https://lastfm-img2.akamaized…6b564d059995f3392e386b8e.png",
-                key: -1
-            }],
+            seedTracks: [],
             generatedTracks: [],
             spotifyTracks: [],
             options: {},
@@ -40,7 +52,10 @@ export default class GeneratorPage extends React.Component {
             saved: false,
             stepIndex: 0,
             locked: false,
+            lastStepText: 'Save to Spotify'
         }
+
+        this.defaultState = clone(this.state);
 
         this.lock = this.lock.bind(this);
         this.nextStep = this.nextStep.bind(this);
@@ -56,16 +71,30 @@ export default class GeneratorPage extends React.Component {
 
     nextStep() {
         const {stepIndex} = this.state;
-        this.setState({
-            stepIndex: stepIndex + 1,
+
+        let options = {
             finished: stepIndex >= 3,
-        });
+            stepIndex: stepIndex
+        }
+
+        if (stepIndex === 3 && !this.linker.done) {
+            this.linker.login();
+            options.lastStepText = 'Reset';
+            this.setState(options);
+            return;
+        } else if (stepIndex == 3) {
+            this.setState(this.defaultState);
+            return;
+        }
+
+        options.stepIndex += 1;
+        this.setState(options);
     }
 
     previousStep() {
         const {stepIndex} = this.state;
         if (stepIndex > 0) {
-            this.setState({stepIndex: stepIndex - 1});
+            this.setState({stepIndex: stepIndex - 1, lastStepText: 'Save to Spotify' });
         }
     }
 
@@ -73,7 +102,7 @@ export default class GeneratorPage extends React.Component {
         return (this.state.stepIndex == 0 && this.state.seedTracks.length > 0)
             || (this.state.stepIndex == 1)
             || (this.state.stepIndex == 2 && this.state.generatedTracks.length > 0)
-            || (this.state.stepIndex == 3 && this.state.saved);
+            || (this.state.stepIndex == 3);
     }
 
     getStepContent(step) {
@@ -88,7 +117,7 @@ export default class GeneratorPage extends React.Component {
                 options.seeds = this.state.seedTracks;
                 return (<GeneratedTracks options={options} onChanged={(tracks) => this.setState({generatedTracks: tracks})} lock={this.lock}/>);
             case 3:
-               return (<Linker tracks={this.state.generatedTracks} onChanged={(tracks, saved) => this.setState({spotifyTracks: tracks, saved: saved})} lock={this.lock}/>);
+               return (<Linker ref ={linker => this.linker = linker} tracks={this.state.generatedTracks} onChanged={(tracks, saved) => this.setState({spotifyTracks: tracks, saved: saved})} lock={this.lock}/>);
             default:
                 return "Start over";
         }
@@ -111,42 +140,27 @@ export default class GeneratorPage extends React.Component {
                 <StepLabel>Generate</StepLabel>
             </Step>
             <Step>
-                <StepLabel>Link</StepLabel>
+                <StepLabel>Save</StepLabel>
             </Step>
             </Stepper>
             <div style={contentStyle}>
-            {finished ? (
-                <p>
-                <a
-                    href="#"
-                    onClick={(event) => {
-                    event.preventDefault();
-                    this.setState({stepIndex: 0, finished: false});
-                    }}
-                >
-                    Click here
-                </a> to reset the generator.
-                </p>
-            ) : (
-                <div>
+            <div>
                 {this.getStepContent(stepIndex)}
                 <div style={{marginTop: 12}}>
                     <FlatButton
                     label="Back"
-                    disabled={stepIndex === 0 || this.state.locked}
+                    disabled={stepIndex === 0 || this.state.locked || finished}
                     onTouchTap={this.previousStep}
                     style={{marginRight: 12}}
                     />
                     <RaisedButton
-                    disabled={this.state.locked}
-                    label={stepIndex === 3 ? 'Finish' : 'Next'}
+                    label={stepIndex === 3 ? this.state.lastStepText : 'Next'}
                     primary={true}
                     onTouchTap={this.nextStep}
-                    disabled={!this.canStepForward()}
+                    disabled={!this.canStepForward() || this.state.locked}
                     />
                 </div>
                 </div>
-            )}
             </div>
         </div>);
     }

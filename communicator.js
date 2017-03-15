@@ -70,7 +70,6 @@ export default class Communicator {
         }
 
         const index = this.listeners[messageName].indexOf(handler);
-        console.log(index);
         if (index !== -1) {
             this.listeners[messageName].splice(index, 1);
         }

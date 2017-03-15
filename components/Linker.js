@@ -6,11 +6,13 @@ import Paper from 'material-ui/Paper';
 import LinearProgress from 'material-ui/LinearProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import TextField from 'material-ui/TextField';
+
 export default class Linker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            playlistName: "test",
+            playlistName: "Discover Playlist",
             playlistUrl: "http://play.spotify.com",
             saved: false,
             token: null,
@@ -21,6 +23,7 @@ export default class Linker extends React.Component {
             throw new Error("Tracks must be set!");
         }
 
+        this.onNameChanged = this.onNameChanged.bind(this);
         this.tokenReceived = this.tokenReceived.bind(this);
         this.progress = this.progress.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
@@ -28,6 +31,11 @@ export default class Linker extends React.Component {
         this.linkTracks = this.linkTracks.bind(this);
         this.onChanged = this.props.onChanged || (() => {});
         this.onChanged([], false);
+        this.done = false;
+    }
+
+    onNameChanged(event, value) {
+        this.setState({playlistName: value})
     }
 
     tokenReceived(token) {
@@ -68,24 +76,31 @@ export default class Linker extends React.Component {
         })
             .then((result) => result.json())
             .then(json => {
-                console.log(json);
                 this.setState({saved: true, playlistUrl: json.response.external_urls.spotify});
             })
-            .then(() => this.props.lock(false));
+            .then(() => {this.props.lock(false); this.done = true;});
+    }
+
+    login() {
+        window.open('/login/spotify');
     }
 
     render() {
+        const style = {
+            padding: "28px 16px"
+        };
+
         return (
             <div className="generated-tracks">
                 <Paper zDepth={1}>                    
                     <Toolbar>
-                        <ToolbarTitle text="Linker"/>
+                        <ToolbarTitle text={this.state.token === null ? "Save on Spotify" : (!this.state.saved ? "Linking..." : "Saved!")}/>
                     </Toolbar>
                     {
                         this.state.token !== null
-                            ? (!this.state.saved ? <LinearProgress mode="determinate" value={this.state.progress}/> : <p>Playlist saved to Spotify! Click <a href={this.state.playlistUrl}>here</a> to open it.</p>)
-                            : <RaisedButton label="Connect Spotify" onClick={() => window.open("/login/spotify")}/>  
-                    }              
+                            ? (!this.state.saved ? <LinearProgress mode="determinate" value={this.state.progress}/> : <p style={style}>Playlist saved to Spotify! Click <a href={this.state.playlistUrl}>here</a> to open it.</p>)
+                            : <TextField style={style} floatingLabelText="Playlist Name" onChange={this.onNameChanged} value={this.state.playlistName}/>
+                    }       
                 </Paper>
             </div>
         );
