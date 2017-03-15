@@ -35,6 +35,7 @@ export default class Linker extends React.Component {
 
     progress(progress) {
         this.setState({progress: progress});
+        console.log('progress');
     }
 
     componentWillMount() {

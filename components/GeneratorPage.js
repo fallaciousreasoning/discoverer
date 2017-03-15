@@ -33,7 +33,7 @@ export default class GeneratorPage extends React.Component {
             options: {},
             finished: false,
             saved: false,
-            stepIndex: 2
+            stepIndex: 0
         }
 
         this.nextStep = this.nextStep.bind(this);

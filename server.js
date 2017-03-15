@@ -110,10 +110,10 @@ app.post('/generate', (req, res) => {
         return;
     }
 
-    if (defaultTracks) {
-        res.json(createResponse(defaultTracks, 200));
-        return;
-    }
+    // if (defaultTracks) {
+    //     res.json(createResponse(defaultTracks, 200));
+    //     return;
+    // }
 
     const options = req.body;
     options.progressCallback = (done, todo) => {
@@ -178,7 +178,7 @@ app.post('/link', (req, res) => {
     const token = req.cookies[tokenCookieName];    
     const spotify = new SpotifyLinker();
 
-    spotify.getTrackIds(info.tracks, (done, total) => sendMessage(token, Math.round(done/total * 10000)/100))
+    spotify.getTrackIds(info.tracks, (done, total) => sendMessage(token, linkProgressMessage(Math.round(done/total * 10000)/100)))
         .then(tracks => {
             res.json(createResponse(tracks, 200));
         });
