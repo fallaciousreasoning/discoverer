@@ -38,14 +38,20 @@ export default class GeneratorPage extends React.Component {
             options: {},
             finished: false,
             saved: false,
-            stepIndex: 0
+            stepIndex: 0,
+            locked: false,
         }
 
+        this.lock.bind(this);
         this.nextStep = this.nextStep.bind(this);
         this.previousStep = this.previousStep.bind(this);
         this.getStepContent = this.getStepContent.bind(this);
         this.canStepForward = this.canStepForward.bind(this);
         this.render = this.render.bind(this);
+    }
+
+    lock(lock) {
+        this.setState({locked: lock});
     }
 
     nextStep() {
@@ -127,11 +133,12 @@ export default class GeneratorPage extends React.Component {
                 <div style={{marginTop: 12}}>
                     <FlatButton
                     label="Back"
-                    disabled={stepIndex === 0}
+                    disabled={stepIndex === 0 || this.state.locked}
                     onTouchTap={this.previousStep}
                     style={{marginRight: 12}}
                     />
                     <RaisedButton
+                    disabled={this.state.locked}
                     label={stepIndex === 3 ? 'Finish' : 'Next'}
                     primary={true}
                     onTouchTap={this.nextStep}
