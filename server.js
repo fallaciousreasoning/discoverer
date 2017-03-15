@@ -92,7 +92,7 @@ app.get('/search/:query', function(req, res) {
         res.json(createResponse([]));
         return;
     }
-    
+
     lastfm.trackSearch(req.params.query)
         .then(result => {
             let tracks = result.results.map(t => {
@@ -198,7 +198,7 @@ app.post('/link', (req, res) => {
         .then(tracks => {
             return spotify.createPlaylist(info.playlistName, tracks, 25, (done) => sendMessage(token, linkProgressMessage(Math.round((info.tracks.length + done)/total * 10000)/100)));
         })
-        .then(() => res.json(createResponse("Success", 200)));
+        .then((playlist) => res.json(createResponse(playlist, 200)));
 });
 
 app.get('/token', (req, res) => {

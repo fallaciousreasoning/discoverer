@@ -78,7 +78,7 @@ module.exports = class SpotifyHelper {
                     return this.spotifyApi.addTracksToPlaylist(playlist.owner.id, playlist.id, batch).then(() => 
                     progressCallback(++progress, steps), error => console.log("Failed adding... " + error));
                 });
-                return Promise.all(promises);
+                return Promise.all(promises).then(() => playlist);
             }, error => console.log("Failed at create! " + error));
     }
 }

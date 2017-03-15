@@ -11,6 +11,7 @@ export default class Linker extends React.Component {
         super(props);
         this.state = {
             playlistName: "test",
+            playlistUrl: "http://play.spotify.com",
             saved: false,
             token: null,
             progress: 0,
@@ -82,7 +83,7 @@ export default class Linker extends React.Component {
                     </Toolbar>
                     {
                         this.state.token !== null
-                            ? (!this.state.saved ? <LinearProgress mode="determinate" value={this.state.progress}/> : "Success!")
+                            ? (!this.state.saved ? <LinearProgress mode="determinate" value={this.state.progress}/> : <p>Playlist saved to Spotify! Click <a href={this.state.playlistUrl}>here</a> to open it.</p>)
                             : <RaisedButton label="Connect Spotify" onClick={() => window.open("/login/spotify")}/>  
                     }              
                 </Paper>
