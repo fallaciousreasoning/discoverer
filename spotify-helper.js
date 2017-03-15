@@ -54,7 +54,7 @@ module.exports = class SpotifyHelper {
             });
     }
 
-    createPlaylist(name, tracks, progressCallback) {
+    createPlaylist(name, tracks, batchSize, progressCallback) {
         const steps = 2 + Math.ceil(tracks.length / 100);
         let progress = 0;
 
@@ -70,8 +70,8 @@ module.exports = class SpotifyHelper {
 
                 let playlist = result.body;
                 const batches = [];
-                for (let i = 100; i < tracks.length + 100; i+=100) {
-                    batches.push(tracks.slice(i - 100, Math.min(i, tracks.length)));
+                for (let i = batchSize; i < tracks.length + batchSize; i+=batchSize) {
+                    batches.push(tracks.slice(i - batchSize, Math.min(i, tracks.length)));
                 }
 
                 const promises = batches.map(batch => {

@@ -191,7 +191,7 @@ app.post('/link', (req, res) => {
     spotify
         .getTrackIds(info.tracks, (done) => sendMessage(token, linkProgressMessage(Math.round(done/total * 10000)/100)))
         .then(tracks => {
-            return spotify.createPlaylist(info.playlistName, tracks, (done) => sendMessage(token, linkProgressMessage(Math.round((info.tracks.length + done)/total * 10000)/100)));
+            return spotify.createPlaylist(info.playlistName, tracks, 25, (done) => sendMessage(token, linkProgressMessage(Math.round((info.tracks.length + done)/total * 10000)/100)));
         })
         .then(() => res.json(createResponse("Success", 200)));
 });
