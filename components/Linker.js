@@ -10,6 +10,7 @@ export default class Linker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            playlistName: "test",
             saved: false,
             token: null,
             progress: 0,
@@ -35,7 +36,6 @@ export default class Linker extends React.Component {
 
     progress(progress) {
         this.setState({progress: progress});
-        console.log('progress');
     }
 
     componentWillMount() {
@@ -46,7 +46,7 @@ export default class Linker extends React.Component {
     componentWillUnmount() {
         // Destroy the event handler.
         this.onChanged = () => {};
-        // TODO remove comms event listener
+        // TODO remove comms event listeners
     }
 
     linkTracks() {
@@ -57,7 +57,7 @@ export default class Linker extends React.Component {
                 'Content-Type': 'application/json'
             },
             credentials: 'same-origin',
-            body: JSON.stringify({tracks: this.props.tracks, token: this.state.token}),
+            body: JSON.stringify({tracks: this.props.tracks, token: this.state.token, playlistName: this.state.playlistName}),
         }).then(() => this.setState({saved: true}));
     }
 

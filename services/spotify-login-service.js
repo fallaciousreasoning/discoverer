@@ -12,7 +12,7 @@ module.exports = {
         res.cookie(spotifyStateKey, state);
 
         // your application requests authorization
-        let scope = 'playlist-modify-public';
+        let scope = 'playlist-modify-public user-read-email';
         res.redirect('https://accounts.spotify.com/authorize?' +
             querystring.stringify({
             response_type: 'code',

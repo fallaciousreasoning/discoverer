@@ -77,7 +77,7 @@ const linkProgressMessage = (progress) => {
 
 const sendMessage = (session, message) => {
     if (!sockets[session]) {
-        throw new Error(`Invalid session {session}!`);
+        throw new Error(`Invalid session ${session}!`);
     }
 
     sockets[session].send(JSON.stringify(message));
@@ -98,6 +98,7 @@ app.get('/search/:query', function(req, res) {
             }});
             res.json(createResponse(tracks));
         }, error => {
+            res.statusCode = 500;
             res.json(errorResponse(500, "Failed to search :/"));
         });
 });
@@ -106,6 +107,7 @@ app.post('/generate', (req, res) => {
     const token = req.cookies ? req.cookies[tokenCookieName] : null;
     
     if (!token) {
+        res.statusCode = 400;
         res.json(errorResponse(400, 'Token cookie not set (you can get one by requesting /token)'));
         return;
     }
@@ -121,6 +123,7 @@ app.post('/generate', (req, res) => {
     }
 
     if (!options.seeds) {
+        res.statusCode = 400;
         res.json(errorResponse(400, "No seed tracks specified!"));
     }
 
@@ -163,7 +166,8 @@ app.post('/link', (req, res) => {
     }
 
     const info = req.body;
-    console.log(info);
+    // TODO remove
+    info.playlistName = info.playlistName || "test";
 
     if (!info.tracks) {
         res.statusCode = 400;
@@ -175,13 +179,21 @@ app.post('/link', (req, res) => {
         res.json(errorResponse(400, "Spotify token not specified!"));
     }
 
-    const token = req.cookies[tokenCookieName];    
-    const spotify = new SpotifyLinker();
+    if (!info.playlistName) {
+        res.statusCode = 400;
+        res.json(errorResponse(400, "Playlist title not specified!"));
+    }
 
-    spotify.getTrackIds(info.tracks, (done, total) => sendMessage(token, linkProgressMessage(Math.round(done/total * 10000)/100)))
+    const token = req.cookies[tokenCookieName];    
+    const spotify = new SpotifyLinker(info.token);
+    let total = info.tracks.length + 2 + Math.ceil(info.tracks.length / 100);
+
+    spotify
+        .getTrackIds(info.tracks, (done) => sendMessage(token, linkProgressMessage(Math.round(done/total * 10000)/100)))
         .then(tracks => {
-            res.json(createResponse(tracks, 200));
-        });
+            return spotify.createPlaylist(info.playlistName, tracks, (done) => sendMessage(token, linkProgressMessage(Math.round((info.tracks.length + done)/total * 10000)/100)));
+        })
+        .then(() => res.json(createResponse("Success", 200)));
 });
 
 app.get('/token', (req, res) => {

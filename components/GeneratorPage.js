@@ -27,7 +27,12 @@ export default class GeneratorPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            seedTracks: [],
+            seedTracks: [{
+                name:"Dead Silence",
+                artist:"Billy Talent",
+                cover:"https://lastfm-img2.akamaized…6b564d059995f3392e386b8e.png",
+                key: -1
+            }],
             generatedTracks: [],
             spotifyTracks: [],
             options: {},
