@@ -50,6 +50,11 @@ export default class GeneratedTracks extends React.Component {
     componentWillUnmount() {
         // Destroy the event handler.
         this.onChanged = () => {};
+
+        // Stop listening for progress events.
+        window.comms.stopListeningFor('generate-progress', this.progress);
+
+        // TODO cancel playlist generation.
     }
 
     getTracks(options) {

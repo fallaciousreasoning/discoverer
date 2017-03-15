@@ -46,7 +46,12 @@ export default class Linker extends React.Component {
     componentWillUnmount() {
         // Destroy the event handler.
         this.onChanged = () => {};
-        // TODO remove comms event listeners
+        
+        // Stop listening for socket events.
+        window.comms.stopListeningFor('link-progress', this.progress);
+        window.comms.stopListeningFor('token', this.progress);
+
+        // TODO cancel link.
     }
 
     linkTracks() {

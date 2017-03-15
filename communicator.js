@@ -64,6 +64,18 @@ export default class Communicator {
         this.listeners[messageName].push(handler);
     }
 
+    stopListeningFor(messageName, handler) {
+        if (!this.listeners[messageName]) {
+            return;
+        }
+
+        const index = this.listeners[messageName].indexOf(handler);
+        console.log(index);
+        if (index !== -1) {
+            this.listeners[messageName].splice(index, 1);
+        }
+    }
+
     sendMessage(route, data) {
         this.socket.send({route: route, data: data});
     }
