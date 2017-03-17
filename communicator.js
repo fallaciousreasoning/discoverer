@@ -1,49 +1,38 @@
-/** 
- * Cookie getting function from Stackoverflow
- * http://stackoverflow.com/questions/5968196/check-cookie-if-cookie-exists
- */
-function getCookie(name) {
-    var dc = document.cookie;
-    var prefix = name + "=";
-    var begin = dc.indexOf("; " + prefix);
-    if (begin == -1) {
-        begin = dc.indexOf(prefix);
-        if (begin != 0) return null;
-    }
-    else
-    {
-        begin += 2;
-        var end = document.cookie.indexOf(";", begin);
-        if (end == -1) {
-        end = dc.length;
-        }
-    }
-    
-    return decodeURI(dc.substring(begin + prefix.length, end));
-} 
-
 export default class Communicator {
-    constructor() {
+    constructor(token) {
+        if (!token) {
+            throw new Error("No token specified!");
+        }
+
         this.listenFor = this.listenFor.bind(this);
         this.initializeSocket = this.initializeSocket.bind(this);
+        this.close = this.close.bind(this);
+
         this.listeners = {};
+
+        this.token = token;
    
-        const token = getCookie('token');
-        if (token !== null) {
-            this.initializeSocket();
-        } else {
-            fetch('/token', {
-                credentials: 'same-origin'
-            }).then(this.initializeSocket);
-        }
+        this.initializeSocket(token)
     }
 
     initializeSocket() {
         const protocol = "ws://";
         const host = window.location.host;
-        const uri = protocol + host + "/socket/";
+        const uri = protocol + host + "/socket?token=" + this.token;
 
         this.socket = new WebSocket(uri);
+        this.socket.onopen = ev => {
+            this.connected = true;
+            if (this.onConnect) {
+                this.onConnect();
+                delete this.onConnect;
+            }
+        };
+
+        this.socket.onclose = ev => {
+            this.connected = false;
+        }
+
         this.socket.onmessage = ev => {
             const message = JSON.parse(ev.data);
             if (!message.route || !this.listeners[message.route]) {
@@ -54,6 +43,11 @@ export default class Communicator {
                 this.listeners[message.route][i](message.data);
             }
         };
+
+        return new Promise((accept, reject) => {
+            if (this.connected) accept();
+            else this.onConnect = accept();
+        });
     }
 
     listenFor(messageName, handler) {
@@ -76,6 +70,14 @@ export default class Communicator {
     }
 
     sendMessage(route, data) {
+        if (!this.socket) return;
+
         this.socket.send({route: route, data: data});
+    }
+
+    close() {
+        if (!this.socket) return;
+
+        this.socket.close();
     }
 }

@@ -25,7 +25,6 @@ export default class SeedTrackPicker extends React.Component {
         this.removeTrack = this.removeTrack.bind(this);
         this.onSearchChanged = this.onSearchChanged.bind(this);
         this.nextTrackId = this.state.tracks.length == 0 ? 0 : this.state.tracks[this.state.tracks.length - 1].key + 1;
-
         this.onChanged = this.props.onChanged || (() => {});
     }
 

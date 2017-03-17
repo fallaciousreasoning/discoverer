@@ -48,8 +48,8 @@ export default class Linker extends React.Component {
     }
 
     componentWillMount() {
-        window.comms.listenFor('token', this.tokenReceived);
-        window.comms.listenFor('link-progress', this.progress);
+        this.props.comms.listenFor('token', this.tokenReceived);
+        this.props.comms.listenFor('link-progress', this.progress);
     }
 
     componentWillUnmount() {
@@ -57,15 +57,15 @@ export default class Linker extends React.Component {
         this.onChanged = () => {};
         
         // Stop listening for socket events.
-        window.comms.stopListeningFor('link-progress', this.progress);
-        window.comms.stopListeningFor('token', this.progress);
+        this.props.comms.stopListeningFor('link-progress', this.progress);
+        this.props.comms.stopListeningFor('token', this.progress);
 
         // TODO cancel link.
     }
 
     linkTracks() {
         this.props.lock(true);
-        fetch('/link', {
+        fetchAuth('/link', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -82,7 +82,7 @@ export default class Linker extends React.Component {
     }
 
     login() {
-        window.open('/login/spotify');
+        window.open('/login/spotify?token=' + this.props.token);
     }
 
     render() {

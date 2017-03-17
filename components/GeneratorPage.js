@@ -17,6 +17,8 @@ import DiscovererSettings from './DiscovererSettings';
 import GeneratedTracks from './GeneratedTracks';
 import Linker from './Linker';
 
+import Communicator from '../communicator';
+
 import {
   Step,
   Stepper,
@@ -52,17 +54,45 @@ export default class GeneratorPage extends React.Component {
             saved: false,
             stepIndex: 0,
             locked: false,
-            lastStepText: 'Save to Spotify'
+            lastStepText: 'Save to Spotify',
+            hasToken: false,
         }
 
         this.defaultState = clone(this.state);
 
+        this.componentWillMount = this.componentWillMount.bind(this);
         this.lock = this.lock.bind(this);
         this.nextStep = this.nextStep.bind(this);
         this.previousStep = this.previousStep.bind(this);
         this.getStepContent = this.getStepContent.bind(this);
         this.canStepForward = this.canStepForward.bind(this);
         this.render = this.render.bind(this);
+    }
+
+    componentWillMount() {
+        if (this.state.hasToken) return;
+
+        fetch('/token')
+            .then(response => response.json())
+            .then(json => {
+                this.token = json.response;
+                this.comms = new Communicator(this.token);
+
+                this.setState({hasToken: true});
+                this.defaultState.hasToken = true;
+
+                window.fetchAuth = (url, init) => {
+                    if (url.indexOf('?') !== -1) {
+                        url += '&token=' + this.token;
+                    } else {
+                        url += '?token=' + this.token;
+                    }
+
+                    return fetch(url, init);
+                };
+
+                return this.comms.initializeSocket();
+            });
     }
 
     lock(lock) {
@@ -115,9 +145,9 @@ export default class GeneratorPage extends React.Component {
             case 2:
                 const options = this.state.options;
                 options.seeds = this.state.seedTracks;
-                return (<GeneratedTracks options={options} onChanged={(tracks) => this.setState({generatedTracks: tracks})} lock={this.lock}/>);
+                return (<GeneratedTracks options={options} onChanged={(tracks) => this.setState({generatedTracks: tracks})} lock={this.lock} comms={this.comms}/>);
             case 3:
-               return (<Linker ref ={linker => this.linker = linker} tracks={this.state.generatedTracks} onChanged={(tracks, saved) => this.setState({spotifyTracks: tracks, saved: saved})} lock={this.lock}/>);
+               return (<Linker ref ={linker => this.linker = linker} tracks={this.state.generatedTracks} onChanged={(tracks, saved) => this.setState({spotifyTracks: tracks, saved: saved})} lock={this.lock} comms={this.comms} token={this.token}/>);
             default:
                 return "Start over";
         }
@@ -157,7 +187,7 @@ export default class GeneratorPage extends React.Component {
                     label={stepIndex === 3 ? this.state.lastStepText : 'Next'}
                     primary={true}
                     onTouchTap={this.nextStep}
-                    disabled={!this.canStepForward() || this.state.locked}
+                    disabled={!this.canStepForward() || this.state.locked || !this.state.hasToken}
                     />
                 </div>
                 </div>

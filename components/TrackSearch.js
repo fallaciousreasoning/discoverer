@@ -3,7 +3,7 @@ import React from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 
 const search = (query) => {
-    return fetch('search/' + query)
+    return fetchAuth('search/' + query)
         .then(response => response.json()
             , error => {
                 return error;

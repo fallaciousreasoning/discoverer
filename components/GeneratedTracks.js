@@ -18,12 +18,14 @@ export default class GeneratedTracks extends React.Component {
         this.state = {
             progress: 0,
             tracks: [],
-            fetched: false
+            fetched: false,
         }
 
         if (!this.props.options) {
             throw new Error("Options must be set!");
         }
+
+        console.log('Comms: ' + this.props.comms);
 
         this.progress = this.progress.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
@@ -42,7 +44,7 @@ export default class GeneratedTracks extends React.Component {
 
         this.getTracks(this.props.options);
 
-        window.comms.listenFor('generate-progress', this.progress);
+        this.props.comms.listenFor('generate-progress', this.progress);
     }
 
     componentWillUnmount() {
@@ -50,7 +52,7 @@ export default class GeneratedTracks extends React.Component {
         this.onChanged = () => {};
 
         // Stop listening for progress events.
-        window.comms.stopListeningFor('generate-progress', this.progress);
+        this.props.comms.stopListeningFor('generate-progress', this.progress);
 
         // TODO cancel playlist generation.
     }
@@ -59,7 +61,7 @@ export default class GeneratedTracks extends React.Component {
         options = options || this.props.options;
 
         this.props.lock(true);
-        fetch('/generate', {
+        fetchAuth('/generate', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

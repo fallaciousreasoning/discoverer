@@ -3,6 +3,7 @@ const request = require("request");
 const config = require('config.json')('spotify-config.json');
 
 const spotifyStateKey = 'spotify_auth_state';
+const tokenMap = {};
 
 module.exports = {
     name: () => "spotify",
@@ -10,6 +11,7 @@ module.exports = {
     login: (req, res) => {
         let state = Guid.raw();
         res.cookie(spotifyStateKey, state);
+        tokenMap[state] = req.query.token;
 
         // your application requests authorization
         let scope = 'playlist-modify-public user-read-email';
@@ -27,6 +29,8 @@ module.exports = {
         let code = req.query.code || null;
         let state = req.query.state || null;
         let storedState = req.cookies ? req.cookies[spotifyStateKey] : null;
+        let token = tokenMap[storedState];
+        delete tokenMap[storedState];
 
         if (state === null || state !== storedState) {
             res.json({error: 'state mismatch (how did you even...?)', code: 400});
@@ -58,7 +62,7 @@ module.exports = {
 
             res.redirect('/close.html');
 
-            if (resultCallback) resultCallback(access_token);
+            if (resultCallback) resultCallback(token, access_token);
         });
     },
 

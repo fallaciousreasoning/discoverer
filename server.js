@@ -77,10 +77,14 @@ const linkProgressMessage = (progress) => {
 
 const sendMessage = (session, message) => {
     if (!sockets[session]) {
-        throw new Error(`Invalid session ${session}!`);
+        return;
     }
 
     sockets[session].send(JSON.stringify(message));
+};
+
+const getService = (name) => {
+    return loginServices.filter(service => service.name() === name)[0];
 };
 
 app.use(express.static('static'));
@@ -109,18 +113,13 @@ app.get('/search/:query', function(req, res) {
 });
 
 app.post('/generate', (req, res) => {
-    const token = req.cookies ? req.cookies[tokenCookieName] : null;
+    const token = req.query.token;
     
     if (!token) {
         res.statusCode = 400;
-        res.json(errorResponse(400, 'Token cookie not set (you can get one by requesting /token)'));
+        res.json(errorResponse(400, 'Token not set (you can get one by requesting /token)'));
         return;
     }
-
-    // if (defaultTracks) {
-    //     res.json(createResponse(defaultTracks, 200));
-    //     return;
-    // }
 
     const options = req.body;
     options.progressCallback = (done, todo) => {
@@ -165,14 +164,12 @@ app.post('/generate', (req, res) => {
 });
 
 app.post('/link', (req, res) => {
-    if (!req.cookies || !req.cookies[tokenCookieName]) {
+    if (!req.query.token) {
         res.statusCode = 400;
-        res.json(errorResponse(400, "Token cookie not set!"));
+        res.json(errorResponse(400, "Token not set (you can request on at /token)!"));
     }
 
     const info = req.body;
-    // TODO remove
-    info.playlistName = info.playlistName || "test";
 
     if (!info.tracks) {
         res.statusCode = 400;
@@ -189,7 +186,7 @@ app.post('/link', (req, res) => {
         res.json(errorResponse(400, "Playlist title not specified!"));
     }
 
-    const token = req.cookies[tokenCookieName];    
+    const token = req.query.token;    
     const spotify = new SpotifyLinker(info.token);
     let total = info.tracks.length + 2 + Math.ceil(info.tracks.length / 100);
 
@@ -202,19 +199,14 @@ app.post('/link', (req, res) => {
 });
 
 app.get('/token', (req, res) => {
-    if (req.cookies && req.cookies[tokenCookieName]) {
-        res.json(createResponse(req.cookies[tokenCookieName]))
+    if (req.query.token) {
+        res.json(createResponse(req.query.token, 302))
         return;
     }
-    const token = Guid.raw();   
-    res.cookie(tokenCookieName, token)
-    res.json(createResponse(token, 200));
+
+    const token = Guid.raw();
+    res.json(createResponse(token));
 });
-
-
-const getService = (name) => {
-    return loginServices.filter(service => service.name() === name)[0];
-}
 
 app.get('/login/:service', (req, res) => {
     const service = getService(req.params.service);
@@ -230,13 +222,6 @@ app.get('/login/:service', (req, res) => {
 });
 
 app.get('/callback', (req, res) => {
-    const token = req.cookies ? req.cookies[tokenCookieName] : null;
-
-    if (!token) {
-        req.statusCode = 400;
-        req.json(400, 'No token specified!');
-    }
-
     const serviceName = req.cookies ? req.cookies[serviceNameCookie] : null;
     const service = getService(serviceName);
 
@@ -245,24 +230,23 @@ app.get('/callback', (req, res) => {
         return;
     }
 
-    service.callback(req, res, access_token => sendMessage(token, loggedInMessage(access_token)));
+    service.callback(req, res, (token, access_token) => sendMessage(token, loggedInMessage(access_token)));
 });
 
 app.ws('/socket', (ws, req) => {
-    if (!req.cookies || !req.cookies[tokenCookieName]) {
+    if (!req.query.token) {
         ws.close();
         return;
     }
 
-    const sessionName = req.cookies[tokenCookieName];
-    sockets[sessionName] = ws;
+    const token = req.query.token;
+    sockets[token] = ws;
 
     ws.on('message', msg => {
-        console.log(msg);
     });
 
     ws.on('close', msg => {
-        delete sockets[sessionName];
+        delete sockets[token];
     });
 });
  
