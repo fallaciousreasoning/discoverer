@@ -1,5 +1,4 @@
 import React from 'react';
-import Track from './Track';
 import TrackSearch from './TrackSearch';
 import DiscovererSettings from './DiscovererSettings';
 
