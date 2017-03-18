@@ -25,8 +25,6 @@ export default class GeneratedTracks extends React.Component {
             throw new Error("Options must be set!");
         }
 
-        console.log('Comms: ' + this.props.comms);
-
         this.progress = this.progress.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.componentWillUnmount = this.componentWillUnmount.bind(this);
