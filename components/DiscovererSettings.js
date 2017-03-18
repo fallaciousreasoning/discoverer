@@ -1,13 +1,11 @@
 import React from 'react';
-import {Card, CardActions, CardHeader, CardText, CardMedia} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
 import {List, ListItem} from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import Toggle from 'material-ui/Toggle';
 
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
-import TextField from 'material-ui/TextField';
+import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar';
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
