@@ -250,4 +250,4 @@ app.ws('/socket', (ws, req) => {
     });
 });
  
-app.listen(3000);
+app.listen(process.env.PORT || 80);
