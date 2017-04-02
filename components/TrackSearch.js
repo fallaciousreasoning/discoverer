@@ -52,7 +52,7 @@ export default class TrackSearch extends React.Component {
         search(value)
             .then(tracks => {
                 let dataSource = tracks.map(track => {
-                    return track.name + ' by ' + track.artist;
+                    return track.name + ' ' + track.artist;
                 });
 
                 this.tracks = tracks;
