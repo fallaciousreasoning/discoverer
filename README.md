@@ -9,7 +9,9 @@ You can play with a live version [here](https://music-generator.herokuapp.com/)
 1. Clone
 
         git clone https://github.com/fallaciousreasoning/discoverer.git
-2. CD into the repository `cd discoverer`
+2. Change to the repository directory 
+        
+        cd discoverer
 3. Install npm packages
 
         npm install
@@ -32,4 +34,4 @@ You can play with a live version [here](https://music-generator.herokuapp.com/)
 9. Start the server with `node server.js`
 10. Navigiate to `http://<YOUR_SERVER>/` (this will be `http://localhost/` if you're running on your local machine). Hopefully you'll be greeted with a page similar to the following
 
-![alt text](/readme_files/landing.PNG "Landing Page")
+![Landing Page](/readme_files/landing.PNG "Landing Page")
