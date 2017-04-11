@@ -2,6 +2,8 @@
 
 A music discovery and playlist generation tool powered by last.fm and Spotify.
 
+You can play with a live version [here](https://music-generator.herokuapp.com/)
+
 ## Installation
 
 1. Clone
@@ -18,7 +20,7 @@ A music discovery and playlist generation tool powered by last.fm and Spotify.
             "apiKey":"<YOUR_API_KEY>"
         }
 
-6. Get a Spotify api key from the [Spotify Developer Console]. You should add a callback url to `http://<YOUR_HOST>/callback` (if you're running locally this will be `http://localhost:3000/callback`) (https://developer.spotify.com/my-applications/#!/applications)
+6. Get a Spotify api key from the [Spotify Developer Console]. You should add a callback url to `http://<YOUR_HOST>/callback` (if you're running locally this will be `http://localhost/callback`) (https://developer.spotify.com/my-applications/#!/applications)
 7. Create a file `spotify-config.json` in the root directory with the contents:
 
         {
@@ -28,6 +30,6 @@ A music discovery and playlist generation tool powered by last.fm and Spotify.
         }
 8. Compile the JavaScript bundle with `node_modules\.bin\webpack.cmd`. If you're going to be changing the client code you might find the `--watch` argument useful, as it will automatically compile every time you make a change.
 9. Start the server with `node server.js`
-10. Navigiate to `http://<YOUR_SERVER>/` (this will be `http://localhost:3000/` if you're running on your local machine). Hopefully you'll be greeted with a page similar to the following
+10. Navigiate to `http://<YOUR_SERVER>/` (this will be `http://localhost/` if you're running on your local machine). Hopefully you'll be greeted with a page similar to the following
 
 ![alt text](/readme_files/landing.PNG "Landing Page")
