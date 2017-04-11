@@ -14,7 +14,7 @@ export default class Communicator {
     }
 
     initializeSocket() {
-        const protocol = "ws://";
+        const protocol = "wss://";
         const host = window.location.host;
         const uri = protocol + host + "/socket?token=" + this.token;
 
