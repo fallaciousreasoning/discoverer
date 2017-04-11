@@ -11,8 +11,6 @@ export default class Communicator {
         this.listeners = {};
 
         this.token = token;
-   
-        this.initializeSocket(token)
     }
 
     initializeSocket() {
