@@ -42,6 +42,9 @@ export default class Communicator {
             }
         };
 
+        // Send a 'ping' message every 5 seconds.
+        setInterval(() => this.sendMessage("ping", {}), 5000);
+
         return new Promise((accept, reject) => {
             if (this.connected) accept();
             else this.onConnect = accept();
