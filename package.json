@@ -35,6 +35,7 @@
     "react-http-request": "^1.0.3",
     "react-router": "^2.6.1",
     "react-tap-event-plugin": "^2.0.1",
+    "reconnectingwebsocket": "^1.0.0",
     "request": "^2.81.0",
     "spotify-web-api-node": "^2.3.6",
     "ws": "^2.2.1"

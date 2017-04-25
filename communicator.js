@@ -1,3 +1,5 @@
+const ReconnectingWebSocket = require("reconnectingwebsocket");
+
 export default class Communicator {
     constructor(token) {
         if (!token) {
@@ -18,7 +20,7 @@ export default class Communicator {
         const host = window.location.host;
         const uri = protocol + host + "/socket?token=" + this.token;
 
-        this.socket = new WebSocket(uri);
+        this.socket = new ReconnectingWebSocket(uri);
         this.socket.onopen = ev => {
             this.connected = true;
             if (this.onConnect) {
