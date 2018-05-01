@@ -1,0 +1,29 @@
+{
+  "name": "discoverer",
+  "version": "2.0.0",
+  "description": "A music discovery tool",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "webpack --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fallaciousreasoning/discoverer.git"
+  },
+  "keywords": [
+    "typescript",
+    "music",
+    "lastfm",
+    "spotify"
+  ],
+  "author": "fallaciousreasoning",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fallaciousreasoning/discoverer/issues"
+  },
+  "homepage": "https://github.com/fallaciousreasoning/discoverer#readme",
+  "devDependencies": {
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.1.2"
+  }
+}
