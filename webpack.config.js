@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
-    entry: './src/index.ts',
+    entry: './src/index.tsx',
 
     devtool: 'source-map',
 
@@ -13,6 +13,7 @@ module.exports = {
     },
 
     resolve: {
+        modules: ['.', './src', 'node_modules'],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
     },
 
