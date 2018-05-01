@@ -4,7 +4,8 @@
   "description": "A music discovery tool",
   "main": "src/index.ts",
   "scripts": {
-    "build": "webpack --mode development"
+    "build": "webpack --config webpack.config.js",
+    "serve": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,14 @@
   },
   "homepage": "https://github.com/fallaciousreasoning/discoverer#readme",
   "devDependencies": {
+    "awesome-typescript-loader": "^5.0.0",
+    "typescript": "^2.8.3",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.1.2"
+  },
+  "dependencies": {
+    "@types/react": "^16.3.13",
+    "react": "^16.3.2",
+    "webpack-dev-server": "^3.1.3"
   }
 }

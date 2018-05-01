@@ -1,34 +1,38 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
     entry: './src/index.ts',
 
+    devtool: 'source-map',
+
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js',
-        publicPath: '/assets/'
+        path: __dirname + '/dist',
+        filename: 'main.js'
+    },
+
+    resolve: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
     },
 
     module: {
         rules: [
-            {
-                test: /\.tsx?$/,
-                include: [
-                    'src'
-                ],
-                loader: 'ts-loader'
-            }
+            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
         ]
     },
 
-    resolve: {
-        modules: [
-            "node_modules",
-            "src"
-        ],
-        extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json' ]
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
     },
 
-    devtool: 'source-map'
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
+
+    devServer: {
+        hot: true,
+        contentBase: './dist'
+    }
 };
