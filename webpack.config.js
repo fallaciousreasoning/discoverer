@@ -13,7 +13,6 @@ module.exports = {
     },
 
     resolve: {
-        modules: ['.', './src', 'node_modules'],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
     },
 
@@ -21,11 +20,6 @@ module.exports = {
         rules: [
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
         ]
-    },
-
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
     },
 
     plugins: [
