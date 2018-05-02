@@ -15,7 +15,7 @@ import configureStore from './store/configureStore';
 import routes from './Routes';
 
 const history = createHistory();
-const store = configureStore(history, {});
+const store = configureStore(history, {} as any);
 
 (window as any).store = store;
 (window as any).rHistory = history;
