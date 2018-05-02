@@ -3,22 +3,16 @@ import { LastFmTrack } from '../api/lastfm';
 import { composeReducers, actionReducer, defaultReducer } from './reducers';
 import { ActionType, AddSong, RemoveSong } from './actions';
 
+import * as seedStore from './seedStore'
+
 export interface ApplicationState {
-    songs: LastFmTrack[];
+    seedTracks: seedStore.SeedState;
 }
 
 const defaultState: ApplicationState = {
-    songs: []
+    seedTracks: []
 };
 
-export const reducer = composeReducers(
-    defaultReducer(defaultState),
-    actionReducer(ActionType.ADD_SONG, (state: ApplicationState, action: AddSong) => ({
-        ...state,
-        songs: [...state.songs, action.song]
-    })),
-    actionReducer(ActionType.REMOVE_SONG, (state: ApplicationState, action: RemoveSong) => ({
-        ...state,
-        songs: state.songs.reduce((prev, next) => next === action.song ? prev : [...prev, next], [])
-    }))
-)
+export const reducer = {
+    seedTracks: seedStore.reducer
+};
