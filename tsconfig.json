@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": false,
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",
+    "moduleResolution": "node",
 
     "typeRoots": [
       "node_modules/@types"

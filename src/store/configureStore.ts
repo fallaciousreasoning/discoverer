@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose, combineReducers, Store, StoreEnhancer } from 'redux';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 
-import { ApplicationState, reducer } from './';
+import { ApplicationState, reducer } from 'src/store';
 import { History } from 'history';
 
 export default function configureStore(history: History, initialState?: ApplicationState) {
