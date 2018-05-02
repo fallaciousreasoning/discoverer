@@ -15,7 +15,7 @@ export interface LastFmTrack {
     url: string;
     streamable: boolean;
     listeners: string;
-    image: string;
+    image: LastFmImage[];
 }
 
 export interface LastFmArtist {

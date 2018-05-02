@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Step, StepLabel, Stepper } from 'material-ui';
+import { Step, StepLabel, Stepper, Paper, Toolbar, ToolbarTitle } from 'material-ui';
 
 import { RouteComponentProps } from 'react-router';
 
@@ -18,11 +18,13 @@ enum Steps {
 }
 
 const components = {
-    seed: <Seed/>,
+    seed: <Seed />,
     configure: <div> configure </div>,
     generate: <div> generate </div>,
     save: <div> save </div>
-}
+};
+
+const stepperContentStyle = { padding: "28px 16px" };
 
 export default class DiscoverStepper extends React.Component<RouteComponentProps<RouteProps>> {
     public render() {
@@ -42,7 +44,12 @@ export default class DiscoverStepper extends React.Component<RouteComponentProps
                     <StepLabel>Save</StepLabel>
                 </Step>
             </Stepper>
-            {components[step]}
+            <Paper>
+                <Toolbar><ToolbarTitle text="Seed Tracks" /></Toolbar>
+                <div style={stepperContentStyle}>
+                    {components[step]}
+                </div>
+            </Paper>
         </div>;
     }
 }

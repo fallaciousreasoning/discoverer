@@ -1,8 +1,10 @@
 import * as React from 'react';
 
 import SongFinder from './SongFinder';
-import { List, ListItem } from 'material-ui';
-import { LastFmTrack } from '../api/lastfm';
+import { List, ListItem, Avatar, IconButton } from 'material-ui';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+
+import { LastFmTrack, trackGetInfo } from '../api/lastfm';
 import { ApplicationState } from 'src/store';
 
 import { connect } from 'react-redux';
@@ -14,10 +16,15 @@ interface Props {
     removeSong: typeof actionCreators.removeSong;
 }
 
-const SeedTrack = (props: { track: LastFmTrack }) => <ListItem>
+// If we have more than one image, take the second (medium size), otherwise take the one and only.
+const artistUrl = (track: LastFmTrack) => track.image[Math.min(track.image.length - 1, 1)]['#text'];
 
-</ListItem>;
-
+const SeedTrack = (props: { track: LastFmTrack, remove: (track: LastFmTrack) => void }) => <ListItem
+    leftAvatar={<Avatar src={artistUrl(props.track)}/>}
+    primaryText={props.track.name}
+    secondaryText={`by ${props.track.artist}`}
+    rightIconButton={<IconButton onClick={() => props.remove(props.track)}><ActionDelete/></IconButton>}
+/>;
 
 
 class Seed extends React.Component<Props> {
@@ -25,6 +32,7 @@ class Seed extends React.Component<Props> {
         return <>
             <SongFinder onSelect={this.props.addSong} />
             <List>
+                {this.props.seedTracks.map(track => <SeedTrack key={`${track.name} ${track.artist} ${track.url}`} track={track} remove={this.props.removeSong}/>)}
             </List>
         </>;
     }
