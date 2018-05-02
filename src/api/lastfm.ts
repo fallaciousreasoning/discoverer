@@ -1,4 +1,4 @@
-import querystring from 'querystring';
+import * as querystring from 'querystring';
 import axios from 'axios';
 
 const config = require('config.json');
@@ -9,7 +9,7 @@ interface LastFmAction {
     format?: 'json';
 }
 
-interface LastFmTrack {
+export interface LastFmTrack {
     name: string;
     artist: string | LastFmArtist;
     url: string;
@@ -18,7 +18,7 @@ interface LastFmTrack {
     image: string;
 }
 
-interface LastFmArtist {
+export interface LastFmArtist {
     name: string;
 }
 
@@ -35,14 +35,20 @@ const executeRequest = <T extends LastFmAction>(options: T) => {
         format: options.format || 'json'
     });
 
-    return axios.get(`${baseUrl}?${params}`).then(response => response.data);
+    return axios.get(`${baseUrl}?${params}`, {
+        headers: {
+            "Accept": "*/*",
+            "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8"
+        },
+        withCredentials: false,
+    } as any).then(response => response.data);
 }
 
 export const trackSearch = (track: string) => {
     return executeRequest({
         method: "track.search",
         track
-    }).then(data => data.result.trackmatches.track as LastFmTrack[]);
+    }).then(data => data.results.trackmatches.track as LastFmTrack[]);
 }
 
 export const getRecentTracks = (user: string) => {

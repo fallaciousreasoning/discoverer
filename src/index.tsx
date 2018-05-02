@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader'
 
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 console.log(ConnectedRouter);
 
@@ -28,7 +29,9 @@ function renderApp() {
         <Discoverer>
             <Provider store={store}>
                 <ConnectedRouter history={history}>
-                    {routes}
+                    <MuiThemeProvider>
+                        {routes}
+                    </MuiThemeProvider>
                 </ConnectedRouter>
             </Provider>
         </Discoverer>,
