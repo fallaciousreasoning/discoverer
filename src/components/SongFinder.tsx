@@ -51,6 +51,7 @@ export default class SongFinder extends React.Component<Props, State> {
             dataSource={this.state.suggestions}
             filter={AutoComplete.caseInsensitiveFilter}
             onNewRequest={this.onNewRequest}
+            fullWidth
         />
     }
 }
