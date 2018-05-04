@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router';
 
 import Seed from './Seed';
 import Configure from './Configure';
+import Generate from './Generate';
 
 interface RouteProps {
     step: string;
@@ -29,7 +30,7 @@ const steps = {
     },
     generate: {
         title: "Generating Playlist",
-        component: null
+        component: <Generate/>
     },
     save: {
         title: "Saving",

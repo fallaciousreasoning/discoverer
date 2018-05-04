@@ -13,7 +13,10 @@ function* generationStart(action: GenerationStart) {
     const seeds: LastFmTrack[] = yield select((state: ApplicationState) => state.seedTracks);
     const settings: Settings = yield select((state: ApplicationState) => state.settings);
 
-    discoverer = new Discoverer(seeds, settings, (progress, generated) => store.dispatch(actionCreators.generationProgress(progress, generated)));
+    discoverer = new Discoverer(seeds, settings, (progress, generated) => {
+        console.log(generated);
+        store.dispatch(actionCreators.generationProgress(progress, generated));
+    });
     discoverer.generate();
 }
 

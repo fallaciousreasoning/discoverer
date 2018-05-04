@@ -20,7 +20,7 @@ export const reducer = composeReducers(
     actionReducer(ActionType.GENERATION_RESET, () => defaultState),
     actionReducer(ActionType.GENERATION_PROGRESS, (state: GenerationState, action: GenerationProgress) => ({
         ...state,
-        generated: action.generated,
+        generated: [...action.generated],
         progress: action.progress,
         generating: action.generating
     })),

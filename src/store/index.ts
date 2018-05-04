@@ -10,7 +10,7 @@ import * as generationStore from './generationStore';
 export interface ApplicationState {
     seedTracks: seedStore.SeedState;
     settings: settingsStore.Settings;
-    generated: generationStore.GenerationState;
+    generation: generationStore.GenerationState;
 }
 
 export const reducer = {
