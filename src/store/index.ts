@@ -4,15 +4,14 @@ import { composeReducers, actionReducer, defaultReducer } from './reducers';
 import { ActionType, AddSong, RemoveSong } from './actions';
 
 import * as seedStore from './seedStore'
+import * as settingsStore from './settingsStore';
 
 export interface ApplicationState {
     seedTracks: seedStore.SeedState;
+    settings: settingsStore.Settings;
 }
 
-const defaultState: ApplicationState = {
-    seedTracks: []
-};
-
 export const reducer = {
-    seedTracks: seedStore.reducer
+    seedTracks: seedStore.reducer,
+    settings: settingsStore.reducer
 };

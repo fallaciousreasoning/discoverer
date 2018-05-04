@@ -1,17 +1,6 @@
 import * as React from 'react';
 import { List, ListItem, Toggle, SelectField, MenuItem } from 'material-ui';
-
-interface Settings {
-    burnSeedTracks: boolean;
-    burnSeedArtists: boolean;
-
-    includeSeedTracks: boolean;
-
-    burnUsedTracks: boolean;
-    burnUsedArtists: boolean;
-
-    limit: number;
-}
+import { Settings } from 'src/store/settingsStore';
 
 interface Props extends Settings {
 
