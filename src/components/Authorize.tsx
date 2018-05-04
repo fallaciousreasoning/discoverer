@@ -30,6 +30,8 @@ export default class Authorize extends React.Component<RouteComponentProps<{}>, 
 
     componentDidMount() {
         this.token = querystring.parse(this.props.location.hash.slice(1));
+        this.token.issue_date = new Date(); // Store the issue date so we know when it expires
+
         window[AuthorizedCallbackName](this.token);
 
         countdown(this.state.secondsTillClose, secondsTillClose => this.setState({ secondsTillClose }));

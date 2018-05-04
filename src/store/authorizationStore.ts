@@ -5,6 +5,7 @@ export interface AuthorizationToken {
     authorization_token?: string;
     expires_in?: number;
     token_type?: string;
+    issue_date?: Date;
 }
 
 const defaultState = {};
