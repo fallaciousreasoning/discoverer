@@ -21,8 +21,6 @@ interface Props {
     removeSong: (song: LastFmTrack) => void;
 }
 
-export default (props: Props) => {
-    console.log(props.songs);
-return <List>
+export default (props: Props) => <List>
     {props.songs.map(song => <Song key={`${song.name} ${song.artist} ${song.url}`} song={song} remove={props.removeSong} />)}
-</List>;}
+</List>;
