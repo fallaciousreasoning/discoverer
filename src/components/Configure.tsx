@@ -32,20 +32,20 @@ class Configure extends React.Component<Props> {
             <ListItem
                 primaryText="Burn Seed Artists"
                 secondaryText="Stops artists from seed tracks from appearing in the final playlist"
-                rightToggle={<Toggle defaultToggled={this.props.burnSeedArtists}
+                rightToggle={<Toggle toggled={this.props.burnSeedArtists}
                     onToggle={(event, value) => this.props.updateSettings({ burnSeedArtists: value })} />} />
             <ListItem
                 primaryText="Include Seed Tracks"
                 secondaryText="Adds seed tracks to the final playlist (this overrides burning seed tracks/artists)."
-                rightToggle={<Toggle defaultToggled={this.props.includeSeedTracks} onToggle={(event, value) => this.props.updateSettings({ includeSeedTracks: value })} />} />
+                rightToggle={<Toggle toggled={this.props.includeSeedTracks} onToggle={(event, value) => this.props.updateSettings({ includeSeedTracks: value })} />} />
             <ListItem
                 primaryText="Burn Used Tracks"
                 secondaryText="Stops tracks from appearing in the final playlist more than once"
-                rightToggle={< Toggle defaultToggled={this.props.burnUsedTracks} onToggle={(event, value) => this.props.updateSettings({ burnUsedTracks: value })} />} />
+                rightToggle={< Toggle toggled={this.props.burnUsedTracks} onToggle={(event, value) => this.props.updateSettings({ burnUsedTracks: value })} />} />
             <ListItem
                 primaryText="Burn Used Artists"
                 secondaryText="Prevents artists from appearing in the final playlist more than once."
-                rightToggle={< Toggle defaultToggled={this.props.burnUsedArtists} onToggle={(event, value) => this.props.updateSettings({ burnUsedArtists: value })} />} />
+                rightToggle={< Toggle toggled={this.props.burnUsedArtists} onToggle={(event, value) => this.props.updateSettings({ burnUsedArtists: value })} />} />
             <ListItem
                 disableFocusRipple={true}
                 disableTouchRipple={true}
