@@ -1,5 +1,5 @@
 import { Action, combineReducers } from 'redux';
-import { LastFmTrack } from '../api/lastfm';
+import { LastFmTrack } from 'src/services/lastfm';
 import { composeReducers, actionReducer, defaultReducer } from './reducers';
 import { ActionType, AddSong, RemoveSong } from './actions';
 
