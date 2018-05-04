@@ -14,5 +14,5 @@ export interface UpdateSettings { type: ActionType.UPDATE_SETTINGS, update: Part
 export const actionCreators = {
     addSong: (song: LastFmTrack) => <AddSong>({ type: ActionType.ADD_SONG, song }),
     removeSong: (song: LastFmTrack) => <RemoveSong>({ type: ActionType.REMOVE_SONG, song }),
-    settings: (update: Partial<Settings>) => <UpdateSettings>({ type: ActionType.UPDATE_SETTINGS, update })
+    updateSettings: (update: Partial<Settings>) => <UpdateSettings>({ type: ActionType.UPDATE_SETTINGS, update })
 }

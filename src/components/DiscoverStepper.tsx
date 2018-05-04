@@ -5,6 +5,7 @@ import { Step, StepLabel, Stepper, Paper, Toolbar, ToolbarTitle, FlatButton, Rai
 import { RouteComponentProps } from 'react-router';
 
 import Seed from './Seed';
+import Settings from './Settings';
 
 interface RouteProps {
     step: string;
@@ -24,7 +25,7 @@ const steps = {
     },
     configure: {
         title: "Configure Options",
-        component: null
+        component: <Settings />
     },
     generate: {
         title: "Generating Playlist",

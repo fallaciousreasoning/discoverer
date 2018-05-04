@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { List, ListItem, Toggle, SelectField, MenuItem } from 'material-ui';
 import { Settings } from 'src/store/settingsStore';
+import { connect } from '../connect';
+import { ApplicationState } from '../store';
+import { actionCreators } from '../store/actions';
 
 interface Props extends Settings {
 
@@ -17,7 +20,7 @@ const secondaryTextStyle = {
     textOverflow: "ellipsis",
 };
 
-export default class SettingsEditor extends React.Component<Props> {
+class SettingsEditor extends React.Component<Props> {
     limitOptions = [5, 10, 25, 50, 100, 250];
 
     public render() {
@@ -61,3 +64,6 @@ export default class SettingsEditor extends React.Component<Props> {
         </List>;
     }
 }
+
+export default connect((state: ApplicationState) => state.settings, { updateSettings: actionCreators.updateSettings})(SettingsEditor);
+
