@@ -11,6 +11,10 @@ export interface Settings {
     burnUsedArtists: boolean;
 
     limit: number;
+
+    minDepth: number;
+    maxDepth: number;
+    maxIterations: number;
 }
 
 const defaultSettings: Settings = {
@@ -22,7 +26,11 @@ const defaultSettings: Settings = {
     burnUsedTracks: true,
     burnUsedArtists: false,
 
-    limit: 25
+    limit: 25,
+
+    minDepth: 0,
+    maxDepth: 1,
+    maxIterations: 1000,
 };
 
 export const reducer = composeReducers(
