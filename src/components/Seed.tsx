@@ -9,6 +9,7 @@ import { ApplicationState } from 'src/store';
 
 import { connect } from 'react-redux';
 import { actionCreators } from 'src/store/actions';
+import SongList from './SongList';
 
 interface Props {
     seedTracks: LastFmTrack[];
@@ -16,24 +17,11 @@ interface Props {
     removeSong: typeof actionCreators.removeSong;
 }
 
-// If we have more than one image, take the second (medium size), otherwise take the one and only.
-const artistUrl = (track: LastFmTrack) => track.image[Math.min(track.image.length - 1, 1)]['#text'];
-
-const SeedTrack = (props: { track: LastFmTrack, remove: (track: LastFmTrack) => void }) => <ListItem
-    leftAvatar={<Avatar src={artistUrl(props.track)}/>}
-    primaryText={props.track.name}
-    secondaryText={`by ${props.track.artist}`}
-    rightIconButton={<IconButton onClick={() => props.remove(props.track)}><ActionDelete/></IconButton>}
-/>;
-
-
 class Seed extends React.Component<Props> {
     public render() {
         return <>
             <SongFinder onSelect={this.props.addSong} />
-            <List>
-                {this.props.seedTracks.map(track => <SeedTrack key={`${track.name} ${track.artist} ${track.url}`} track={track} remove={this.props.removeSong}/>)}
-            </List>
+            <SongList songs={this.props.seedTracks} removeSong={this.props.removeSong} />
         </>;
     }
 }
