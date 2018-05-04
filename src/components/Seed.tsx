@@ -19,7 +19,6 @@ interface Props {
 
 class Seed extends React.Component<Props> {
     public render() {
-        console.log(this.props.seedTracks);
         return <>
             <SongFinder onSelect={this.props.addSong} />
             <SongList songs={this.props.seedTracks} removeSong={this.props.removeSong} />

@@ -16,7 +16,7 @@ export class Discoverer {
     options: Settings;
     progress: Progress;
 
-    result: LastFmTrack[];
+    result: LastFmTrack[] = [];
 
     burntTracks = new Set<string>();
     burntArtists = new Set<string>();

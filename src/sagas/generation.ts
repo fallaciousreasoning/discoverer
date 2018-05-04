@@ -1,5 +1,5 @@
 import { all, takeEvery, select } from "redux-saga/effects";
-import { GenerationStart, ActionType, GenerationReset } from "src/store/actions";
+import { GenerationStart, ActionType, GenerationReset, actionCreators } from "src/store/actions";
 import { Discoverer } from "src/services/discoverer";
 import { ApplicationState } from "src/store";
 import { LastFmTrack } from "../services/lastfm";
@@ -13,7 +13,7 @@ function* generationStart(action: GenerationStart) {
     const seeds: LastFmTrack[] = yield select((state: ApplicationState) => state.seedTracks);
     const settings: Settings = yield select((state: ApplicationState) => state.settings);
 
-    discoverer = new Discoverer(seeds, settings, progress => console.log(progress));
+    discoverer = new Discoverer(seeds, settings, (progress, generated) => store.dispatch(actionCreators.generationProgress(progress, generated)));
     discoverer.generate();
 }
 
