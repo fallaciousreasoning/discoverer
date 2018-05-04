@@ -9,9 +9,14 @@ import { GenerationState } from '../store/generationStore';
 
 interface Props extends GenerationState {
     removeSong: (song: LastFmTrack) => void;
+    generationStart: () => void;
 }
 
 class Generate extends React.Component<Props> {
+    componentDidMount() {
+        this.props.generationStart();
+    }
+
     public render() {
         return <>
             <LinearProgress min={0} max={1} value={this.props.progress} mode="determinate"/>
@@ -21,6 +26,6 @@ class Generate extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: ApplicationState) => state.generation;
-const mapDispatchToProps = { removeSong: actionCreators.generationRemoveSong };
+const mapDispatchToProps = { removeSong: actionCreators.generationRemoveSong, generationStart: actionCreators.generationStart };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Generate);
