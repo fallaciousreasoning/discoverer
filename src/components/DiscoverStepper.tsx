@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import Seed from './Seed';
 import Configure from './Configure';
 import Generate from './Generate';
+import Save from './Save';
 
 interface RouteProps {
     step: string;
@@ -34,7 +35,7 @@ const steps = {
     },
     save: {
         title: "Saving",
-        component: null
+        component: <Save/>
     },
 };
 

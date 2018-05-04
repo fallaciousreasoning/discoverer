@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/fallaciousreasoning/discoverer#readme",
   "devDependencies": {
+    "@types/spotify-web-api-js": "^0.21.0",
     "awesome-typescript-loader": "^5.0.0",
     "react-hot-loader": "^4.1.2",
     "typescript": "^2.8.3",
@@ -51,6 +52,7 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "^4.0.0",
     "redux-saga": "^0.16.0",
+    "spotify-web-api-js": "^0.24.0",
     "webpack-dev-server": "^3.1.3"
   }
 }
