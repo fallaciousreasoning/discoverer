@@ -13,8 +13,8 @@ import SongList from './SongList';
 
 interface Props {
     seedTracks: LastFmTrack[];
-    addSong: typeof actionCreators.addSong;
-    removeSong: typeof actionCreators.removeSong;
+    addSong: typeof actionCreators.addSeedSong;
+    removeSong: typeof actionCreators.removeSeedSong;
 }
 
 class Seed extends React.Component<Props> {
@@ -28,8 +28,8 @@ class Seed extends React.Component<Props> {
 
 const mapStateToProps = (state: ApplicationState) => ({ seedTracks: state.seedTracks });
 const mapDispatchToProps = {
-    addSong: actionCreators.addSong,
-    removeSong: actionCreators.removeSong
+    addSong: actionCreators.addSeedSong,
+    removeSong: actionCreators.removeSeedSong
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Seed);
