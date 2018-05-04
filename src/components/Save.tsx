@@ -1,6 +1,10 @@
 import * as React from 'react';
-import Authorizer, { AuthorizationToken } from 'src/services/linker';
+import Authorizer from 'src/services/linker';
 import { RaisedButton } from 'material-ui';
+import { AuthorizationToken } from 'src/store/authorizationStore';
+import { ApplicationState } from '../store';
+import { connect } from 'src/connect';
+import { actionCreators } from '../store/actions';
 
 
 interface Props {
@@ -8,17 +12,30 @@ interface Props {
     onAuthorized: (token: AuthorizationToken) => void;
 }
 
-export default class Save extends React.Component<Props> {
+class Save extends React.Component<Props> {
     authorizer: Authorizer = new Authorizer();
+
+    componentDidMount() {
+        this.authorizer.setToken(this.props.token);
+        this.authorizer.setCallback(this.props.onAuthorized);
+        this.updateValues();
+    }
 
     componentDidUpdate() {
         this.authorizer.setToken(this.props.token);
         this.authorizer.setCallback(this.props.onAuthorized);
+        this.updateValues();
+    }
+
+    updateValues = () => {
     }
 
     public render() {
         return <div>
-            <RaisedButton primary label="Connect to Spotify" onClick={this.authorizer.authorize}/>
+            <RaisedButton primary label="Connect to Spotify" onClick={this.authorizer.authorize} />
         </div>
     }
 }
+
+// TODO memoize
+export default connect((state: ApplicationState) => ({ token: state.token }), { onAuthorized: actionCreators.setToken })(Save)

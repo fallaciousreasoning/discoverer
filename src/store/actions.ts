@@ -1,5 +1,6 @@
 import { LastFmTrack } from 'src/services/lastfm';
 import { Settings } from './settingsStore';
+import { AuthorizationToken } from './authorizationStore';
 
 export enum ActionType {
     ADD_SEED_SONG = "ADD_SEED_SONG",
@@ -12,7 +13,9 @@ export enum ActionType {
     GENERATION_PROGRESS = "GENERATION_PROGRESS",
     GENERATION_REMOVE_SONG = "GENERATION_REMOVE_SONG",
 
-    CANCEL_SAGAS_HMR = "CANCEL_SAGAS_HMR"
+    CANCEL_SAGAS_HMR = "CANCEL_SAGAS_HMR",
+
+    SET_TOKEN = "SET_TOKEN"
 }
 
 export interface AddSeedSong { type: ActionType.ADD_SEED_SONG, song: LastFmTrack }
@@ -26,6 +29,8 @@ export interface GenerationRemoveSong { type: ActionType.GENERATION_REMOVE_SONG,
 
 export interface CancelSagasHMR { type: ActionType.CANCEL_SAGAS_HMR }
 
+export interface SetToken { type: ActionType.SET_TOKEN, token: AuthorizationToken }
+
 export const actionCreators = {
     addSeedSong: (song: LastFmTrack) => <AddSeedSong>({ type: ActionType.ADD_SEED_SONG, song }),
     removeSeedSong: (song: LastFmTrack) => <RemoveSeedSong>({ type: ActionType.REMOVE_SEED_SONG, song }),
@@ -37,5 +42,7 @@ export const actionCreators = {
     generationProgress: (progress: number, generated: LastFmTrack[]) => <GenerationProgress>({ type: ActionType.GENERATION_PROGRESS, generating: progress === 1, progress, generated }),
     generationRemoveSong: (song: LastFmTrack) => <GenerationRemoveSong>({ type: ActionType.GENERATION_REMOVE_SONG, song }),
 
-    cancelSagasHMR: () => <CancelSagasHMR>({ type: ActionType.CANCEL_SAGAS_HMR })
+    cancelSagasHMR: () => <CancelSagasHMR>({ type: ActionType.CANCEL_SAGAS_HMR }),
+
+    setToken: (token: AuthorizationToken) => <SetToken>({ type: ActionType.SET_TOKEN, token })
 };

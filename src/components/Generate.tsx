@@ -14,6 +14,7 @@ interface Props extends GenerationState {
 
 class Generate extends React.Component<Props> {
     componentDidMount() {
+        // TODO do this more intelligently
         this.props.generationStart();
     }
 

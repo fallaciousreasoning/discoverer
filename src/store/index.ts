@@ -6,15 +6,18 @@ import { ActionType, AddSeedSong, RemoveSeedSong } from './actions';
 import * as seedStore from './seedStore'
 import * as settingsStore from './settingsStore';
 import * as generationStore from './generationStore';
+import * as authorizationStore from './authorizationStore';
 
 export interface ApplicationState {
     seedTracks: seedStore.SeedState;
     settings: settingsStore.Settings;
     generation: generationStore.GenerationState;
+    token: authorizationStore.AuthorizationToken;
 }
 
 export const reducer = {
     seedTracks: seedStore.reducer,
     settings: settingsStore.reducer,
-    generation: generationStore.reducer
+    generation: generationStore.reducer,
+    token: authorizationStore.reducer
 };

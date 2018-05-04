@@ -1,15 +1,11 @@
 import * as Spotify from 'spotify-web-api-js';
 import * as querystring from 'querystring';
+import { AuthorizationToken } from 'src/store/authorizationStore';
 
 const config = require('config');
 
 const spotifyAuthorizeUrl = "https://accounts.spotify.com/authorize";
-
-export interface AuthorizationToken {
-    authorizationToken: string;
-    expiresIn: number;
-    tokenType: string;
-}
+export const AuthorizedCallbackName = "authorizedCallback";
 
 export default class Authorizer {
     window: Window;
@@ -23,10 +19,6 @@ export default class Authorizer {
     isAuthorized = () => !!this.token;
 
     authorize = () => {
-        if (this.isAuthorized()) {
-            this.onAuthorized(this.token);
-            return;
-        }
 
         const queryParams = {
             client_id: config.spotifyClientId,
@@ -40,6 +32,6 @@ export default class Authorizer {
         const url = `${spotifyAuthorizeUrl}?${queryString}`;
 
         this.window = window.open(url);
-        this.window["authorizedCallback"] = this.onAuthorized;
+        this.window['authorizedCallback'] = this.onAuthorized;
     }
 }
