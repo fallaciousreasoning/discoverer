@@ -27,6 +27,8 @@ interface LastFmImage {
     size: string;
 }
 
+export const getArtistName = (track: LastFmTrack) => typeof track.artist === "string" ? track.artist : track.artist.name;
+
 const executeRequest = <T extends LastFmAction>(options: T) => {
     const params = querystring.stringify({
         api_key: config.lastfmApiKey,

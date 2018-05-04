@@ -7,15 +7,13 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-console.log(ConnectedRouter);
-
 import createHistory from 'history/createBrowserHistory';
 import configureStore from './store/configureStore';
 
 import routes from './Routes';
 
-const history = createHistory();
-const store = configureStore(history, {} as any);
+export const history = createHistory();
+export const store = configureStore(history, {} as any);
 
 (window as any).store = store;
 (window as any).rHistory = history;

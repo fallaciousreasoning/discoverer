@@ -1,9 +1,8 @@
-import { LastFmTrack, LastFmArtist, trackGetSimilar } from './lastfm';
+import { LastFmTrack, LastFmArtist, trackGetSimilar, getArtistName } from './lastfm';
 import { Settings } from 'src/store/settingsStore';
 
 type Progress = (percent: number, results: LastFmTrack[]) => void;
 
-const getArtistName = (track: LastFmTrack) => typeof track.artist === "string" ? track.artist : track.artist.name;
 const getTrackId = (track: LastFmTrack) => `${track.name}_${getArtistName(track)}`;
 
 interface DiscoverTrack extends LastFmTrack {

@@ -5,6 +5,8 @@ import { ApplicationState } from "src/store";
 import { LastFmTrack } from "../services/lastfm";
 import { Settings } from "../store/settingsStore";
 
+import { store } from 'src/index';
+
 let discoverer: Discoverer;
 
 function* generationStart(action: GenerationStart) {
