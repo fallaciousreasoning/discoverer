@@ -1,6 +1,6 @@
 import { composeReducers, defaultReducer, actionReducer } from "src/store/reducers";
 import { ActionType, RemoveSong, AddSong } from "src/store/actions";
-import { LastFmTrack } from "src/api/lastfm";
+import { LastFmTrack } from "src/services/lastfm";
 
 export type SeedState = LastFmTrack[];
 

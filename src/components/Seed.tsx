@@ -4,7 +4,7 @@ import SongFinder from './SongFinder';
 import { List, ListItem, Avatar, IconButton } from 'material-ui';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
-import { LastFmTrack, trackGetInfo } from '../api/lastfm';
+import { LastFmTrack, trackGetInfo } from 'src/services/lastfm';
 import { ApplicationState } from 'src/store';
 
 import { connect } from 'react-redux';

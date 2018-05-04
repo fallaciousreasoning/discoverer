@@ -1,4 +1,4 @@
-import { LastFmTrack } from 'src/api/lastfm';
+import { LastFmTrack } from 'src/services/lastfm';
 import { Settings } from './settingsStore';
 
 export enum ActionType {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { AutoComplete }  from 'material-ui';
-import { LastFmTrack, trackSearch } from 'src/api/lastfm';
+import { LastFmTrack, trackSearch } from 'src/services/lastfm';
 
 interface Props {
     onSelect: (track: LastFmTrack) => void;
