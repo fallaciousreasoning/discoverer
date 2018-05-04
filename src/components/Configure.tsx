@@ -20,7 +20,7 @@ const secondaryTextStyle = {
     textOverflow: "ellipsis",
 };
 
-class SettingsEditor extends React.Component<Props> {
+class Configure extends React.Component<Props> {
     limitOptions = [5, 10, 25, 50, 100, 250];
 
     public render() {
@@ -65,5 +65,5 @@ class SettingsEditor extends React.Component<Props> {
     }
 }
 
-export default connect((state: ApplicationState) => state.settings, { updateSettings: actionCreators.updateSettings})(SettingsEditor);
+export default connect((state: ApplicationState) => state.settings, { updateSettings: actionCreators.updateSettings})(Configure);
 
