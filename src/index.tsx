@@ -10,7 +10,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import createHistory from 'history/createBrowserHistory';
 import configureStore from './store/configureStore';
 
-import routes from './Routes';
+import * as Routes from './Routes';
+let routes = Routes.default;
 
 export const history = createHistory();
 export const store = configureStore(history, {} as any);
@@ -38,3 +39,11 @@ function renderApp() {
 }
 
 renderApp();
+
+// Allow Hot Module Replacement
+if (module.hot) {
+    module.hot.accept('./Routes', () => {
+        routes = require('./Routes').default;
+        renderApp();
+    });
+}

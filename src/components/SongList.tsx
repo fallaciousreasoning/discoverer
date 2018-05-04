@@ -4,7 +4,7 @@ import { List, ListItem, Avatar, IconButton } from 'material-ui';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 import { LastFmTrack, getArtistName } from 'src/services/lastfm';
-import { actionCreators } from '../store/actions';
+import { actionCreators } from 'src/store/actions';
 
 // If we have more than one image, take the second (medium size), otherwise take the one and only.
 const artistUrl = (song: LastFmTrack) => song.image[Math.min(song.image.length - 1, 1)]['#text'];
