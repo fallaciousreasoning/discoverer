@@ -10,24 +10,27 @@ import { actionCreators } from '../store/actions';
 interface Props {
     token: AuthorizationToken;
     onAuthorized: (token: AuthorizationToken) => void;
+    linkToSpotify: () => void;
 }
 
 class Save extends React.Component<Props> {
     authorizer: Authorizer = new Authorizer();
 
     componentDidMount() {
-        this.authorizer.setToken(this.props.token);
-        this.authorizer.setCallback(this.props.onAuthorized);
         this.updateValues();
     }
 
     componentDidUpdate() {
-        this.authorizer.setToken(this.props.token);
-        this.authorizer.setCallback(this.props.onAuthorized);
         this.updateValues();
     }
 
     updateValues = () => {
+        this.authorizer.setToken(this.props.token);
+        this.authorizer.setCallback(this.props.onAuthorized);
+
+        if (this.authorizer.token.access_token) {
+            this.props.linkToSpotify();
+        }
     }
 
     public render() {
@@ -39,4 +42,8 @@ class Save extends React.Component<Props> {
 }
 
 // TODO memoize
-export default connect((state: ApplicationState) => ({ token: state.token }), { onAuthorized: actionCreators.setToken })(Save)
+export default connect((state: ApplicationState) => ({ token: state.token }),
+{
+    onAuthorized: actionCreators.setToken,
+    linkToSpotify: actionCreators.linkToSpotify
+})(Save)

@@ -2,10 +2,12 @@ import { takeEvery, takeLatest, put, all, fork, cancel, take } from 'redux-saga/
 
 import generation from './generation';
 import { actionCreators, ActionType } from 'src/store/actions';
+import link from './link';
 
 function* rootSaga() {
     yield all([
-        generation()
+        generation(),
+        link(),
     ]);
 }
 

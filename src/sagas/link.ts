@@ -6,12 +6,16 @@ import { ApplicationState } from "src/store";
 
 import { store } from 'src/index';
 import { DiscoverTrack } from "src/store/generationStore";
+import Linker from "../services/linker";
+import { AuthorizationToken } from "../store/authorizationStore";
 
 let discoverer: Discoverer;
 
 function* link(action: LinkToSpotify) {
-    const seeds: DiscoverTrack[] = yield select((state: ApplicationState) => state.generation.generated);
-    
+    const generated: DiscoverTrack[] = yield select((state: ApplicationState) => state.generation.generated);
+    const token: AuthorizationToken = yield select((state: ApplicationState) => state.token);
+    const linker = new Linker(token, () => {});
+    linker.link(generated);
 }
 
 export default function* () {
