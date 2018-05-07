@@ -2,11 +2,15 @@ import { LastFmTrack } from "src/services/lastfm";
 import { composeReducers, defaultReducer, actionReducer } from "./reducers";
 import { ActionType, GenerationProgress, GenerationRemoveSong } from "./actions";
 
+export interface DiscoverTrack extends LastFmTrack{
+    spotifyId?: string;
+}
+
 export interface GenerationState {
     generating: boolean;
     progress: number;
 
-    generated: LastFmTrack[];
+    generated: DiscoverTrack[];
 }
 
 const defaultState: GenerationState = {
