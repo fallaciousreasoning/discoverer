@@ -25,6 +25,11 @@ export default class SongFinder extends React.Component<Props, State> {
     onSearch = (query: string) => {
         this.setState({ query });
 
+        if (!query) {
+            // Otherwise lastfm errors
+            return;
+        }
+
         trackSearch(query)
             .then(tracks => {
                 this.setState({
