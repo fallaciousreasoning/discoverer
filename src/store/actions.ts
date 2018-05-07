@@ -20,7 +20,7 @@ export enum ActionType {
 
     SET_TOKEN = "SET_TOKEN",
 
-    FETCH_SPOTIFY_ID = "FETCH_SPOTIFY_ID",
+    LINK_TO_SPOTIFY = "LINK_TO_SPOTIFY",
     SET_SPOTIFY_ID = "SET_SPOTIFY_ID"
 }
 
@@ -32,8 +32,8 @@ export interface GenerationReset { type: ActionType.GENERATION_RESET }
 export interface GenerationStart { type: ActionType.GENERATION_START }
 export interface GenerationProgress { type: ActionType.GENERATION_PROGRESS, generating: boolean, progress: number, generated: LastFmTrack[] }
 export interface GenerationRemoveSong { type: ActionType.GENERATION_REMOVE_SONG, song: LastFmTrack }
-export interface GetSpotifyId { type: ActionType.FETCH_SPOTIFY_ID, song: LastFmTrack }
-export interface FetchSpotifyId {type: ActionType.SET_SPOTIFY_ID, song: LastFmTrack, spotifyId: string }
+export interface LinkToSpotify { type: ActionType.LINK_TO_SPOTIFY }
+export interface SetSpotifyId {type: ActionType.SET_SPOTIFY_ID, song: LastFmTrack, spotifyId: string }
 
 export interface CancelSagasHMR { type: ActionType.CANCEL_SAGAS_HMR }
 
@@ -54,6 +54,6 @@ export const actionCreators = {
 
     setToken: (token: AuthorizationToken) => <SetToken>({ type: ActionType.SET_TOKEN, token }),
 
-    fetchSpotifyId: (song: DiscoverTrack) => <GetSpotifyId>({ type: ActionType.FETCH_SPOTIFY_ID, song }),
-    setSpotifyId: (song: DiscoverTrack, spotifyId: string) => <FetchSpotifyId>({ type: ActionType.SET_SPOTIFY_ID, song, spotifyId })
+    linkToSpotify: () => <LinkToSpotify>({ type: ActionType.LINK_TO_SPOTIFY }),
+    setSpotifyId: (song: DiscoverTrack, spotifyId: string) => <SetSpotifyId>({ type: ActionType.SET_SPOTIFY_ID, song, spotifyId })
 };

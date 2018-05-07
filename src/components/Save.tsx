@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Authorizer from 'src/services/linker';
+import Authorizer from 'src/services/authorizer';
 import { RaisedButton } from 'material-ui';
 import { AuthorizationToken } from 'src/store/authorizationStore';
 import { ApplicationState } from '../store';
