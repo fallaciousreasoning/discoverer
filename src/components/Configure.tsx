@@ -6,7 +6,6 @@ import { ApplicationState } from '../store';
 import { actionCreators } from '../store/actions';
 
 interface Props extends Settings {
-
     updateSettings: (update: Partial<Settings>) => void;
 }
 

@@ -44,7 +44,7 @@ const controlBoxStyle = { margin: '12px' };
 const nextButtonStyle = { margin: '12px' };
 
 export default class DiscoverStepper extends React.Component<RouteComponentProps<RouteProps>> {
-    currentStepName = () => this.props.match.params.step;
+    currentStepName = () => this.props.match.params.step || 'seed';
     currentStep = () => steps[this.currentStepName()];
 
     nextStep = () => this.props.history.push(Steps[Steps[this.currentStepName()] + 1]);
