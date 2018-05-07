@@ -1,6 +1,6 @@
 import { LastFmTrack } from "src/services/lastfm";
 import { composeReducers, defaultReducer, actionReducer } from "./reducers";
-import { ActionType, GenerationProgress, GenerationRemoveSong } from "./actions";
+import { ActionType, GenerationProgress, GenerationRemoveSong, SetSpotifyId } from "./actions";
 
 export interface DiscoverTrack extends LastFmTrack{
     spotifyId?: string;
@@ -33,6 +33,19 @@ export const reducer = composeReducers(
         const index = generated.indexOf(action.song);
 
         generated.splice(index, 1);
+
+        return {
+            ...state,
+            generated
+        }
+    }),
+    actionReducer(ActionType.SET_SPOTIFY_ID, (state: GenerationState, action: SetSpotifyId) => {
+        const index = state.generated.indexOf(action.song);
+        const generated = [...state.generated];
+        generated[index] = {
+            ...action.song,
+            spotifyId: action.spotifyId
+        };
 
         return {
             ...state,

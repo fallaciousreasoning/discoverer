@@ -14,7 +14,8 @@ let discoverer: Discoverer;
 function* link(action: LinkToSpotify) {
     const generated: DiscoverTrack[] = yield select((state: ApplicationState) => state.generation.generated);
     const token: AuthorizationToken = yield select((state: ApplicationState) => state.token);
-    const linker = new Linker(token, () => {});
+    const linker = new Linker(token, (song, id) => store.dispatch(actionCreators.setSpotifyId(song, id)));
+    
     linker.link(generated);
 }
 
