@@ -31,8 +31,9 @@ class Save extends React.Component<Props> {
     }
 
     public render() {
+        const connected = !!this.props.token.access_token;
         return <div>
-            <RaisedButton primary label="Connect to Spotify" onClick={this.authorizer.authorize} />
+            <RaisedButton primary disabled={connected} label={connected ? 'Connected to Spotify!' : 'Connect to Spotify'} onClick={this.authorizer.authorize} />
         </div>
     }
 }
