@@ -18,6 +18,8 @@ interface Props {
 }
 
 class Seed extends React.Component<Props> {
+    thing: number = 8;
+
     public render() {
         return <>
             <SongFinder onSelect={this.props.addSong} />

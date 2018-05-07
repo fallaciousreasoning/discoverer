@@ -8,6 +8,9 @@ import Seed from './Seed';
 import Configure from './Configure';
 import Generate from './Generate';
 import Save from './Save';
+import { ApplicationState } from '../store';
+import { store } from 'src';
+import { connect } from 'src/connect';
 
 interface RouteProps {
     step: string;
@@ -20,21 +23,31 @@ enum Steps {
     save = 3
 }
 
-const steps = {
+interface DiscoveryStep {
+    title: string;
+    component: JSX.Element;
+    complete: (state: ApplicationState) => boolean;
+}
+
+const steps: { [step: string]: DiscoveryStep } = {
     seed: {
         title: "Seed Tracks",
+        complete: (state) => !!state.seedTracks.length,
         component: <Seed />
     },
     configure: {
         title: "Configure Options",
+        complete: (state) => true,
         component: <Configure />
     },
     generate: {
         title: "Generating Playlist",
+        complete: (state) => !state.generation.generating,
         component: <Generate/>
     },
     save: {
         title: "Saving",
+        complete: (state) => false,
         component: <Save/>
     },
 };
@@ -43,7 +56,7 @@ const stepperContentStyle = { padding: "28px 16px" };
 const controlBoxStyle = { margin: '12px' };
 const nextButtonStyle = { margin: '12px' };
 
-export default class DiscoverStepper extends React.Component<RouteComponentProps<RouteProps>> {
+class DiscoverStepper extends React.Component<ApplicationState & RouteComponentProps<RouteProps>> {
     currentStepName = () => this.props.match.params.step || 'seed';
     currentStep = () => steps[this.currentStepName()];
 
@@ -55,18 +68,18 @@ export default class DiscoverStepper extends React.Component<RouteComponentProps
         const currentStep = this.currentStep();
 
         return <div>
-            <Stepper activeStep={Steps[step] || 0}>
+            <Stepper activeStep={Steps[step]}>
                 <Step>
-                    <StepLabel>Seed</StepLabel>
+                    <StepLabel>{steps.seed.title}</StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel>Configure</StepLabel>
+                    <StepLabel>{steps.configure.title}</StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel>Generate</StepLabel>
+                    <StepLabel>{steps.generate.title}</StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel>Save</StepLabel>
+                    <StepLabel>{steps.save.title}</StepLabel>
                 </Step>
             </Stepper>
             <Paper>
@@ -84,7 +97,7 @@ export default class DiscoverStepper extends React.Component<RouteComponentProps
                         label="Next"
                         primary={true}
                         onClick={this.nextStep}
-                        disabled={step === 'save'}
+                        disabled={!currentStep.complete(store.getState())}
                         style={nextButtonStyle}
                     />
                 </div>
@@ -92,3 +105,5 @@ export default class DiscoverStepper extends React.Component<RouteComponentProps
         </div>;
     }
 }
+
+export default connect(state => state)(DiscoverStepper);

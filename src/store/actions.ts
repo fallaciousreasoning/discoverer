@@ -39,7 +39,7 @@ export const actionCreators = {
 
     generationReset: () => <GenerationReset>({ type: ActionType.GENERATION_RESET }),
     generationStart: () => <GenerationStart>({ type: ActionType.GENERATION_START }),
-    generationProgress: (progress: number, generated: LastFmTrack[]) => <GenerationProgress>({ type: ActionType.GENERATION_PROGRESS, generating: progress === 1, progress, generated }),
+    generationProgress: (progress: number, generated: LastFmTrack[]) => <GenerationProgress>({ type: ActionType.GENERATION_PROGRESS, generating: progress !== 1, progress, generated }),
     generationRemoveSong: (song: LastFmTrack) => <GenerationRemoveSong>({ type: ActionType.GENERATION_REMOVE_SONG, song }),
 
     cancelSagasHMR: () => <CancelSagasHMR>({ type: ActionType.CANCEL_SAGAS_HMR }),
