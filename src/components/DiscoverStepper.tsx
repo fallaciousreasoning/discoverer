@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Step, StepLabel, Stepper, Paper, Toolbar, ToolbarTitle, FlatButton, RaisedButton } from 'material-ui';
 
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, Redirect } from 'react-router';
 
 import Seed from './Seed';
 import Configure from './Configure';
@@ -66,6 +66,10 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
     public render() {
         const step = this.currentStepName();
         const currentStep = this.currentStep();
+
+        if (!steps.seed.complete(store.getState()) && step !== 'seed' ) {
+            return <Redirect to='/seed'/>
+        }
 
         return <div>
             <Stepper activeStep={Steps[step]}>
