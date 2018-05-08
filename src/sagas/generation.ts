@@ -1,20 +1,120 @@
-import { all, takeEvery, select } from "redux-saga/effects";
+import { all, takeEvery, select, put } from "redux-saga/effects";
 import { GenerationStart, ActionType, GenerationReset, actionCreators } from "src/store/actions";
-import { Discoverer } from "src/services/discoverer";
 import { ApplicationState } from "src/store";
-import { LastFmTrack } from "../services/lastfm";
+import { LastFmTrack, getArtistName, trackGetSimilar } from "../services/lastfm";
 import { Settings } from "../store/settingsStore";
 
 import { store } from 'src/index';
 
-let discoverer: Discoverer;
+interface DiscoverTrack extends LastFmTrack {
+    depth: number;
+    id: string;
+}
+
+const tracks: DiscoverTrack[] = [];
+const getTrackId = (track: LastFmTrack) => `${track.name}_${getArtistName(track)}`;
 
 function* generationStart(action: GenerationStart) {
-    const seeds: LastFmTrack[] = yield select((state: ApplicationState) => state.seedTracks);
+    const rawSeeds: LastFmTrack[] = yield select((state: ApplicationState) => state.seedTracks);
+    const seeds: DiscoverTrack[] = rawSeeds.map(s => ({...s, depth: 0, id: getTrackId(s)}));
     const settings: Settings = yield select((state: ApplicationState) => state.settings);
 
-    discoverer = new Discoverer(seeds, settings, (progress, generated) => store.dispatch(actionCreators.generationProgress(progress, generated)));
-    discoverer.generate();
+    if (!seeds || !seeds.length) {
+        return;
+    }
+
+    const frontier: DiscoverTrack[] = [];
+    const burntTracks = new Set<string>();
+    const burntArtists = new Set<string>();
+    const seen = new Set<string>();
+
+    let result: DiscoverTrack[] = [];
+    let iteration = 0;
+
+    const burnTrack = (track: DiscoverTrack) => burntTracks.add(track.id);
+    const burnArtist = (track: DiscoverTrack) => burntArtists.add(getArtistName(track));
+
+    const tryBurn = (track: DiscoverTrack) => {
+        if (settings.burnUsedTracks) {
+            burnTrack(track);
+        }
+
+        if (settings.burnUsedArtists) {
+            burnArtist(track);
+        }
+    }
+
+    const isBurnt = (track: DiscoverTrack) => burntTracks.has(track.id) || burntArtists.has(getArtistName(track));
+
+    const add = (track: DiscoverTrack) => {
+        if (isBurnt(track)) {
+            return;
+        }
+
+        // Burn this track/artist, if our options allow it.
+        tryBurn(track);
+
+        result.push(track);
+
+        return put(actionCreators.generationProgress(result.length / settings.limit, result))
+    }
+
+    if (settings.includeSeedTracks) {
+        for (const seed of seeds)
+            yield add(seed);
+    }
+
+    if (settings.burnSeedArtists) {
+        seeds.forEach(burnArtist);
+    }
+
+    if (settings.burnSeedTracks) {
+        seeds.forEach(burnTrack);
+    }
+
+    seeds.forEach(seed => {
+        frontier.push(seed);
+        seen.add(seed.id);
+    })
+
+    while (iteration < settings.maxIterations
+        && result.length < settings.limit
+        && frontier.length !== 0) {
+
+        iteration += 1;
+
+        // This is a highly scientific random first search (tm)....
+        const index = Math.floor(Math.random() * frontier.length);
+        const track = frontier[index];
+
+        // Remove the track from the frontier
+        frontier.splice(index, 1);
+
+        if (track.depth < settings.minDepth || track.depth > settings.maxDepth) {
+            continue;
+        } 
+        
+        yield add(track);
+
+        const similar = yield trackGetSimilar(track);
+        if (!similar) continue;
+
+        similar.forEach(s => {
+            const id = getTrackId(s);
+            const similarTrack = {
+                ...s,
+                depth: track.depth + 1,
+                id
+            };
+
+            if (seen[id] || similarTrack.depth > settings.maxDepth) {
+                return;
+            }
+
+            seen.add(similarTrack.id);
+            frontier.push(similarTrack);
+        });
+    }
 }
 
 function generationReset(action: GenerationReset) {

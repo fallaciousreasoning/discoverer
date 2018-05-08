@@ -3,7 +3,6 @@ import { ActionType, LinkToSpotify, actionCreators } from "src/store/actions";
 
 import * as Spotify from 'spotify-web-api-js';
 
-import { Discoverer } from "src/services/discoverer";
 import { ApplicationState } from "src/store";
 
 import { store } from 'src/index';
@@ -11,8 +10,6 @@ import { DiscoverTrack } from "src/store/generationStore";
 import Linker from "../services/linker";
 import { AuthorizationToken } from "../store/authorizationStore";
 import { getArtistName } from "../services/lastfm";
-
-let discoverer: Discoverer;
 
 function* link(action: LinkToSpotify) {
     const generated: DiscoverTrack[] = yield select((state: ApplicationState) => state.generation.generated);

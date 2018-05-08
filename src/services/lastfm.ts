@@ -64,7 +64,7 @@ export const trackGetSimilar = (track: LastFmTrack) => {
     return executeRequest({
         method: 'track.getSimilar',
         track: track.name,
-        artist: track.artist || track.artist
+        artist: getArtistName(track)
     }).then(data => data.similartracks.track as LastFmTrack[]);
 }
 
