@@ -1,5 +1,5 @@
-import { composeReducers, defaultReducer, actionReducer } from "./reducers";
 import { ActionType, UpdateSettings } from "./actions";
+import { actionReducer, composeReducers, defaultReducer } from "./reducers";
 
 export interface Settings {
     burnSeedTracks: boolean;
@@ -26,7 +26,7 @@ const defaultSettings: Settings = {
     burnUsedTracks: true,
     burnUsedArtists: false,
 
-    limit: 25,
+    limit: 5,
 
     minDepth: 0,
     maxDepth: 1,

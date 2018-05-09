@@ -18,7 +18,7 @@ const defaultState: GenerationState = {
 export const reducer = composeReducers(
     defaultReducer(defaultState),
     actionReducer(ActionType.GENERATION_ADD_SONG, (state: GenerationState, action: GenerationAddSong) => ({
-        generated: [state.generated, action.song.id],
+        generated: [...state.generated, action.song.id],
         progress: action.progress
     })),
     actionReducer(ActionType.GENERATION_REMOVE_SONG, (state: GenerationState, action: GenerationRemoveSong) => {
