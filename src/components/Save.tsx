@@ -1,9 +1,9 @@
-import { LinearProgress, RaisedButton } from 'material-ui';
+import { LinearProgress, RaisedButton, TextField } from 'material-ui';
 import * as React from 'react';
 import { createSelector } from 'reselect';
 import { connect } from 'src/connect';
 import Authorizer from 'src/services/authorizer';
-import { getLinkProgress } from 'src/store';
+import { getLinkProgress, getPlaylistName } from 'src/store';
 import { actionCreators } from 'src/store/actions';
 import { AuthorizationToken, getToken } from 'src/store/authorizationStore';
 
@@ -12,6 +12,9 @@ interface Props {
     onAuthorized: (token: AuthorizationToken) => void;
     progress: number;
     linkStart: () => void;
+
+    playlistName: string;
+    playlistSetName: (name: string) => void;
 }
 
 class Save extends React.Component<Props> {
@@ -40,16 +43,18 @@ class Save extends React.Component<Props> {
         const connected = !!this.props.token.access_token;
         return <>
             <LinearProgress mode="determinate" value={this.props.progress} min={0} max={1} />
+            <TextField fullWidth hintText="Playlist Name" value={this.props.playlistName} onChange={(e: any) => this.props.playlistSetName(e.target.value)}/>
             <RaisedButton primary disabled={connected} label={connected ? 'Connected to Spotify!' : 'Connect to Spotify'} onClick={this.authorizer.authorize} />
         </>
     }
 }
 
-const mapStateToProps = createSelector([getLinkProgress, getToken], (progress, token) => ({ progress, token }));
+const mapStateToProps = createSelector([getLinkProgress, getToken, getPlaylistName], (progress, token, playlistName) => ({ progress, token, playlistName }));
 
 // TODO memoize
 export default connect(mapStateToProps,
     {
         onAuthorized: actionCreators.setToken,
-        linkStart: actionCreators.linkStart
+        linkStart: actionCreators.linkStart,
+        playlistSetName: actionCreators.playlistSetName
     })(Save)

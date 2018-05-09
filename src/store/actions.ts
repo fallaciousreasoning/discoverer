@@ -16,6 +16,8 @@ export enum ActionType {
     LINK_START = "LINK_START",
     LINK_SET_SPOTIFY_ID = "LINK_SET_SPOTIFY_ID",
 
+    PLAYLIST_SET_NAME = "PLAYLIST_SET_NAME",
+
     CANCEL_SAGAS_HMR = "CANCEL_SAGAS_HMR",
 
     SET_TOKEN = "SET_TOKEN",
@@ -32,6 +34,8 @@ export interface GenerationRemoveSong { type: ActionType.GENERATION_REMOVE_SONG,
 
 export interface LinkStart { type: ActionType.LINK_START }
 export interface LinkSetSpotifyId {type: ActionType.LINK_SET_SPOTIFY_ID, progress: number, song: Track, spotifyId: string }
+
+export interface PlaylistSetName { type: ActionType.PLAYLIST_SET_NAME, name: string }
 
 export interface CancelSagasHMR { type: ActionType.CANCEL_SAGAS_HMR }
 
@@ -50,6 +54,8 @@ export const actionCreators = {
 
     linkStart: () => <LinkStart>({ type: ActionType.LINK_START }),
     linkSetSpotifyId: (progress: number, song: Track, spotifyId: string) => <LinkSetSpotifyId>({ type: ActionType.LINK_SET_SPOTIFY_ID, progress, song, spotifyId }),
+
+    playlistSetName: (name: string) => <PlaylistSetName>({ type: ActionType.PLAYLIST_SET_NAME, name }),
 
     cancelSagasHMR: () => <CancelSagasHMR>({ type: ActionType.CANCEL_SAGAS_HMR }),
 

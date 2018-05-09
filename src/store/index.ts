@@ -1,4 +1,4 @@
-import { ActionType, GenerationAddSong, LinkSetSpotifyId } from './actions';
+import { ActionType, GenerationAddSong, LinkSetSpotifyId, PlaylistSetName } from './actions';
 import * as authorizationStore from './authorizationStore';
 import * as generationStore from './generationStore';
 import { actionReducer, composeReducers, defaultReducer } from './reducers';
@@ -15,6 +15,8 @@ export interface ApplicationState {
     generationProgress: number;
 
     linkProgress: number;
+
+    playlistName: string;
 
     settings: settingsStore.Settings;
     token: authorizationStore.AuthorizationToken;
@@ -36,8 +38,14 @@ export const reducer = {
         actionReducer(ActionType.LINK_SET_SPOTIFY_ID, (state, action: LinkSetSpotifyId) => action.progress)
     ),
 
+    playlistName: composeReducers(
+        defaultReducer('Discover Playlist'),
+        actionReducer(ActionType.PLAYLIST_SET_NAME, (state, action: PlaylistSetName) => action.name)
+    ),
+
     settings: settingsStore.reducer,
     token: authorizationStore.reducer,
 };
 
 export const getLinkProgress = (state: ApplicationState) => state.linkProgress;
+export const getPlaylistName = (state: ApplicationState) => state.playlistName;
