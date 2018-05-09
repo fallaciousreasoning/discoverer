@@ -1,10 +1,11 @@
+import { Paper, Toolbar, ToolbarTitle } from 'material-ui';
+import * as querystring from 'querystring';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-
-import * as querystring from 'querystring';
 import { AuthorizationToken } from 'src/store/authorizationStore';
-import { Paper, Toolbar, ToolbarTitle } from 'material-ui';
-import { AuthorizedCallbackName } from 'src/services/linker';
+
+
+export const AuthorizedCallbackName = "AuthorizedCallback";
 
 const secondsTillClose = 3;
 

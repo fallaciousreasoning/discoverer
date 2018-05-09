@@ -1,3 +1,4 @@
+import { ApplicationState } from ".";
 import { ActionType, GenerationAddSong, SeedAddSong, SetSpotifyId } from "./actions";
 import { actionReducer, composeReducers, defaultReducer } from "./reducers";
 
@@ -25,3 +26,5 @@ export const reducer = composeReducers(
         [action.song.id]: action.spotifyId
     }))
 )
+
+export const getTracks = (state: ApplicationState) => state.tracks;

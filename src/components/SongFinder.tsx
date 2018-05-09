@@ -1,16 +1,17 @@
+import { AutoComplete } from 'material-ui';
 import * as React from 'react';
+import { trackSearch } from 'src/services/lastfm';
+import { Track } from '../store/trackStore';
 
-import { AutoComplete }  from 'material-ui';
-import { LastFmTrack, trackSearch } from 'src/services/lastfm';
 
 interface Props {
-    onSelect: (track: LastFmTrack) => void;
+    onSelect: (track: Track) => void;
 }
 
 interface State {
     query: string;
 
-    results: LastFmTrack[];
+    results: Track[];
     suggestions: string[];
 }
 

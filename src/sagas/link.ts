@@ -1,18 +1,12 @@
-import { all, takeEvery, select, put } from "redux-saga/effects";
-import { ActionType, LinkToSpotify, actionCreators } from "src/store/actions";
-
+import { all, put, select, takeEvery } from "redux-saga/effects";
 import * as Spotify from 'spotify-web-api-js';
-
 import { ApplicationState } from "src/store";
-
-import { store } from 'src/index';
-import { DiscoverTrack } from "src/store/generationStore";
-import Linker from "../services/linker";
+import { ActionType, LinkToSpotify, actionCreators } from "src/store/actions";
+import { Track } from "src/store/trackStore";
 import { AuthorizationToken } from "../store/authorizationStore";
-import { getArtistName } from "../services/lastfm";
 
 function* link(action: LinkToSpotify) {
-    const generated: DiscoverTrack[] = yield select((state: ApplicationState) => state.generation.generated);
+    const generated: Track[] = yield select((state: ApplicationState) => state.generation.generated);
     const token: AuthorizationToken = yield select((state: ApplicationState) => state.token);
 
     const client = new Spotify();
@@ -20,7 +14,7 @@ function* link(action: LinkToSpotify) {
     
     const trackUris: string[] = [];
     for (const song of generated) {
-        const response = yield client.searchTracks(`${song.name} ${getArtistName(song)}`);
+        const response = yield client.searchTracks(`${song.name} ${song.artist}`);
 
         if (!response.tracks || !response.tracks.items || !response.tracks.items.length) {
             continue;

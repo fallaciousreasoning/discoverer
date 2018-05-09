@@ -1,18 +1,17 @@
 import * as React from 'react';
-
-import SongFinder from './SongFinder';
-import { List, ListItem, Avatar, IconButton } from 'material-ui';
-import ActionDelete from 'material-ui/svg-icons/action/delete';
-
-import { LastFmTrack, trackGetInfo } from 'src/services/lastfm';
-import { ApplicationState } from 'src/store';
-
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { actionCreators } from 'src/store/actions';
+import { Track } from 'src/store/trackStore';
+import { getSeedTracks } from '../store/seedStore';
+import SongFinder from './SongFinder';
 import SongList from './SongList';
 
+
+
+
 interface Props {
-    seedTracks: LastFmTrack[];
+    seeds: Track[];
     addSong: typeof actionCreators.addSeedSong;
     removeSong: typeof actionCreators.removeSeedSong;
 }
@@ -23,12 +22,12 @@ class Seed extends React.Component<Props> {
     public render() {
         return <>
             <SongFinder onSelect={this.props.addSong} />
-            <SongList songs={this.props.seedTracks} removeSong={this.props.removeSong} />
+            <SongList songs={this.props.seeds} removeSong={this.props.removeSong} />
         </>;
     }
 }
 
-const mapStateToProps = (state: ApplicationState) => ({ seedTracks: state.seedTracks });
+const mapStateToProps = createSelector([getSeedTracks], seeds => ({ seeds }))
 const mapDispatchToProps = {
     addSong: actionCreators.addSeedSong,
     removeSong: actionCreators.removeSeedSong

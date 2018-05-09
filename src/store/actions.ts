@@ -1,5 +1,5 @@
-import { Settings } from './settingsStore';
 import { AuthorizationToken } from './authorizationStore';
+import { Settings } from './settingsStore';
 import { Track } from './trackStore';
 
 export enum ActionType {
@@ -26,7 +26,7 @@ export interface SeedRemoveSong { type: ActionType.SEED_REMOVE_SONG, song: Track
 export interface UpdateSettings { type: ActionType.UPDATE_SETTINGS, update: Partial<Settings> }
 
 export interface GenerationStart { type: ActionType.GENERATION_START }
-export interface GenerationAddSong { type: ActionType.GENERATION_ADD_SONG, complete: boolean, progress: number, song: Track }
+export interface GenerationAddSong { type: ActionType.GENERATION_ADD_SONG, progress: number, song: Track }
 export interface GenerationAddSimilar { type: ActionType.GENERATION_ADD_SIMILAR, to: Track, similar: Track[] }
 export interface GenerationRemoveSong { type: ActionType.GENERATION_REMOVE_SONG, song: Track }
 
@@ -44,7 +44,7 @@ export const actionCreators = {
     updateSettings: (update: Partial<Settings>) => <UpdateSettings>({ type: ActionType.UPDATE_SETTINGS, update }),
 
     generationStart: () => <GenerationStart>({ type: ActionType.GENERATION_START }),
-    generationProgress: (progress: number, song: Track) => <GenerationAddSong>({ type: ActionType.GENERATION_ADD_SONG, complete: progress !== 1, progress, song }),
+    generationProgress: (progress: number, song: Track) => <GenerationAddSong>({ type: ActionType.GENERATION_ADD_SONG, progress, song }),
     generationRemoveSong: (song: Track) => <GenerationRemoveSong>({ type: ActionType.GENERATION_REMOVE_SONG, song }),
     generationAddSimilar: (to: Track, similar: Track[]) => <GenerationAddSimilar>({ type: ActionType.GENERATION_ADD_SIMILAR, to, similar }),
 

@@ -1,26 +1,20 @@
-import * as React from 'react';
-
-import { List, ListItem, Avatar, IconButton } from 'material-ui';
+import { Avatar, IconButton, List, ListItem } from 'material-ui';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import * as React from 'react';
+import { Track } from 'src/store/trackStore';
 
-import { LastFmTrack, getArtistName } from 'src/services/lastfm';
-import { actionCreators } from 'src/store/actions';
-
-// If we have more than one image, take the second (medium size), otherwise take the one and only.
-const artistUrl = (song: LastFmTrack) => song.image[Math.min(song.image.length - 1, 1)]['#text'];
-
-const Song = (props: { song: LastFmTrack, remove: (song: LastFmTrack) => void }) => <ListItem
-    leftAvatar={<Avatar src={artistUrl(props.song)} />}
+const Song = (props: { song: Track, remove: (song: Track) => void }) => <ListItem
+    leftAvatar={<Avatar src={props.song.imageUrl} />}
     primaryText={props.song.name}
-    secondaryText={`by ${getArtistName(props.song)}`}
+    secondaryText={`by ${props.song.artist}`}
     rightIconButton={<IconButton onClick={() => props.remove(props.song)}><ActionDelete /></IconButton>}
 />;
 
 interface Props {
-    songs: LastFmTrack[];
-    removeSong: (song: LastFmTrack) => void;
+    songs: Track[];
+    removeSong: (song: Track) => void;
 }
 
 export default (props: Props) => <List>
-    {props.songs.map(song => <Song key={`${song.name} ${song.artist} ${song.url}`} song={song} remove={props.removeSong} />)}
+    {props.songs.map(song => <Song key={song.id} song={song} remove={props.removeSong} />)}
 </List>;

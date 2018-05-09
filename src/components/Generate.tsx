@@ -1,14 +1,19 @@
-import * as React from 'react';
-import { LastFmTrack } from 'src/services/lastfm';
 import { LinearProgress } from 'material-ui';
-import SongList from './SongList';
+import * as React from 'react';
+import { createSelector } from 'reselect';
 import { connect } from 'src/connect';
 import { ApplicationState } from '../store';
 import { actionCreators } from '../store/actions';
-import { GenerationState } from '../store/generationStore';
+import { getGeneratedTracks, getProgress } from '../store/generationStore';
+import { Track } from '../store/trackStore';
+import SongList from './SongList';
 
-interface Props extends GenerationState {
-    removeSong: (song: LastFmTrack) => void;
+
+interface Props {
+    progress: number;
+    generated: Track[];
+
+    removeSong: (song: Track) => void;
     generationStart: () => void;
 }
 
@@ -26,7 +31,14 @@ class Generate extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: ApplicationState) => state.generation;
+const getGenerationState = (state: ApplicationState) => state.generation;
+const getTracks = (state: ApplicationState) => state.tracks;
+
+const mapStateToProps = createSelector([getGeneratedTracks, getProgress], (generated, progress) => ({
+    progress,
+    generated
+}));
+
 const mapDispatchToProps = { removeSong: actionCreators.generationRemoveSong, generationStart: actionCreators.generationStart };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Generate);

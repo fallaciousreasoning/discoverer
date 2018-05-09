@@ -1,16 +1,16 @@
+import { FlatButton, Paper, RaisedButton, Step, StepLabel, Stepper, Toolbar, ToolbarTitle } from 'material-ui';
 import * as React from 'react';
-
-import { Step, StepLabel, Stepper, Paper, Toolbar, ToolbarTitle, FlatButton, RaisedButton } from 'material-ui';
-
-import { RouteComponentProps, Redirect } from 'react-router';
-
-import Seed from './Seed';
+import { Redirect, RouteComponentProps } from 'react-router';
+import { store } from 'src';
+import { connect } from 'src/connect';
+import { ApplicationState } from '../store';
 import Configure from './Configure';
 import Generate from './Generate';
 import Save from './Save';
-import { ApplicationState } from '../store';
-import { store } from 'src';
-import { connect } from 'src/connect';
+import Seed from './Seed';
+
+
+
 
 interface RouteProps {
     step: string;
@@ -42,7 +42,7 @@ const steps: { [step: string]: DiscoveryStep } = {
     },
     generate: {
         title: "Generating Playlist",
-        complete: (state) => !state.generation.generating,
+        complete: (state) => state.generation.progress === 1,
         component: <Generate/>
     },
     save: {

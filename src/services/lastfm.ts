@@ -25,11 +25,14 @@ interface LastFmImage {
     size: string;
 }
 
+// If we have more than one image, take the second (medium size), otherwise take the one and only.
+const artistUrl = (track: LastFmTrack) => track.image[Math.min(track.image.length - 1, 1)]['#text'];
+
 const toTrack = (lastFmTrack: LastFmTrack): Track => ({
     artist: getArtistName(lastFmTrack),
     name: lastFmTrack.name,
     id: lastFmTrack.mbid,
-    imageUrl: undefined,
+    imageUrl: artistUrl(lastFmTrack),
     similarTracks: []
 });
 
@@ -70,17 +73,17 @@ export const getRecentTracks = (user: string) => {
     .then(tracks => tracks.map(toTrack));
 }
 
-export const trackGetSimilar = (track: LastFmTrack) => {
+export const trackGetSimilar = (track: Track) => {
     return executeRequest({
         method: 'track.getSimilar',
         track: track.name,
-        artist: getArtistName(track)
+        artist: track.artist
     })
     .then(data => data.similartracks.track as LastFmTrack[])
     .then(tracks => tracks.map(toTrack));
 }
 
-export const trackGetInfo = (track: LastFmTrack) => {
+export const trackGetInfo = (track: Track) => {
     return executeRequest({
         method: 'track.getInfo',
         track: track.name,
