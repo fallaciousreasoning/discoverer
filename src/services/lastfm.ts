@@ -11,6 +11,7 @@ interface LastFmAction {
 
 export interface LastFmTrack {
     name: string;
+    mbid: string;
     artist: string | LastFmArtist;
     url: string;
     streamable: boolean;

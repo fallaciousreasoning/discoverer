@@ -1,7 +1,7 @@
 import { Action, combineReducers } from 'redux';
 import { LastFmTrack } from 'src/services/lastfm';
 import { composeReducers, actionReducer, defaultReducer } from './reducers';
-import { ActionType, AddSeedSong, RemoveSeedSong } from './actions';
+import { ActionType, SeedAddSong, SeedRemoveSong } from './actions';
 
 import * as seedStore from './seedStore'
 import * as settingsStore from './settingsStore';
