@@ -31,7 +31,7 @@ const artistUrl = (track: LastFmTrack) => track.image[Math.min(track.image.lengt
 const toTrack = (lastFmTrack: LastFmTrack): Track => ({
     artist: getArtistName(lastFmTrack),
     name: lastFmTrack.name,
-    id: lastFmTrack.mbid,
+    id: lastFmTrack.mbid || `${lastFmTrack.name}_${getArtistName(lastFmTrack)}`,
     imageUrl: artistUrl(lastFmTrack),
     similarTracks: []
 });
