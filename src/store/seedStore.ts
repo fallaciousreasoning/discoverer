@@ -1,11 +1,10 @@
-import { composeReducers, defaultReducer, actionReducer } from "src/store/reducers";
-import { ActionType, SeedRemoveSong, SeedAddSong } from "src/store/actions";
-import { LastFmTrack } from "src/services/lastfm";
+import { ActionType, SeedAddSong, SeedRemoveSong } from "src/store/actions";
+import { actionReducer, composeReducers, defaultReducer } from "src/store/reducers";
 
-export type SeedState = LastFmTrack[];
+export type SeedState = string[];
 
 export const reducer = composeReducers(
     defaultReducer([]),
-    actionReducer(ActionType.SEED_ADD_SONG, (state: LastFmTrack[], action: SeedAddSong) => [...state, action.song]),
-    actionReducer(ActionType.SEED_REMOVE_SONG, (state: LastFmTrack[], action: SeedRemoveSong) => state.reduce((prev, next) => next === action.song ? prev : [...prev, next], []))
+    actionReducer(ActionType.SEED_ADD_SONG, (state: SeedState, action: SeedAddSong) => [...state, action.song.id]),
+    actionReducer(ActionType.SEED_REMOVE_SONG, (state: SeedState, action: SeedRemoveSong) => state.reduce((prev, next) => next === action.song.id ? prev : [...prev, next], []))
 )

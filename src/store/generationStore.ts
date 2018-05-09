@@ -1,51 +1,31 @@
-import { LastFmTrack } from "src/services/lastfm";
-import { composeReducers, defaultReducer, actionReducer } from "./reducers";
-import { ActionType, GenerationProgress, GenerationRemoveSong, SetSpotifyId } from "./actions";
-
-export interface DiscoverTrack extends LastFmTrack{
-    spotifyId?: string;
-}
+import { ActionType, GenerationAddSong, GenerationRemoveSong } from "./actions";
+import { actionReducer, composeReducers, defaultReducer } from "./reducers";
 
 export interface GenerationState {
-    generating: boolean;
+    complete: boolean;
     progress: number;
 
-    generated: DiscoverTrack[];
+    generated: string[];
 }
 
 const defaultState: GenerationState = {
-    generating: false,
+    complete: false,
     progress: 0,
     generated: []
 }
 
 export const reducer = composeReducers(
     defaultReducer(defaultState),
-    actionReducer(ActionType.GENERATION_RESET, () => defaultState),
-    actionReducer(ActionType.GENERATION_PROGRESS, (state: GenerationState, action: GenerationProgress) => ({
-        ...state,
-        generated: [...action.generated],
+    actionReducer(ActionType.GENERATION_ADD_SONG, (state: GenerationState, action: GenerationAddSong) => ({
+        generated: [state.generated, action.song.id],
         progress: action.progress,
-        generating: action.generating
+        complete: action.complete
     })),
     actionReducer(ActionType.GENERATION_REMOVE_SONG, (state: GenerationState, action: GenerationRemoveSong) => {
         const generated = [...state.generated];
-        const index = generated.indexOf(action.song);
+        const index = generated.indexOf(action.song.id);
 
         generated.splice(index, 1);
-
-        return {
-            ...state,
-            generated
-        }
-    }),
-    actionReducer(ActionType.SET_SPOTIFY_ID, (state: GenerationState, action: SetSpotifyId) => {
-        const index = state.generated.indexOf(action.song);
-        const generated = [...state.generated];
-        generated[index] = {
-            ...action.song,
-            spotifyId: action.spotifyId
-        };
 
         return {
             ...state,
