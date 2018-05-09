@@ -8,7 +8,7 @@ import * as trackStore from './trackStore';
 export interface ApplicationState {
     settings: settingsStore.Settings;
     
-    seedTracks: seedStore.SeedState;
+    seeds: seedStore.SeedState;
     generation: generationStore.GenerationState;
     token: authorizationStore.AuthorizationToken;
 
@@ -16,7 +16,7 @@ export interface ApplicationState {
 }
 
 export const reducer = {
-    seedTracks: seedStore.reducer,
+    seeds: seedStore.reducer,
     settings: settingsStore.reducer,
     generation: generationStore.reducer,
     token: authorizationStore.reducer,

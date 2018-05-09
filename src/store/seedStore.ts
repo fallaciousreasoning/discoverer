@@ -12,5 +12,5 @@ export const reducer = composeReducers(
     actionReducer(ActionType.SEED_REMOVE_SONG, (state: SeedState, action: SeedRemoveSong) => state.reduce((prev, next) => next === action.song.id ? prev : [...prev, next], []))
 )
 
-const getSeedTrackIds = (state: ApplicationState) => state.seedTracks;
+const getSeedTrackIds = (state: ApplicationState) => state.seeds;
 export const getSeedTracks = createSelector([getSeedTrackIds, getTracks], (seedTrackIds, tracks) => seedTrackIds.map(id => tracks[id]));

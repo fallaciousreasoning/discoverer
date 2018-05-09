@@ -32,7 +32,7 @@ interface DiscoveryStep {
 const steps: { [step: string]: DiscoveryStep } = {
     seed: {
         title: "Seed Tracks",
-        complete: (state) => !!state.seedTracks.length,
+        complete: (state) => !!state.seeds.length,
         component: <Seed />
     },
     configure: {
