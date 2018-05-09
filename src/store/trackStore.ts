@@ -1,5 +1,5 @@
 import { ApplicationState } from ".";
-import { ActionType, GenerationAddSong, LinkSetSpotifyId, SeedAddSong } from "./actions";
+import { ActionType, GenerationAddSimilar, GenerationAddSong, LinkSetSpotifyId, SeedAddSong } from "./actions";
 import { actionReducer, composeReducers, defaultReducer } from "./reducers";
 
 export interface Track {
@@ -24,7 +24,24 @@ export const reducer = composeReducers(
     actionReducer(ActionType.LINK_SET_SPOTIFY_ID, (state: TrackState, action: LinkSetSpotifyId) => ({
         ...state,
         [action.song.id]: action.spotifyId
-    }))
+    })),
+    actionReducer(ActionType.GENERATION_ADD_SIMILAR, (state: TrackState, action: GenerationAddSimilar) => {
+        const newState = {
+            ...state,
+            [action.to.id]: {
+                ...state[action.to.id],
+                similarTracks: action.similar.map(s => s.id)
+            }
+        };
+
+        for (const s of action.similar) {
+            if (newState[s.id]) continue;
+
+            newState[s.id] = s;
+        }
+
+        return newState;
+    })
 )
 
 export const getTracks = (state: ApplicationState) => state.tracks;

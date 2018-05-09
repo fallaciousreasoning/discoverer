@@ -95,8 +95,12 @@ function* generationStart(action: GenerationStart) {
         
         yield add(track);
 
-        const similar = yield trackGetSimilar(track);
-        if (!similar) continue;
+        let similar = yield select((state: ApplicationState) => track.similarTracks.map(id => state.tracks[id]));
+        if (!similar.length) {
+            similar = yield trackGetSimilar(track);
+            yield put(actionCreators.generationAddSimilar(track, similar));
+        }
+        if (!similar || !similar.length) continue;
 
         similar.forEach(s => {
             const similarTrack = {
