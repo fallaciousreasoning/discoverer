@@ -4,9 +4,10 @@ import { ApplicationState } from "src/store";
 import { ActionType, LinkToSpotify, actionCreators } from "src/store/actions";
 import { Track } from "src/store/trackStore";
 import { AuthorizationToken } from "../store/authorizationStore";
+import { getGeneratedTracks } from "../store/generationStore";
 
 function* link(action: LinkToSpotify) {
-    const generated: Track[] = yield select((state: ApplicationState) => state.generation.generated);
+    const generated: Track[] = yield select(getGeneratedTracks);
     const token: AuthorizationToken = yield select((state: ApplicationState) => state.token);
 
     const client = new Spotify();
