@@ -67,6 +67,7 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
         const step = this.currentStepName();
         const currentStep = this.currentStep();
 
+        // If we aren't ready, for this step, send us back to the first.
         if (!steps.seed.complete(store.getState()) && step !== 'seed' ) {
             return <Redirect to='/seed'/>
         }
