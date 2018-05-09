@@ -1,5 +1,6 @@
-import { composeReducers, defaultReducer, actionReducer } from "./reducers";
+import { ApplicationState } from ".";
 import { ActionType, SetToken } from "./actions";
+import { actionReducer, composeReducers, defaultReducer } from "./reducers";
 
 export interface AuthorizationToken {
     access_token?: string;
@@ -14,3 +15,5 @@ export const reducer = composeReducers(
     defaultReducer(defaultState),
     actionReducer(ActionType.SET_TOKEN, (token: AuthorizationToken, action: SetToken) => ({ ...action.token }))
 );
+
+export const getToken = (state: ApplicationState) => state.token;

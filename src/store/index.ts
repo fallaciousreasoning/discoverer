@@ -14,6 +14,8 @@ export interface ApplicationState {
     generated: generationStore.GenerationState;
     generationProgress: number;
 
+    linkProgress: number;
+
     settings: settingsStore.Settings;
     token: authorizationStore.AuthorizationToken;
 }
@@ -22,6 +24,7 @@ export const reducer = {
     tracks: trackStore.reducer,
 
     seeds: seedStore.reducer,
+    
     generated: generationStore.reducer,
     generationProgress: composeReducers(
         defaultReducer(0),
@@ -36,3 +39,5 @@ export const reducer = {
     settings: settingsStore.reducer,
     token: authorizationStore.reducer,
 };
+
+export const getLinkProgress = (state: ApplicationState) => state.linkProgress;
