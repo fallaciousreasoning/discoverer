@@ -6,20 +6,21 @@ import * as trackStore from './trackStore';
 
 
 export interface ApplicationState {
-    settings: settingsStore.Settings;
+    tracks: trackStore.TrackState;
     
     seeds: seedStore.SeedState;
     generation: generationStore.GenerationState;
-    token: authorizationStore.AuthorizationToken;
 
-    tracks: trackStore.TrackState;
+    settings: settingsStore.Settings;
+    token: authorizationStore.AuthorizationToken;
 }
 
 export const reducer = {
-    seeds: seedStore.reducer,
-    settings: settingsStore.reducer,
-    generation: generationStore.reducer,
-    token: authorizationStore.reducer,
+    tracks: trackStore.reducer,
 
-    tracks: trackStore.reducer
+    seeds: seedStore.reducer,
+    generation: generationStore.reducer,
+
+    settings: settingsStore.reducer,
+    token: authorizationStore.reducer,
 };
