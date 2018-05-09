@@ -3,6 +3,7 @@ import { ApplicationState } from "src/store";
 import { ActionType, GenerationStart, actionCreators } from "src/store/actions";
 import { Track } from "src/store/trackStore";
 import { trackGetSimilar } from "../services/lastfm";
+import { getSeedTracks } from "../store/seedStore";
 import { Settings } from "../store/settingsStore";
 
 interface DiscoverTrack extends Track {
@@ -12,7 +13,7 @@ interface DiscoverTrack extends Track {
 const tracks: DiscoverTrack[] = [];
 
 function* generationStart(action: GenerationStart) {
-    const rawSeeds: DiscoverTrack[] = yield select((state: ApplicationState) => state.seedTracks);
+    const rawSeeds: Track[] = yield select(getSeedTracks);
     const seeds: DiscoverTrack[] = rawSeeds.map(s => ({...s, depth: 0 }));
 
     const settings: Settings = yield select((state: ApplicationState) => state.settings);
