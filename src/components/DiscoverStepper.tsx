@@ -42,7 +42,7 @@ const steps: { [step: string]: DiscoveryStep } = {
     },
     generate: {
         title: "Generating Playlist",
-        complete: (state) => state.generation.progress === 1,
+        complete: (state) => state.generationProgress === 1,
         component: <Generate/>
     },
     save: {

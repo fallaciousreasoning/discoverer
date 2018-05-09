@@ -13,12 +13,12 @@ export enum ActionType {
     GENERATION_REMOVE_SONG = "GENERATION_REMOVE_SONG",
     GENERATION_ADD_SIMILAR = "GENERATION_ADD_SIMILAR",
 
+    LINK_START = "LINK_START",
+    LINK_SET_SPOTIFY_ID = "LINK_SET_SPOTIFY_ID",
+
     CANCEL_SAGAS_HMR = "CANCEL_SAGAS_HMR",
 
     SET_TOKEN = "SET_TOKEN",
-
-    LINK_TO_SPOTIFY = "LINK_TO_SPOTIFY",
-    SET_SPOTIFY_ID = "SET_SPOTIFY_ID"
 }
 
 export interface SeedAddSong { type: ActionType.SEED_ADD_SONG, song: Track }
@@ -30,8 +30,8 @@ export interface GenerationAddSong { type: ActionType.GENERATION_ADD_SONG, progr
 export interface GenerationAddSimilar { type: ActionType.GENERATION_ADD_SIMILAR, to: Track, similar: Track[] }
 export interface GenerationRemoveSong { type: ActionType.GENERATION_REMOVE_SONG, song: Track }
 
-export interface LinkToSpotify { type: ActionType.LINK_TO_SPOTIFY }
-export interface SetSpotifyId {type: ActionType.SET_SPOTIFY_ID, song: Track, spotifyId: string }
+export interface LinkStart { type: ActionType.LINK_START }
+export interface LinkSetSpotifyId {type: ActionType.LINK_SET_SPOTIFY_ID, progress: number, song: Track, spotifyId: string }
 
 export interface CancelSagasHMR { type: ActionType.CANCEL_SAGAS_HMR }
 
@@ -48,10 +48,10 @@ export const actionCreators = {
     generationRemoveSong: (song: Track) => <GenerationRemoveSong>({ type: ActionType.GENERATION_REMOVE_SONG, song }),
     generationAddSimilar: (to: Track, similar: Track[]) => <GenerationAddSimilar>({ type: ActionType.GENERATION_ADD_SIMILAR, to, similar }),
 
+    linkStart: () => <LinkStart>({ type: ActionType.LINK_START }),
+    linkSetSpotifyId: (progress: number, song: Track, spotifyId: string) => <LinkSetSpotifyId>({ type: ActionType.LINK_SET_SPOTIFY_ID, progress, song, spotifyId }),
+
     cancelSagasHMR: () => <CancelSagasHMR>({ type: ActionType.CANCEL_SAGAS_HMR }),
 
-    setToken: (token: AuthorizationToken) => <SetToken>({ type: ActionType.SET_TOKEN, token }),
-
-    linkToSpotify: () => <LinkToSpotify>({ type: ActionType.LINK_TO_SPOTIFY }),
-    setSpotifyId: (song: Track, spotifyId: string) => <SetSpotifyId>({ type: ActionType.SET_SPOTIFY_ID, song, spotifyId })
+    setToken: (token: AuthorizationToken) => <SetToken>({ type: ActionType.SET_TOKEN, token })
 };

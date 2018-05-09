@@ -1,16 +1,16 @@
-import * as React from 'react';
-import Authorizer from 'src/services/authorizer';
 import { RaisedButton } from 'material-ui';
+import * as React from 'react';
+import { connect } from 'src/connect';
+import Authorizer from 'src/services/authorizer';
 import { AuthorizationToken } from 'src/store/authorizationStore';
 import { ApplicationState } from '../store';
-import { connect } from 'src/connect';
 import { actionCreators } from '../store/actions';
 
 
 interface Props {
     token: AuthorizationToken;
     onAuthorized: (token: AuthorizationToken) => void;
-    linkToSpotify: () => void;
+    linkStart: () => void;
 }
 
 class Save extends React.Component<Props> {
@@ -29,7 +29,7 @@ class Save extends React.Component<Props> {
         this.authorizer.setCallback(this.props.onAuthorized);
 
         if (this.authorizer.token.access_token) {
-            this.props.linkToSpotify();
+            this.props.linkStart();
         }
     }
 
@@ -45,5 +45,5 @@ class Save extends React.Component<Props> {
 export default connect((state: ApplicationState) => ({ token: state.token }),
 {
     onAuthorized: actionCreators.setToken,
-    linkToSpotify: actionCreators.linkToSpotify
+    linkStart: actionCreators.linkStart
 })(Save)
