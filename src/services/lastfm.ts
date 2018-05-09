@@ -1,5 +1,6 @@
-import * as querystring from 'querystring';
 import axios from 'axios';
+import * as querystring from 'querystring';
+import { Track } from 'src/store/trackStore';
 
 const config = require('config.json');
 const baseUrl = 'http://ws.audioscrobbler.com/2.0/';
@@ -9,18 +10,14 @@ interface LastFmAction {
     format?: 'json';
 }
 
-export interface LastFmTrack {
+interface LastFmTrack {
     name: string;
     mbid: string;
-    artist: string | LastFmArtist;
+    artist: string | { name: string };
     url: string;
     streamable: boolean;
     listeners: string;
     image: LastFmImage[];
-}
-
-export interface LastFmArtist {
-    name: string;
 }
 
 interface LastFmImage {
@@ -28,7 +25,15 @@ interface LastFmImage {
     size: string;
 }
 
-export const getArtistName = (track: LastFmTrack) => typeof track.artist === "string" ? track.artist : track.artist.name;
+const toTrack = (lastFmTrack: LastFmTrack): Track => ({
+    artist: getArtistName(lastFmTrack),
+    name: lastFmTrack.name,
+    id: lastFmTrack.mbid,
+    imageUrl: undefined,
+    similarTracks: []
+});
+
+const getArtistName = (track: LastFmTrack) => typeof track.artist === "string" ? track.artist : track.artist.name;
 
 const executeRequest = <T extends LastFmAction>(options: T) => {
     const params = querystring.stringify({
@@ -51,14 +56,18 @@ export const trackSearch = (track: string) => {
     return executeRequest({
         method: "track.search",
         track
-    }).then(data => data.results.trackmatches.track as LastFmTrack[]);
+    })
+    .then(data => data.results.trackmatches.track as LastFmTrack[])
+    .then(tracks => tracks.map(toTrack));
 }
 
 export const getRecentTracks = (user: string) => {
     return executeRequest({
         method: "user.getrecenttracks",
         user
-    }).then(data => data.recenttracks.track as LastFmTrack[])
+    })
+    .then(data => data.recenttracks.track as LastFmTrack[])
+    .then(tracks => tracks.map(toTrack));
 }
 
 export const trackGetSimilar = (track: LastFmTrack) => {
@@ -66,7 +75,9 @@ export const trackGetSimilar = (track: LastFmTrack) => {
         method: 'track.getSimilar',
         track: track.name,
         artist: getArtistName(track)
-    }).then(data => data.similartracks.track as LastFmTrack[]);
+    })
+    .then(data => data.similartracks.track as LastFmTrack[])
+    .then(tracks => tracks.map(toTrack));
 }
 
 export const trackGetInfo = (track: LastFmTrack) => {
@@ -74,5 +85,7 @@ export const trackGetInfo = (track: LastFmTrack) => {
         method: 'track.getInfo',
         track: track.name,
         artist: track.artist
-    }).then(data => data.track as LastFmTrack[]);
+    })
+    .then(data => data.track as LastFmTrack[])
+    .then(tracks => tracks.map(toTrack));
 }

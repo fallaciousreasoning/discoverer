@@ -1,4 +1,3 @@
-import { LastFmTrack, getArtistName } from "../services/lastfm";
 import { ActionType, GenerationAddSong, SeedAddSong, SetSpotifyId } from "./actions";
 import { actionReducer, composeReducers, defaultReducer } from "./reducers";
 
@@ -14,14 +13,6 @@ export interface Track {
 }
 
 export type TrackState = { [id: string]: Track };
-
-export const toTrack = (lastFmTrack: LastFmTrack): Track => ({
-    artist: getArtistName(lastFmTrack),
-    name: lastFmTrack.name,
-    id: lastFmTrack.mbid,
-    imageUrl: undefined,
-    similarTracks: []
-});
 
 export const reducer = composeReducers(
     defaultReducer([]),
