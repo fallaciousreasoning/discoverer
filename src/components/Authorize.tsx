@@ -3,9 +3,7 @@ import * as querystring from 'querystring';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { AuthorizationToken } from 'src/store/authorizationStore';
-
-
-export const AuthorizedCallbackName = "AuthorizedCallback";
+import { AuthorizedCallbackName } from 'src/services/authorizer';
 
 const secondsTillClose = 3;
 

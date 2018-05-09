@@ -1,4 +1,3 @@
-import * as Spotify from 'spotify-web-api-js';
 import * as querystring from 'querystring';
 import { AuthorizationToken } from 'src/store/authorizationStore';
 
