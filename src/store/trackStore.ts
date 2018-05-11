@@ -26,7 +26,7 @@ export const reducer = persistReducer({ key: 'tracks', storage: storage }, compo
     })),
     actionReducer(ActionType.LINK_SET_SPOTIFY_ID, (state: TrackState, action: LinkSetSpotifyId) => ({
         ...state,
-        [action.song.id]: action.spotifyId
+        [action.song.id]: { ...state[action.song.id] ,spotifyId: action.spotifyId }
     })),
     actionReducer(ActionType.GENERATION_ADD_SIMILAR, (state: TrackState, action: GenerationAddSimilar) => {
         const newState = {
