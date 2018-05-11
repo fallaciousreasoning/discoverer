@@ -19,7 +19,7 @@ export const reducer = composeReducers(
     defaultReducer([]),
     actionReducer([ActionType.SEED_ADD_SONG, ActionType.GENERATION_ADD_SONG], (state: TrackState, action: SeedAddSong | GenerationAddSong) => ({
         ...state,
-        [action.song.id]: action.song
+        [action.song.id]: { ...action.song, ...state[action.song.id] }
     })),
     actionReducer(ActionType.LINK_SET_SPOTIFY_ID, (state: TrackState, action: LinkSetSpotifyId) => ({
         ...state,
