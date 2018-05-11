@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "target": "es5",
+    "jsx": "react",
+    "sourceMap": true,
+    "skipDefaultLibCheck": true,
+    "noErrorTruncation": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es6",
+      "es2017",
+      "dom"
+    ],
+    "types": [
+      "webpack-env",
+    ],
+    "paths": {
+      "history": [
+        "./node_modules/@types/history/index"
+      ],
+      "react": [
+        "./node_modules/@types/react/index"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "Tests"
+  ]
+}

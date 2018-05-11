@@ -16,22 +16,14 @@ You can play with a live version [here](https://music-generator.herokuapp.com/)
 
         npm install
 4. Get a Last.FM api key from [Last.FM](https://www.last.fm/api/account/create)
+5. Get a Spoify api key from the [Spotify Developer Console](https://developer.spotify.com/my-applications/#!/applications). You should add a callback url to `http://<YOUR_HOST>/authorize` (if you're running locally this will be `http://localhost:<PORT>/authorize`) 
 5. Create a file `config.json` in the root directory with the contents
 
         {
-            "apiKey":"<YOUR_API_KEY>"
+            "lastfmApiKey": "<LASTFMAPIKEY>",
+            "lastfmApiSecret": "<LASTFMAPISECRET>",
+            "spotifyClientId": "<SPOTIFYCLIENTID>",
+            "spotifyClientSecret": "<SPOTIFYCLIENTSECRET>",
+            "spotifyRedirectUrl": "<CALLBACKURL>"
         }
-
-6. Get a Spotify api key from the [Spotify Developer Console]. You should add a callback url to `http://<YOUR_HOST>/callback` (if you're running locally this will be `http://localhost/callback`) (https://developer.spotify.com/my-applications/#!/applications)
-7. Create a file `spotify-config.json` in the root directory with the contents:
-
-        {
-            "clientId":"<YOUR_SPOTIFY_CLIENT_ID",
-            "clientSecret":"<YOUR_SPOTIFY_CLIENT_SECRET>",
-            "callbackUrl":"http://<YOUR_SERVER>/callback"
-        }
-8. Compile the JavaScript bundle with `node_modules\.bin\webpack.cmd`. If you're going to be changing the client code you might find the `--watch` argument useful, as it will automatically compile every time you make a change.
-9. Start the server with `node server.js`
-10. Navigiate to `http://<YOUR_SERVER>/` (this will be `http://localhost/` if you're running on your local machine). Hopefully you'll be greeted with a page similar to the following
-
-![Landing Page](/readme_files/landing.PNG "Landing Page")
+8. Run `weback-dev-server` and open the url

@@ -1,35 +1,42 @@
-const webpack = require('webpack');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    entry: path.join(__dirname, 'app-client.js'),
+    mode: 'development',
+    entry: './src/index.tsx',
+
+    devtool: 'source-map',
+
     output: {
-        path: path.join(__dirname, 'static', 'js'),
-        filename: 'bundle.js'
+        path: __dirname + '/dist',
+        filename: 'main.js'
     },
+
+    resolve: {
+        modules: ['.', './', 'node_modules'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+    },
+
     module: {
-        loaders: [{
-            test: __dirname,
-            loader: ['babel-loader'],
-            query: {
-                cacheDirectory: 'babel_cache',
-                presets: ['react', 'es2015']
-            }
-        }]
+        rules: [
+            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+        ]
     },
-    debug: true,
+
     plugins: [
-        new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-        }),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-        compress: { warnings: false },
-        mangle: false,
-        sourcemap: true,
-        beautify: true,
-        dead_code: true
-        })
-    ]
-}
+        new webpack.HotModuleReplacementPlugin()
+    ],
+
+    devServer: {
+        hotOnly: true,
+        inline: true,
+        contentBase: './dist',
+        historyApiFallback: true,
+
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+          }
+    }
+};
