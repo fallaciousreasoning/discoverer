@@ -1,6 +1,9 @@
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { ApplicationState } from ".";
 import { ActionType, GenerationAddSimilar, GenerationAddSong, LinkSetSpotifyId, SeedAddSong } from "./actions";
 import { actionReducer, composeReducers, defaultReducer } from "./reducers";
+
 
 export interface Track {
     spotifyId?: string;
@@ -15,7 +18,7 @@ export interface Track {
 
 export type TrackState = { [id: string]: Track };
 
-export const reducer = composeReducers(
+export const reducer = persistReducer({ key: 'tracks', storage: storage }, composeReducers(
     defaultReducer([]),
     actionReducer([ActionType.SEED_ADD_SONG, ActionType.GENERATION_ADD_SONG], (state: TrackState, action: SeedAddSong | GenerationAddSong) => ({
         ...state,
@@ -42,6 +45,6 @@ export const reducer = composeReducers(
 
         return newState;
     })
-)
+));
 
 export const getTracks = (state: ApplicationState) => state.tracks;

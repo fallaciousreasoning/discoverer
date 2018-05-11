@@ -1,12 +1,9 @@
-import { createStore, applyMiddleware, compose, combineReducers, Store, StoreEnhancer } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-
-import { routerReducer, routerMiddleware } from 'react-router-redux';
-
-import { ApplicationState, reducer } from 'src/store';
 import { History } from 'history';
-
+import { routerMiddleware, routerReducer } from 'react-router-redux';
+import { Store, StoreEnhancer, applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import SagaManager from 'src/sagas';
+import { ApplicationState, reducer } from 'src/store';
 
 export default function configureStore(history: History, initialState?: ApplicationState) {
     // Build middleware. These are functions that can process the actions before they reach the store.
