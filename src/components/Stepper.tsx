@@ -37,9 +37,9 @@ export class Stepper extends React.Component<Props> {
                     {this.props.vertical ? <MUIStepContent>{child}</MUIStepContent> : <React.Fragment />}
                 </MUIStep>)}
             </MUIStepper>
-            <this.props.renderHorizontalContentAs {...activeStep.props}>
-                {!this.props.vertical && activeStep}
-            </this.props.renderHorizontalContentAs>
+            {!this.props.vertical && <this.props.renderHorizontalContentAs {...activeStep.props}>
+                {activeStep}
+            </this.props.renderHorizontalContentAs>}
         </>;
     }
 }
