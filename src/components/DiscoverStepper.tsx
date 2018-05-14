@@ -9,9 +9,6 @@ import Generate from './Generate';
 import Save from './Save';
 import Seed from './Seed';
 
-
-
-
 interface RouteProps {
     step: string;
 }
@@ -65,7 +62,7 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
 
     public render() {
         const step = this.currentStepName();
-        const currentStep = this.currentStep();
+        const currentStep = this.currentStep() || steps.seed;
         const state = store.getState();
 
         const progress = currentStep.progress(state);

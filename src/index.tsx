@@ -10,9 +10,11 @@ import { PersistGate } from 'src/components/PersistGate';
 import * as Routes from './Routes';
 import configureStore from './store/configureStore';
 
+const config = require('config.json');
+
 let routes = Routes.default;
 
-export const history = createHistory();
+export const history = createHistory({ basename: config.basename });
 export const store = configureStore(history, {} as any);
 export const persistor = persistStore(store);
 
