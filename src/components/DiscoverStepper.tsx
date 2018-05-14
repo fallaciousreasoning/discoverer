@@ -39,7 +39,7 @@ function StepContainer(props: StepProps & { children }) {
         <Toolbar>
             <ToolbarTitle text={props.name} />
         </Toolbar>
-        <LinearProgress mode="determinate" value={0} min={0} max={1} />
+        <LinearProgress mode="determinate" value={props.progress || 1} min={0} max={1} />
         <div style={stepperContentStyle}>
             {props.children}
         </div>
@@ -61,8 +61,6 @@ class DiscoverStepper extends React.Component<Props & RouteComponentProps<RouteP
     public render() {
         const step = this.currentStepName();
         const state = store.getState();
-
-        console.log(this.props.seedProgress)
 
         // If we aren't ready, for this step, send us back to the first.
         // if (!steps.seed.progress(state) && step !== 'seed') {
