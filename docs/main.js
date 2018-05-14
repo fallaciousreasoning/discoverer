@@ -62,7 +62,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0493c280ad199258f87e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8c2b557263bd566cb82b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -78090,7 +78090,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var material_ui_1 = __webpack_require__(/*! material-ui */ "./node_modules/material-ui/index.es.js");
 var querystring = __webpack_require__(/*! querystring */ "./node_modules/querystring-es3/index.js");
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var authorizer_1 = __webpack_require__(/*! src/services/authorizer */ "./src/services/authorizer.ts");
 var secondsTillClose = 3;
 var delayOneSecond = function () { return new Promise(function (resolve) { return setTimeout(resolve, 1000); }); };
 var countdown = function (from, callback) { return delayOneSecond().then(function () {
@@ -78113,7 +78112,7 @@ var Authorize = /** @class */ (function (_super) {
         var _this = this;
         this.token = querystring.parse(this.props.location.hash.slice(1));
         this.token.issue_date = new Date(); // Store the issue date so we know when it expires
-        window[authorizer_1.AuthorizedCallbackName](this.token);
+        window.opener.postMessage(this.token, '*');
         countdown(this.state.secondsTillClose, function (secondsTillClose) { return _this.setState({ secondsTillClose: secondsTillClose }); });
     };
     Authorize.prototype.componentDidUpdate = function () {
@@ -79168,13 +79167,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var querystring = __webpack_require__(/*! querystring */ "./node_modules/querystring-es3/index.js");
 var config = __webpack_require__(/*! config */ "./config.json");
 var spotifyAuthorizeUrl = "https://accounts.spotify.com/authorize";
-exports.AuthorizedCallbackName = "authorizedCallback";
 var Authorizer = /** @class */ (function () {
     function Authorizer() {
         var _this = this;
         this.setToken = function (token) { return _this.token = token; };
         this.setCallback = function (onAuthorized) { return _this.onAuthorized = onAuthorized; };
         this.isAuthorized = function () { return !!_this.token; };
+        this.listener = function (ev) {
+            _this.onAuthorized(ev.data);
+            window.removeEventListener('message', _this.listener);
+        };
         this.authorize = function () {
             var queryParams = {
                 client_id: config.spotifyClientId,
@@ -79186,7 +79188,7 @@ var Authorizer = /** @class */ (function () {
             var queryString = querystring.stringify(queryParams);
             var url = spotifyAuthorizeUrl + "?" + queryString;
             _this.window = window.open(url);
-            _this.window['authorizedCallback'] = _this.onAuthorized;
+            window.addEventListener('message', _this.listener);
         };
     }
     return Authorizer;
