@@ -52,6 +52,7 @@ const steps: { [step: string]: DiscoveryStep } = {
 const stepperContentStyle = { padding: "28px 16px" };
 const controlBoxStyle = { margin: '12px' };
 const nextButtonStyle = { margin: '12px' };
+const discovererStyle = { width: '100%', maxWidth: '700px', margin: 'auto' };
 
 class DiscoverStepper extends React.Component<ApplicationState & RouteComponentProps<RouteProps>> {
     currentStepName = () => this.props.match.params.step || 'seed';
@@ -71,7 +72,7 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
             return <Redirect to='/seed'/>
         }
 
-        return <div>
+        return <div style={discovererStyle}>
             <Stepper activeStep={Steps[step]}>
                 <Step>
                     <StepLabel>{steps.seed.title}</StepLabel>
