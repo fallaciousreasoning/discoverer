@@ -1,4 +1,4 @@
-import { all, put, select, takeEvery } from "redux-saga/effects";
+import { all, fork, put, select, takeEvery } from "redux-saga/effects";
 import { ApplicationState } from "src/store";
 import { ActionType, GenerationStart, actionCreators } from "src/store/actions";
 import { Track } from "src/store/trackStore";
@@ -17,6 +17,14 @@ function* generationStart(action: GenerationStart) {
     const seeds: DiscoverTrack[] = rawSeeds.map(s => ({...s, depth: 0 }));
 
     const settings: Settings = yield select((state: ApplicationState) => state.settings);
+    let cancel = false;
+
+    // On every router change event, cancel generation.
+    yield fork(function *() {
+        yield takeEvery('@@router/LOCATION_CHANGE', function() {
+            cancel = true;
+        });
+    })
 
     if (!seeds || !seeds.length) {
         return;
@@ -92,6 +100,11 @@ function* generationStart(action: GenerationStart) {
         if (track.depth < settings.minDepth || track.depth > settings.maxDepth) {
             continue;
         } 
+
+        if (cancel) {
+            // If the route has changed, cancel generation.
+            return;
+        }
         
         yield add(track);
 
