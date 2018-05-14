@@ -1,10 +1,12 @@
 import { FlatButton, LinearProgress, Paper, RaisedButton, Toolbar, ToolbarTitle } from 'material-ui';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { createSelector } from 'reselect';
 import { store } from 'src';
 import { Step, StepProps, Stepper } from 'src/components/Stepper';
 import { connect } from 'src/connect';
-import { ApplicationState } from '../store';
+import { ApplicationState, getLinkProgress, getSeedProgress } from '../store';
+import { getGenerationProgress } from '../store/generationStore';
 import Configure from './Configure';
 import Generate from './Generate';
 import Save from './Save';
@@ -44,7 +46,13 @@ function StepContainer(props: StepProps & { children }) {
     </Paper>
 }
 
-class DiscoverStepper extends React.Component<ApplicationState & RouteComponentProps<RouteProps>> {
+interface Props {
+    seedProgress: number;
+    generationProgress: number;
+    linkProgress: number;
+}
+
+class DiscoverStepper extends React.Component<Props & RouteComponentProps<RouteProps>> {
     currentStepName = () => this.props.match.params.step || 'seed';
 
     nextStep = () => this.props.history.push(Steps[Steps[this.currentStepName()] + 1]);
@@ -54,6 +62,8 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
         const step = this.currentStepName();
         const state = store.getState();
 
+        console.log(this.props.seedProgress)
+
         // If we aren't ready, for this step, send us back to the first.
         // if (!steps.seed.progress(state) && step !== 'seed') {
         //     return <Redirect to='/seed' />
@@ -62,70 +72,47 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
         return <div style={discovererStyle}>
             <Stepper activeStep={Steps[step]}
                 renderHorizontalContentAs={StepContainer}>
-                <Step name='Seed'>
+                <Step name='Seed' progress={this.props.seedProgress}>
                     <Seed />
                 </Step>
                 <Step name='Configure'>
                     <Configure />
                 </Step>
-                <Step name="Generate">
+                <Step name="Generate" progress={this.props.generationProgress}>
                     <Generate />
                 </Step>
-                <Step name="Save">
+                <Step name="Save" progress={this.props.linkProgress}>
                     <Save />
                 </Step>
-                {props => <>
+                {props => <div style={controlBoxStyle}>
                     <FlatButton
                         label="Back"
-                        disabled={step === 'seed'}
+                        disabled={props.firstStep}
                         onClick={this.previousStep}
                     />
                     <RaisedButton
                         label="Next"
                         primary={true}
                         onClick={this.nextStep}
-                        disabled={1 !== 1}
+                        disabled={!props.complete}
                         style={nextButtonStyle}
                     />
-                </>}
+                </div>}
             </Stepper>
-            {/* <Stepper activeStep={Steps[step]}>
-                <Step>
-                    <StepLabel>{steps.seed.title}</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>{steps.configure.title}</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>{steps.generate.title}</StepLabel>
-                </Step>
-                <Step>
-                    <StepLabel>{steps.save.title}</StepLabel>
-                </Step>
-            </Stepper>
-            <Paper>
-                <Toolbar><ToolbarTitle text={currentStep.title} /></Toolbar>
-                <LinearProgress mode="determinate" value={progress} min={0} max={1} />
-                <div style={stepperContentStyle}>
-                    {currentStep.component}
-                </div>
-                <div style={controlBoxStyle}>
-                    <FlatButton
-                        label="Back"
-                        disabled={step === 'seed'}
-                        onClick={this.previousStep}
-                    />
-                    <RaisedButton
-                        label="Next"
-                        primary={true}
-                        onClick={this.nextStep}
-                        disabled={progress !== 1}
-                        style={nextButtonStyle}
-                    />
-                </div>
-            </Paper> */}
         </div>;
     }
 }
 
-export default connect(state => state)(DiscoverStepper);
+const mapStateToProps = createSelector([getSeedProgress,
+    getGenerationProgress,
+    getLinkProgress], (
+        seedProgress,
+        generationProgress,
+        linkProgress
+    ) => ({
+        seedProgress,
+        generationProgress,
+        linkProgress
+    }))
+
+export default connect(mapStateToProps)(DiscoverStepper);

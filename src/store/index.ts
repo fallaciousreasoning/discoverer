@@ -47,5 +47,6 @@ export const reducer = {
     token: authorizationStore.reducer,
 };
 
+export const getSeedProgress = (state: ApplicationState) => state.seeds.length < 1 ? 0 : 1;
 export const getLinkProgress = (state: ApplicationState) => state.linkProgress;
 export const getPlaylistName = (state: ApplicationState) => state.playlistName;

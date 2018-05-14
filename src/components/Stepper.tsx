@@ -3,6 +3,7 @@ import * as React from 'react';
 
 export interface StepProps {
     name: string;
+    progress?: number;
 }
 
 export class Step extends React.Component<StepProps> {
@@ -11,12 +12,15 @@ export class Step extends React.Component<StepProps> {
     }
 }
 
-type StepChildType = { props: { name: string } };
+type StepChildType = { props: StepProps };
 type ButtonChildType = (props: StepButtonProps) => JSX.Element;
 type ChildType = StepChildType | (StepChildType | ButtonChildType)[] | ButtonChildType;
 
 interface StepButtonProps {
     currentStepProps: StepProps;
+    complete: boolean;
+    firstStep: boolean;
+    lastStep: boolean;
 }
 
 interface Props {
@@ -47,6 +51,12 @@ export class Stepper extends React.Component<Props> {
         });
 
         const activeStep = steps[this.props.activeStep];
+        const buttonProps: StepButtonProps = {
+            currentStepProps: activeStep.props,
+            firstStep: this.props.activeStep === 0,
+            lastStep: this.props.activeStep === steps.length - 1,
+            complete: activeStep.props.progress === undefined || activeStep.props.progress === 1
+        }
 
         return <>
             <MUIStepper activeStep={this.props.activeStep} orientation={this.props.vertical ? 'vertical' : 'horizontal'}>
@@ -58,7 +68,7 @@ export class Stepper extends React.Component<Props> {
             {!this.props.vertical && <this.props.renderHorizontalContentAs {...activeStep.props}>
                 {activeStep}
                 {buttons.map((button, i) => <React.Fragment key={i}>
-                    {button({ currentStepProps: activeStep.props })}
+                    {button(buttonProps)}
                 </React.Fragment>)}
             </this.props.renderHorizontalContentAs>}
         </>;
