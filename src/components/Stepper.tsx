@@ -2,7 +2,7 @@ import { Step as MUIStep, StepContent as MUIStepContent, StepLabel as MUIStepLab
 import * as React from 'react';
 
 interface StepProps {
-    stepName: string;
+    name: string;
 }
 
 export class Step extends React.Component<StepProps> {
@@ -14,17 +14,19 @@ export class Step extends React.Component<StepProps> {
 interface Props {
     activeStep: number;
     vertical?: boolean;
-    children: (Step) [];
+    children: { props: { name: string } }[] | { props: { name: string } };
 }
 
-export default class Stepper extends React.Component<Props> {
+export class Stepper extends React.Component<Props> {
     public render() {
-        const activeStep = this.props.children[this.props.activeStep];
+        const children = (Array.isArray(this.props.children) ? this.props.children : [this.props.children]) as { props: { name: string } }[];
+        console.log(children);
+        const activeStep = children[this.props.activeStep];
         return <>
             <MUIStepper activeStep={this.props.activeStep} orientation={this.props.vertical ? 'vertical' : 'horizontal'}>
-                {this.props.children.map(child => <MUIStep>
-                    <MUIStepLabel>{child.props.stepName}</MUIStepLabel>
-                    {this.props.vertical && <MUIStepContent>{child}</MUIStepContent>}
+                {children.map(child => child && <MUIStep key={child.props.name}>
+                    <MUIStepLabel>{child.props.name}</MUIStepLabel>
+                    {this.props.vertical ? <MUIStepContent>{child}</MUIStepContent> : <React.Fragment/>}
                 </MUIStep>)}
             </MUIStepper>
             {!this.props.vertical && activeStep}
