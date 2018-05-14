@@ -1,11 +1,11 @@
 import { FlatButton, LinearProgress, Paper, RaisedButton, Toolbar, ToolbarTitle } from 'material-ui';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { Redirect, RouteComponentProps } from 'react-router';
 import { createSelector } from 'reselect';
 import { store } from 'src';
 import { Step, StepProps, Stepper } from 'src/components/Stepper';
 import { connect } from 'src/connect';
-import { ApplicationState, getLinkProgress, getSeedProgress } from '../store';
+import { getLinkProgress, getSeedProgress } from '../store';
 import { getGenerationProgress } from '../store/generationStore';
 import Configure from './Configure';
 import Generate from './Generate';
@@ -21,12 +21,6 @@ enum Steps {
     configure = 1,
     generate = 2,
     save = 3
-}
-
-interface DiscoveryStep {
-    title: string;
-    component: JSX.Element;
-    progress: (state: ApplicationState) => number;
 }
 
 const stepperContentStyle = { padding: "28px 16px" };
@@ -60,12 +54,13 @@ class DiscoverStepper extends React.Component<Props & RouteComponentProps<RouteP
 
     public render() {
         const step = this.currentStepName();
+        const stepNumber = Steps[step];
         const state = store.getState();
 
         // If we aren't ready, for this step, send us back to the first.
-        // if (!steps.seed.progress(state) && step !== 'seed') {
-        //     return <Redirect to='/seed' />
-        // }
+        if (this.props.seedProgress !== 1 && stepNumber !== 0) {
+            return <Redirect to='/seed' />
+        }
 
         return <div style={discovererStyle}>
             <Stepper activeStep={Steps[step]}
