@@ -2,7 +2,7 @@
 
 A music discovery and playlist generation tool powered by last.fm and Spotify.
 
-You can play with a live version [here](https://music-generator.herokuapp.com/)
+You can play with a live version [here](https://fallaciousreasoning.github.io/discoverer)
 
 ## Installation
 
