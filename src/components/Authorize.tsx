@@ -3,7 +3,6 @@ import * as querystring from 'querystring';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { AuthorizationToken } from 'src/store/authorizationStore';
-import { AuthorizedCallbackName } from 'src/services/authorizer';
 
 const secondsTillClose = 3;
 
@@ -31,7 +30,7 @@ export default class Authorize extends React.Component<RouteComponentProps<{}>, 
         this.token = querystring.parse(this.props.location.hash.slice(1));
         this.token.issue_date = new Date(); // Store the issue date so we know when it expires
 
-        window[AuthorizedCallbackName](this.token);
+        window.opener.postMessage(this.token, '*');
 
         countdown(this.state.secondsTillClose, secondsTillClose => this.setState({ secondsTillClose }));
     }
