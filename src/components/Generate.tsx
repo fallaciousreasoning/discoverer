@@ -1,3 +1,4 @@
+import { RaisedButton } from 'material-ui';
 import * as React from 'react';
 import { createSelector } from 'reselect';
 import { connect } from 'src/connect';
@@ -15,12 +16,16 @@ interface Props {
 
 class Generate extends React.Component<Props> {
     componentDidMount() {
-        // TODO do this more intelligently
-        this.props.generationStart();
+        if (!this.props.generated.length) {
+            this.props.generationStart();
+        }
     }
 
     public render() {
-        return <SongList songs={this.props.generated} removeSong={this.props.removeSong}/>;
+        return <>
+            <SongList songs={this.props.generated} removeSong={this.props.removeSong} />
+            <RaisedButton onClick={this.props.generationStart} label="Regenerate" />
+        </>;
     }
 }
 

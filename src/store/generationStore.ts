@@ -9,7 +9,7 @@ export type GenerationState = string[];
 export const reducer = composeReducers(
     defaultReducer([]),
     actionReducer(ActionType.GENERATION_START, () => []),
-    actionReducer(ActionType.GENERATION_ADD_SONG, (state: GenerationState, action: GenerationAddSong) => [...state, action.song.id]),
+    actionReducer(ActionType.GENERATION_ADD_SONG, (state: GenerationState, action: GenerationAddSong) => action.song ? [...state, action.song.id] : state),
     actionReducer(ActionType.GENERATION_REMOVE_SONG, (state: GenerationState, action: GenerationRemoveSong) => {
         const generated = [...state];
         const index = generated.indexOf(action.song.id);

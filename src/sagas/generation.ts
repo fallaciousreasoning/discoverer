@@ -116,6 +116,9 @@ function* generationStart(action: GenerationStart) {
             frontier.push(similarTrack);
         });
     }
+
+    // Make sure we say we're done.
+    yield put(actionCreators.generationProgress(1, undefined))
 }
 
 export default function* () {

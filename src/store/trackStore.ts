@@ -20,13 +20,15 @@ export type TrackState = { [id: string]: Track };
 
 export const reducer = persistReducer({ key: 'tracks', storage: storage }, composeReducers(
     defaultReducer([]),
-    actionReducer([ActionType.SEED_ADD_SONG, ActionType.GENERATION_ADD_SONG], (state: TrackState, action: SeedAddSong | GenerationAddSong) => ({
-        ...state,
-        [action.song.id]: { ...action.song, ...state[action.song.id] }
-    })),
+    actionReducer([ActionType.SEED_ADD_SONG, ActionType.GENERATION_ADD_SONG], (state: TrackState, action: SeedAddSong | GenerationAddSong) => action.song
+        ? {
+            ...state,
+            [action.song.id]: { ...action.song, ...state[action.song.id] }
+        }
+        : state),
     actionReducer(ActionType.LINK_SET_SPOTIFY_ID, (state: TrackState, action: LinkSetSpotifyId) => ({
         ...state,
-        [action.song.id]: { ...state[action.song.id] ,spotifyId: action.spotifyId }
+        [action.song.id]: { ...state[action.song.id], spotifyId: action.spotifyId }
     })),
     actionReducer(ActionType.GENERATION_ADD_SIMILAR, (state: TrackState, action: GenerationAddSimilar) => {
         const newState = {
