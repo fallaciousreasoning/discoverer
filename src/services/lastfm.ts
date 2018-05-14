@@ -18,6 +18,7 @@ interface LastFmTrack {
     streamable: boolean;
     listeners: string;
     image: LastFmImage[];
+    match: number;
 }
 
 interface LastFmImage {
@@ -61,7 +62,9 @@ export const trackSearch = (track: string) => {
         track
     })
     .then(data => data.results.trackmatches.track as LastFmTrack[])
-    .then(tracks => tracks.map(toTrack));
+    .then(tracks => tracks
+        .filter(t => t.mbid)
+        .map(toTrack));
 }
 
 export const getRecentTracks = (user: string) => {
@@ -70,7 +73,9 @@ export const getRecentTracks = (user: string) => {
         user
     })
     .then(data => data.recenttracks.track as LastFmTrack[])
-    .then(tracks => tracks.map(toTrack));
+    .then(tracks => tracks
+        .filter(t => t.mbid)
+        .map(toTrack));
 }
 
 export const trackGetSimilar = (track: Track) => {
@@ -80,7 +85,9 @@ export const trackGetSimilar = (track: Track) => {
         artist: track.artist
     })
     .then(data => data.similartracks.track as LastFmTrack[])
-    .then(tracks => tracks.map(toTrack));
+    .then(tracks => tracks
+        .filter(t => t.mbid)
+        .map(toTrack));
 }
 
 export const trackGetInfo = (track: Track) => {
@@ -90,5 +97,7 @@ export const trackGetInfo = (track: Track) => {
         artist: track.artist
     })
     .then(data => data.track as LastFmTrack[])
-    .then(tracks => tracks.map(toTrack));
+    .then(tracks => tracks
+        .filter(t => t.mbid)
+        .map(toTrack));
 }
