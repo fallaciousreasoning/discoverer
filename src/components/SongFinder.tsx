@@ -3,7 +3,6 @@ import * as React from 'react';
 import { trackSearch } from 'src/services/lastfm';
 import { Track } from '../store/trackStore';
 
-
 interface Props {
     onSelect: (track: Track) => void;
 }
@@ -35,7 +34,7 @@ export default class SongFinder extends React.Component<Props, State> {
             .then(tracks => {
                 this.setState({
                     results: tracks,
-                    suggestions: tracks.map(t => `${t.name} (${t.artist})`)
+                    suggestions: tracks.map(t => `${t.name} ${t.artist}`)
                 });
             });
     }
