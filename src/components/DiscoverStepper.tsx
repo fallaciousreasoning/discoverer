@@ -23,8 +23,8 @@ enum Steps {
     save = 3
 }
 
-const stepperContentStyle = { padding: "28px 16px" };
-const controlBoxStyle = { margin: '12px' };
+const stepperContentStyle = { padding: "28px 16px 0px 16px" };
+const controlBoxStyle = { marginTop: '12px' };
 const nextButtonStyle = { margin: '12px' };
 const discovererStyle = { width: '100%', maxWidth: '700px', margin: 'auto' };
 
