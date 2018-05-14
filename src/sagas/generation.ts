@@ -4,7 +4,7 @@ import { ActionType, GenerationStart, actionCreators } from "src/store/actions";
 import { Track } from "src/store/trackStore";
 import { trackGetSimilar } from "../services/lastfm";
 import { getSeedTracks } from "../store/seedStore";
-import { Settings } from "../store/settingsStore";
+import { Settings, getSettings } from "../store/settingsStore";
 
 interface DiscoverTrack extends Track {
     depth: number;
@@ -16,7 +16,7 @@ function* generationStart(action: GenerationStart) {
     const rawSeeds: Track[] = yield select(getSeedTracks);
     const seeds: DiscoverTrack[] = rawSeeds.map(s => ({...s, depth: 0 }));
 
-    const settings: Settings = yield select((state: ApplicationState) => state.settings);
+    const settings: Settings = yield select(getSettings);
     let cancel = false;
 
     // On every router change event, cancel generation.

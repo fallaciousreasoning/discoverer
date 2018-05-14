@@ -1,5 +1,10 @@
+import * as hash from 'object-hash';
+import { createSelector } from "reselect";
+import { ApplicationState } from ".";
 import { ActionType, UpdateSettings } from "./actions";
 import { actionReducer, composeReducers, defaultReducer } from "./reducers";
+import { getSeedTracks } from "./seedStore";
+
 
 export interface Settings {
     burnSeedTracks: boolean;
@@ -37,3 +42,6 @@ export const reducer = composeReducers(
     defaultReducer(defaultSettings),
     actionReducer(ActionType.UPDATE_SETTINGS, (state: Settings, action: UpdateSettings) => ({ ...state, ...action.update }))
 );
+
+export const getSettings = (state: ApplicationState) => state.settings;
+export const settingsHash = createSelector([getSeedTracks, getSettings], (seeds, settings) => hash({ ...seeds, ...settings }));
