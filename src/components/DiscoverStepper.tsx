@@ -1,7 +1,8 @@
-import { FlatButton, LinearProgress, Paper, RaisedButton, Step, StepLabel, Stepper, Toolbar, ToolbarTitle } from 'material-ui';
+import { LinearProgress, Paper, Toolbar, ToolbarTitle } from 'material-ui';
 import * as React from 'react';
-import { Redirect, RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { store } from 'src';
+import { Step, StepProps, Stepper } from 'src/components/Stepper';
 import { connect } from 'src/connect';
 import { ApplicationState } from '../store';
 import Configure from './Configure';
@@ -26,54 +27,55 @@ interface DiscoveryStep {
     progress: (state: ApplicationState) => number;
 }
 
-const steps: { [step: string]: DiscoveryStep } = {
-    seed: {
-        title: "Seed Tracks",
-        progress: (state) => state.seeds.length === 0 ? 0 : 1,
-        component: <Seed />
-    },
-    configure: {
-        title: "Configure Options",
-        progress: () => 1,
-        component: <Configure />
-    },
-    generate: {
-        title: "Generating Playlist",
-        progress: (state) => state.generationProgress,
-        component: <Generate/>
-    },
-    save: {
-        title: "Saving",
-        progress: (state) => state.linkProgress,
-        component: <Save/>
-    },
-};
-
 const stepperContentStyle = { padding: "28px 16px" };
 const controlBoxStyle = { margin: '12px' };
 const nextButtonStyle = { margin: '12px' };
 const discovererStyle = { width: '100%', maxWidth: '700px', margin: 'auto' };
 
+function StepContainer(props: StepProps & { children }) {
+    return <Paper>
+        <Toolbar>
+            <ToolbarTitle text={props.name} />
+        </Toolbar>
+        <LinearProgress mode="determinate" value={0} min={0} max={1} />
+        <div style={stepperContentStyle}>
+            {props.children}
+        </div>
+    </Paper>
+}
+
 class DiscoverStepper extends React.Component<ApplicationState & RouteComponentProps<RouteProps>> {
     currentStepName = () => this.props.match.params.step || 'seed';
-    currentStep = () => steps[this.currentStepName()];
 
     nextStep = () => this.props.history.push(Steps[Steps[this.currentStepName()] + 1]);
     previousStep = () => this.props.history.push(Steps[Steps[this.currentStepName()] - 1]);
 
     public render() {
         const step = this.currentStepName();
-        const currentStep = this.currentStep() || steps.seed;
         const state = store.getState();
 
-        const progress = currentStep.progress(state);
         // If we aren't ready, for this step, send us back to the first.
-        if (!steps.seed.progress(state) && step !== 'seed' ) {
-            return <Redirect to='/seed'/>
-        }
+        // if (!steps.seed.progress(state) && step !== 'seed') {
+        //     return <Redirect to='/seed' />
+        // }
 
         return <div style={discovererStyle}>
-            <Stepper activeStep={Steps[step]}>
+            <Stepper activeStep={Steps[step]}
+                renderHorizontalContentAs={StepContainer}>
+                <Step name='Seed'>
+                    <Seed />
+                </Step>
+                <Step name='Configure'>
+                    <Configure />
+                </Step>
+                <Step name="Generate">
+                    <Generate />
+                </Step>
+                <Step name="Save">
+                    <Save />
+                </Step>
+            </Stepper>
+            {/* <Stepper activeStep={Steps[step]}>
                 <Step>
                     <StepLabel>{steps.seed.title}</StepLabel>
                 </Step>
@@ -89,7 +91,7 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
             </Stepper>
             <Paper>
                 <Toolbar><ToolbarTitle text={currentStep.title} /></Toolbar>
-            <LinearProgress mode="determinate" value={progress} min={0} max={1} />
+                <LinearProgress mode="determinate" value={progress} min={0} max={1} />
                 <div style={stepperContentStyle}>
                     {currentStep.component}
                 </div>
@@ -107,7 +109,7 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
                         style={nextButtonStyle}
                     />
                 </div>
-            </Paper>
+            </Paper> */}
         </div>;
     }
 }
