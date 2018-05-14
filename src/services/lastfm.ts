@@ -3,7 +3,7 @@ import * as querystring from 'querystring';
 import { Track } from 'src/store/trackStore';
 
 const config = require('config.json');
-const baseUrl = 'http://ws.audioscrobbler.com/2.0/';
+const baseUrl = 'https://ws.audioscrobbler.com/2.0/';
 
 interface LastFmAction {
     method: "track.search" | "track.getInfo" | "track.getSimilar" | "user.getrecenttracks";
