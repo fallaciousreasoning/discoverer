@@ -1,4 +1,4 @@
-import { LinearProgress, Paper, Toolbar, ToolbarTitle } from 'material-ui';
+import { FlatButton, LinearProgress, Paper, RaisedButton, Toolbar, ToolbarTitle } from 'material-ui';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { store } from 'src';
@@ -74,6 +74,20 @@ class DiscoverStepper extends React.Component<ApplicationState & RouteComponentP
                 <Step name="Save">
                     <Save />
                 </Step>
+                {props => <>
+                    <FlatButton
+                        label="Back"
+                        disabled={step === 'seed'}
+                        onClick={this.previousStep}
+                    />
+                    <RaisedButton
+                        label="Next"
+                        primary={true}
+                        onClick={this.nextStep}
+                        disabled={1 !== 1}
+                        style={nextButtonStyle}
+                    />
+                </>}
             </Stepper>
             {/* <Stepper activeStep={Steps[step]}>
                 <Step>
