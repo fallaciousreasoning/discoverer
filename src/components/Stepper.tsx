@@ -11,12 +11,18 @@ export class Step extends React.Component<StepProps> {
     }
 }
 
-type StepType = { props: { name: string } };
+type StepChildType = { props: { name: string } };
+type ButtonChildType = (props: StepButtonProps) => JSX.Element;
+type ChildType = StepChildType | (StepChildType | ButtonChildType)[] | ButtonChildType;
+
+interface StepButtonProps {
+    currentStepProps: StepProps;
+}
 
 interface Props {
     activeStep: number;
     vertical?: boolean;
-    children: StepType[] | StepType;
+    children: ChildType;
 
     renderHorizontalContentAs?: string | React.ComponentType<StepProps> | React.ComponentType;
 }
@@ -27,18 +33,33 @@ export class Stepper extends React.Component<Props> {
     };
 
     public render() {
-        const children = (Array.isArray(this.props.children) ? this.props.children : [this.props.children]) as { props: { name: string } }[];
-        const activeStep = children[this.props.activeStep];
-        
+        const children = (Array.isArray(this.props.children) ? this.props.children : [this.props.children]) as (StepChildType | ButtonChildType)[];
+        const buttons: ButtonChildType[] = [];
+        const steps: StepChildType[] = [];
+
+        // TODO reduce rerendering
+        children.forEach(child => {
+            if (typeof child === "function") {
+                buttons.push(child);
+            } else {
+                steps.push(child);
+            }
+        });
+
+        const activeStep = steps[this.props.activeStep];
+
         return <>
             <MUIStepper activeStep={this.props.activeStep} orientation={this.props.vertical ? 'vertical' : 'horizontal'}>
-                {children.map(child => child && <MUIStep key={child.props.name}>
-                    <MUIStepLabel>{child.props.name}</MUIStepLabel>
-                    {this.props.vertical ? <MUIStepContent>{child}</MUIStepContent> : <React.Fragment />}
+                {steps.map(step => step && <MUIStep key={step.props.name}>
+                    <MUIStepLabel>{step.props.name}</MUIStepLabel>
+                    {this.props.vertical ? <MUIStepContent>{step}</MUIStepContent> : <React.Fragment />}
                 </MUIStep>)}
             </MUIStepper>
             {!this.props.vertical && <this.props.renderHorizontalContentAs {...activeStep.props}>
                 {activeStep}
+                {buttons.map((button, i) => <React.Fragment key={i}>
+                    {button({ currentStepProps: activeStep.props })}
+                </React.Fragment>)}
             </this.props.renderHorizontalContentAs>}
         </>;
     }
