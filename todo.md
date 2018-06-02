@@ -1,0 +1,10 @@
+- [x] Fix bug when there aren't enough similar songs
+- [] Fix display on mobile
+- [] Make PWA
+- [x] Host site on github pages
+- [x] Dont regen every load of generate page
+- [x] cancel generate on navigate
+- [] Add reset option to last page
+- [] Add fork me to docs page
+- [] Performance improvements
+- [] Upgrade to new version of material design
