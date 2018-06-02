@@ -7,9 +7,6 @@ import { getSeedTracks } from '../store/seedStore';
 import SongFinder from './SongFinder';
 import SongList from './SongList';
 
-
-
-
 interface Props {
     seeds: Track[];
     addSong: typeof actionCreators.addSeedSong;
@@ -17,8 +14,6 @@ interface Props {
 }
 
 class Seed extends React.Component<Props> {
-    thing: number = 8;
-
     public render() {
         return <>
             <SongFinder onSelect={this.props.addSong} />
