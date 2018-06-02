@@ -1,14 +1,17 @@
-import { Avatar, IconButton, List, ListItem } from 'material-ui';
-import ActionDelete from 'material-ui/svg-icons/action/delete';
+import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import * as React from 'react';
 import { Track } from 'src/store/trackStore';
 
-const Song = (props: { song: Track, remove: (song: Track) => void }) => <ListItem
-    leftAvatar={<Avatar src={props.song.imageUrl} />}
-    primaryText={props.song.name}
-    secondaryText={`by ${props.song.artist}`}
-    rightIconButton={<IconButton onClick={() => props.remove(props.song)}><ActionDelete /></IconButton>}
-/>;
+const Song = (props: { song: Track, remove: (song: Track) => void }) => <ListItem>
+    <ListItemAvatar>
+        <Avatar src={props.song.imageUrl} />
+    </ListItemAvatar>
+    <ListItemText primary={props.song.name} secondary={`by ${props.song.artist}`} />
+    <ListItemSecondaryAction>
+        <IconButton onClick={() => props.remove(props.song)}><DeleteIcon /></IconButton>
+    </ListItemSecondaryAction>
+</ListItem>;
 
 interface Props {
     songs: Track[];

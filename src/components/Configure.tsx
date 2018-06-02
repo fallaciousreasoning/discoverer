@@ -1,5 +1,5 @@
+import { List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, Switch } from '@material-ui/core';
 import * as React from 'react';
-import { List, ListItem, Toggle, SelectField, MenuItem } from 'material-ui';
 import { Settings } from 'src/store/settingsStore';
 import { connect } from '../connect';
 import { ApplicationState } from '../store';
@@ -19,36 +19,48 @@ const secondaryTextStyle = {
     textOverflow: "ellipsis",
 };
 
+function ListToggleEntry(props: { primary: string, secondary: string, checked: boolean, onChange: (event) => void }) {
+    return <ListItem>
+        <ListItemText
+            primary={props.primary}
+            secondary={props.secondary} />
+        <ListItemSecondaryAction>
+            <Switch checked={props.checked} onChange={props.onChange}/>
+        </ListItemSecondaryAction>
+    </ListItem>;
+}
+
 class Configure extends React.Component<Props> {
     limitOptions = [5, 10, 25, 50, 100, 250];
 
     public render() {
         return <List>
-            <ListItem
-                primaryText="Burn Seed Tracks"
-                secondaryText="Stops tracks used as seeds from appearing in the final playlist"
-                rightToggle={<Toggle toggled={this.props.burnSeedTracks} onToggle={(event, value) => this.props.updateSettings({ burnSeedTracks: value })} />} />
-            <ListItem
-                primaryText="Burn Seed Artists"
-                secondaryText="Stops artists from seed tracks from appearing in the final playlist"
-                rightToggle={<Toggle toggled={this.props.burnSeedArtists}
-                    onToggle={(event, value) => this.props.updateSettings({ burnSeedArtists: value })} />} />
-            <ListItem
-                primaryText="Include Seed Tracks"
-                secondaryText="Adds seed tracks to the final playlist (this overrides burning seed tracks/artists)."
-                rightToggle={<Toggle toggled={this.props.includeSeedTracks} onToggle={(event, value) => this.props.updateSettings({ includeSeedTracks: value })} />} />
-            <ListItem
-                primaryText="Burn Used Tracks"
-                secondaryText="Stops tracks from appearing in the final playlist more than once"
-                rightToggle={< Toggle toggled={this.props.burnUsedTracks} onToggle={(event, value) => this.props.updateSettings({ burnUsedTracks: value })} />} />
-            <ListItem
-                primaryText="Burn Used Artists"
-                secondaryText="Prevents artists from appearing in the final playlist more than once."
-                rightToggle={< Toggle toggled={this.props.burnUsedArtists} onToggle={(event, value) => this.props.updateSettings({ burnUsedArtists: value })} />} />
-            <ListItem
-                disableFocusRipple={true}
-                disableTouchRipple={true}
-                hoverColor="transparent">
+            <ListToggleEntry
+                primary="Burn Seed Tracks"
+                secondary="Stops tracks used as seeds from appearing in the final playlist"
+                checked={this.props.burnSeedTracks}
+                onChange={event => this.props.updateSettings({ burnSeedTracks: event.target.value })}/>
+            <ListToggleEntry
+                primary="Burn Seed Artists"
+                secondary="Stops artists from seed tracks from appearing in the final playlist"
+                checked={this.props.burnSeedArtists}
+                onChange={(event) => this.props.updateSettings({ burnSeedArtists: event.target.value })}/>
+            <ListToggleEntry
+                primary="Include Seed Tracks"
+                secondary="Adds seed tracks to the final playlist (this overrides burning seed tracks/artists)."
+                checked={this.props.includeSeedTracks}
+                onChange={(event) => this.props.updateSettings({ includeSeedTracks: event.target.value })} />
+            <ListToggleEntry
+                primary="Burn Used Tracks"
+                secondary="Stops tracks from appearing in the final playlist more than once"
+                checked={this.props.burnUsedTracks}
+                onChange={(event) => this.props.updateSettings({ burnUsedTracks: event.target.value })} />
+            <ListToggleEntry
+                primary="Burn Used Artists"
+                secondary="Prevents artists from appearing in the final playlist more than once."
+                checked={this.props.burnUsedArtists}
+                onChange={(event) => this.props.updateSettings({ burnUsedArtists: event.target.value })} />
+            <ListItem>
                 <div>
                     Limit
                     <div style={secondaryTextStyle}>
@@ -56,13 +68,13 @@ class Configure extends React.Component<Props> {
                     </div>
                 </div>
                 <br />
-                <SelectField autoWidth value={this.props.limit} onChange={(event, index, value) => this.props.updateSettings({ limit: value })}>
-                    {this.limitOptions.map(option => <MenuItem primaryText={option} key={option} value={option} />)}
-                </SelectField>
+                <Select autoWidth value={this.props.limit} onChange={(event) => this.props.updateSettings({ limit: event.target.value as any })}>
+                    {this.limitOptions.map(option => <MenuItem key={option} value={option}>{option}</MenuItem>)}
+                </Select>
             </ListItem>
         </List>;
     }
 }
 
-export default connect((state: ApplicationState) => state.settings, { updateSettings: actionCreators.updateSettings})(Configure);
+export default connect((state: ApplicationState) => state.settings, { updateSettings: actionCreators.updateSettings })(Configure);
 

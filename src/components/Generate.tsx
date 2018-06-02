@@ -1,4 +1,4 @@
-import { RaisedButton } from 'material-ui';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 import { createSelector } from 'reselect';
 import { connect } from 'src/connect';
@@ -32,7 +32,7 @@ class Generate extends React.Component<Props> {
     public render() {
         return <>
             <SongList songs={this.props.generated} removeSong={this.props.removeSong} />
-            <RaisedButton onClick={this.props.generationStart} disabled={this.props.progress !== 1} label="Regenerate" />
+            <Button variant="raised" onClick={this.props.generationStart} disabled={this.props.progress !== 1}>Regenerate</Button>
         </>;
     }
 }

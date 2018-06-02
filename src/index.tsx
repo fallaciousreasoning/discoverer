@@ -1,5 +1,4 @@
 import createHistory from 'history/createBrowserHistory';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
@@ -31,9 +30,7 @@ function renderApp() {
             <Provider store={store}>
                 <PersistGate persistor={persistor}>
                     <ConnectedRouter history={history}>
-                        <MuiThemeProvider>
-                            {routes}
-                        </MuiThemeProvider>
+                        {routes}
                     </ConnectedRouter>
                 </PersistGate>
             </Provider>

@@ -1,4 +1,4 @@
-import { RaisedButton, TextField } from 'material-ui';
+import { Button, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { createSelector } from 'reselect';
 import { connect } from 'src/connect';
@@ -41,8 +41,10 @@ class Save extends React.Component<Props> {
     public render() {
         const connected = !!this.props.token.access_token;
         return <>
-            <TextField fullWidth hintText="Playlist Name" value={this.props.playlistName} onChange={(e: any) => this.props.playlistSetName(e.target.value)}/>
-            <RaisedButton primary disabled={connected} label={connected ? 'Connected to Spotify!' : 'Connect to Spotify'} onClick={this.authorizer.authorize} />
+            <TextField fullWidth placeholder="Playlist Name" value={this.props.playlistName} onChange={(e: any) => this.props.playlistSetName(e.target.value)}/>
+            <Button variant='raised' color='primary' disabled={connected} onClick={this.authorizer.authorize}>
+                {connected ? 'Connected to Spotify!' : 'Connect to Spotify'}
+            </Button>
         </>
     }
 }

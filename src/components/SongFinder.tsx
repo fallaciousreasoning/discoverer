@@ -1,4 +1,4 @@
-import { AutoComplete } from 'material-ui';
+import { TextField } from '@material-ui/core';
 import * as React from 'react';
 import { trackSearch } from 'src/services/lastfm';
 import { Track } from '../store/trackStore';
@@ -49,14 +49,15 @@ export default class SongFinder extends React.Component<Props, State> {
     }
 
     public render() {
-        return <AutoComplete
-            onUpdateInput={this.onSearch}
-            hintText="Search for a track"
-            value={this.state.query}
-            dataSource={this.state.suggestions}
-            filter={AutoComplete.caseInsensitiveFilter}
-            onNewRequest={this.onNewRequest}
-            fullWidth
-        />
+        return <TextField/>
+        // return <AutoComplete
+        //     onUpdateInput={this.onSearch}
+        //     hintText="Search for a track"
+        //     value={this.state.query}
+        //     dataSource={this.state.suggestions}
+        //     filter={AutoComplete.caseInsensitiveFilter}
+        //     onNewRequest={this.onNewRequest}
+        //     fullWidth
+        // />
     }
 }

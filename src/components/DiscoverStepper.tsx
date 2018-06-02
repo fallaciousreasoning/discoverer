@@ -1,8 +1,7 @@
-import { FlatButton, LinearProgress, Paper, RaisedButton, Toolbar, ToolbarTitle } from 'material-ui';
+import { Button, LinearProgress, Paper, Toolbar } from '@material-ui/core';
 import * as React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { createSelector } from 'reselect';
-import { store } from 'src';
 import { Step, StepProps, Stepper } from 'src/components/Stepper';
 import { connect } from 'src/connect';
 import { getLinkProgress, getSeedProgress } from '../store';
@@ -30,10 +29,8 @@ const discovererStyle = { width: '100%', maxWidth: '700px', margin: 'auto' };
 
 function StepContainer(props: StepProps & { children }) {
     return <Paper>
-        <Toolbar>
-            <ToolbarTitle text={props.name} />
-        </Toolbar>
-        <LinearProgress mode="determinate" value={props.progress || 1} min={0} max={1} />
+        <Toolbar title={props.name}/>
+        <LinearProgress variant="determinate" value={props.progress * 100 || 100} />
         <div style={stepperContentStyle}>
             {props.children}
         </div>
@@ -55,7 +52,6 @@ class DiscoverStepper extends React.Component<Props & RouteComponentProps<RouteP
     public render() {
         const step = this.currentStepName();
         const stepNumber = Steps[step];
-        const state = store.getState();
 
         // If we aren't ready, for this step, send us back to the first.
         if (this.props.seedProgress !== 1 && stepNumber !== 0) {
@@ -78,18 +74,21 @@ class DiscoverStepper extends React.Component<Props & RouteComponentProps<RouteP
                     <Save />
                 </Step>
                 {props => <div style={controlBoxStyle}>
-                    <FlatButton
-                        label="Back"
+                    <Button
+                        variant="raised"
                         disabled={props.firstStep}
                         onClick={this.previousStep}
-                    />
-                    <RaisedButton
-                        label="Next"
-                        primary={true}
+                    >
+                        Back
+                    </Button>
+                    <Button
+                        color="primary"
                         onClick={this.nextStep}
                         disabled={!props.complete}
                         style={nextButtonStyle}
-                    />
+                    >
+                        Next
+                    </Button>
                 </div>}
             </Stepper>
         </div>;

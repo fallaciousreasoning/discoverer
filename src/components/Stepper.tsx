@@ -1,4 +1,5 @@
-import { Step as MUIStep, StepContent as MUIStepContent, StepLabel as MUIStepLabel, Stepper as MUIStepper } from 'material-ui';
+import MUIStep from '@material-ui/core/Step';
+import MUIStepper from '@material-ui/core/Stepper';
 import * as React from 'react';
 
 export interface StepProps {
@@ -61,8 +62,8 @@ export class Stepper extends React.Component<Props> {
         return <>
             <MUIStepper activeStep={this.props.activeStep} orientation={this.props.vertical ? 'vertical' : 'horizontal'}>
                 {steps.map(step => step && <MUIStep key={step.props.name}>
-                    <MUIStepLabel>{step.props.name}</MUIStepLabel>
-                    {this.props.vertical ? <MUIStepContent>{step}</MUIStepContent> : <React.Fragment />}
+                    {step.props.name}
+                    {this.props.vertical ? <>{step}</> : <React.Fragment />}
                 </MUIStep>)}
             </MUIStepper>
             {!this.props.vertical && <this.props.renderHorizontalContentAs {...activeStep.props}>

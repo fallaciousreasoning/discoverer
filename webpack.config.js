@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 module.exports = {
     mode: 'development',
@@ -24,7 +25,15 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new CircularDependencyPlugin({
+            // exclude detection of files based on a RegExp
+            exclude: /a\.js|node_modules/,
+            // add errors to webpack instead of warnings
+            failOnError: true,
+            // set the current working directory for displaying module paths
+            cwd: process.cwd(),
+        })
     ],
 
     devServer: {
@@ -37,6 +46,6 @@ module.exports = {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-          }
+        }
     }
 };

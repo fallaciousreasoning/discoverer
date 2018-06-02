@@ -1,8 +1,10 @@
-import { Paper, Toolbar, ToolbarTitle } from 'material-ui';
+import { AppBar, Toolbar } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import * as querystring from 'querystring';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { AuthorizationToken } from 'src/store/authorizationStore';
+
 
 const secondsTillClose = 3;
 
@@ -43,7 +45,9 @@ export default class Authorize extends React.Component<RouteComponentProps<{}>, 
 
     public render() {
         return <Paper>
-            <Toolbar><ToolbarTitle text="Success!" /></Toolbar>
+            <AppBar>
+                <Toolbar title="Success!"/>
+            </AppBar>
             You have been successfully authorized! This tab will close in {this.state.secondsTillClose}
         </Paper>
     }
