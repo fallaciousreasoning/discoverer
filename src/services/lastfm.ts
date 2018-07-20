@@ -32,7 +32,7 @@ const artistUrl = (track: LastFmTrack) => track.image[Math.min(track.image.lengt
 const toTrack = (lastFmTrack: LastFmTrack): Track => ({
     artist: getArtistName(lastFmTrack),
     name: lastFmTrack.name,
-    id: lastFmTrack.mbid || `${lastFmTrack.name}_${getArtistName(lastFmTrack)}`,
+    id: `${lastFmTrack.name}|${getArtistName(lastFmTrack)}`,
     imageUrl: artistUrl(lastFmTrack),
     similarTracks: []
 });
@@ -63,7 +63,6 @@ export const trackSearch = (track: string) => {
     })
     .then(data => data.results.trackmatches.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }
 
@@ -86,7 +85,6 @@ export const trackGetSimilar = (track: Track) => {
     })
     .then(data => data.similartracks.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }
 
@@ -98,6 +96,5 @@ export const trackGetInfo = (track: Track) => {
     })
     .then(data => data.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }
