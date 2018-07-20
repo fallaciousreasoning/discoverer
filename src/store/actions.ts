@@ -3,18 +3,17 @@ import { AuthorizationToken } from './authorizationStore';
 import { Settings } from './settingsStore';
 
 export enum ActionType {
-    SEED_ADD_SONG = "SEED_ADD_SONG",
-    SEED_REMOVE_SONG = "SEED_REMOVE_SONG",
+    SEED_ADD_SONG = "SEED_REMOVE_SONG",
+    SEED_REMOVE_SONG = "SEED_ADD_SONG",
 
     UPDATE_SETTINGS = "UPDATE_SETTINGS",
 
     GENERATION_START = "GENERATION_START",
     GENERATION_ADD_SONG = "GENERATION_ADD_SONG",
     GENERATION_REMOVE_SONG = "GENERATION_REMOVE_SONG",
-    GENERATION_ADD_SIMILAR = "GENERATION_ADD_SIMILAR",
 
     LINK_START = "LINK_START",
-    LINK_SET_SPOTIFY_ID = "LINK_SET_SPOTIFY_ID",
+    LINK_PROGRESS = "LINK_PROGRESS",
 
     PLAYLIST_SET_NAME = "PLAYLIST_SET_NAME",
 
@@ -29,11 +28,10 @@ export interface UpdateSettings { type: ActionType.UPDATE_SETTINGS, update: Part
 
 export interface GenerationStart { type: ActionType.GENERATION_START }
 export interface GenerationAddSong { type: ActionType.GENERATION_ADD_SONG, progress: number, song: Track }
-export interface GenerationAddSimilar { type: ActionType.GENERATION_ADD_SIMILAR, to: Track, similar: Track[] }
 export interface GenerationRemoveSong { type: ActionType.GENERATION_REMOVE_SONG, song: Track }
 
 export interface LinkStart { type: ActionType.LINK_START }
-export interface LinkSetSpotifyId {type: ActionType.LINK_SET_SPOTIFY_ID, progress: number, song: Track, spotifyId: string }
+export interface LinkProgress {type: ActionType.LINK_PROGRESS, progress: number }
 
 export interface PlaylistSetName { type: ActionType.PLAYLIST_SET_NAME, name: string }
 
@@ -50,10 +48,9 @@ export const actionCreators = {
     generationStart: () => <GenerationStart>({ type: ActionType.GENERATION_START }),
     generationProgress: (progress: number, song: Track) => <GenerationAddSong>({ type: ActionType.GENERATION_ADD_SONG, progress, song }),
     generationRemoveSong: (song: Track) => <GenerationRemoveSong>({ type: ActionType.GENERATION_REMOVE_SONG, song }),
-    generationAddSimilar: (to: Track, similar: Track[]) => <GenerationAddSimilar>({ type: ActionType.GENERATION_ADD_SIMILAR, to, similar }),
 
     linkStart: () => <LinkStart>({ type: ActionType.LINK_START }),
-    linkSetSpotifyId: (progress: number, song: Track, spotifyId: string) => <LinkSetSpotifyId>({ type: ActionType.LINK_SET_SPOTIFY_ID, progress, song, spotifyId }),
+    linkProgress: (progress: number) => <LinkProgress>({ type: ActionType.LINK_PROGRESS, progress }),
 
     playlistSetName: (name: string) => <PlaylistSetName>({ type: ActionType.PLAYLIST_SET_NAME, name }),
 

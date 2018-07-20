@@ -16,6 +16,7 @@ export default class Authorizer {
     isAuthorized = () => !!this.token;
 
     listener = (ev: MessageEvent) => {
+        if (!ev.data.access_token) return;
         this.onAuthorized(ev.data);
         window.removeEventListener('message', this.listener);
     }

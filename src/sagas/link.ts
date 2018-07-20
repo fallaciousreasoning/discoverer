@@ -1,6 +1,7 @@
 import { all, put, select, takeEvery } from "redux-saga/effects";
 import * as Spotify from 'spotify-web-api-js';
 import { Track } from "src/model";
+import { setTrack } from "src/services/dataContext";
 import { getPlaylistName } from "src/store";
 import { actionCreators, ActionType, LinkStart } from "src/store/actions";
 import { AuthorizationToken, getToken } from "src/store/authorizationStore";
@@ -20,7 +21,7 @@ function* link(action: LinkStart) {
 
         // If we already have the id, update our progress and continue
         if (song.spotifyId) {
-            yield put(actionCreators.linkSetSpotifyId((i + 1) / generated.length, song, song.spotifyId));
+            yield put(actionCreators.linkProgress((i + 1) / generated.length));
             continue;
         }
         
@@ -32,7 +33,12 @@ function* link(action: LinkStart) {
 
         const spotifyTrack = response.tracks.items[0];
         trackUris.push(spotifyTrack.uri);
-        yield put(actionCreators.linkSetSpotifyId((i + 1) / generated.length, song, spotifyTrack.uri));
+
+        // Update the track in the database
+        song.spotifyId = spotifyTrack.uri;
+        yield setTrack(song);
+
+        yield put(actionCreators.linkProgress((i + 1) / generated.length));
     }
 
     const currentUser = yield client.getMe();
