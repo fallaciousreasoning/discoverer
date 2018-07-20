@@ -3,8 +3,8 @@ import { Settings } from './settingsStore';
 import { Track } from './trackStore';
 
 export enum ActionType {
-    SEED_ADD_SONG = "SEED_REMOVE_SONG",
-    SEED_REMOVE_SONG = "SEED_ADD_SONG",
+    SEED_ADD_SONG = "SEED_ADD_SONG",
+    SEED_REMOVE_SONG = "SEED_REMOVE_SONG",
 
     UPDATE_SETTINGS = "UPDATE_SETTINGS",
 
