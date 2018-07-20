@@ -1,11 +1,11 @@
 import { RaisedButton, TextField } from 'material-ui';
 import * as React from 'react';
 import { createSelector } from 'reselect';
-import { connect } from 'src/connect';
-import Authorizer from 'src/services/authorizer';
-import { getPlaylistName } from 'src/store';
-import { actionCreators } from 'src/store/actions';
-import { AuthorizationToken, getToken } from 'src/store/authorizationStore';
+import { connect } from '../connect';
+import Authorizer from '../services/authorizer';
+import { getPlaylistName } from '../store';
+import { actionCreators } from '../store/actions';
+import { AuthorizationToken, getToken } from '../store/authorizationStore';
 
 interface Props {
     token: AuthorizationToken;

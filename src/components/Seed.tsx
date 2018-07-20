@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { actionCreators } from 'src/store/actions';
 import { Track } from 'src/store/trackStore';
+import { actionCreators } from '../store/actions';
 import { getSeedTracks } from '../store/seedStore';
 import SongFinder from './SongFinder';
 import SongList from './SongList';

@@ -35,7 +35,9 @@ export async function setTrack(track: Track) {
     return await setItem(key, track);
 }
 
-export async function getTrack(id: string) {
+// Assumes that we've cached the track before calling this.
+// A safe assumption, as we must setTrack before we can get
+export function getTrack(id: string) {
     const key = `${trackPrefix} ${id}`;
-    return await getItem(key);
+    return cache[key];
 }

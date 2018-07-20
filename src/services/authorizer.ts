@@ -1,5 +1,5 @@
 import * as querystring from 'querystring';
-import { AuthorizationToken } from 'src/store/authorizationStore';
+import { AuthorizationToken } from '../store/authorizationStore';
 
 const config = require('config');
 const spotifyAuthorizeUrl = "https://accounts.spotify.com/authorize";

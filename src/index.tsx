@@ -6,7 +6,7 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { persistStore } from 'redux-persist';
-import { PersistGate } from 'src/components/PersistGate';
+import { PersistGate } from './components/PersistGate';
 import * as Routes from './Routes';
 import configureStore from './store/configureStore';
 

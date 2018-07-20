@@ -73,7 +73,6 @@ export const getRecentTracks = (user: string) => {
     })
     .then(data => data.recenttracks.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }
 

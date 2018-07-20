@@ -1,10 +1,10 @@
 import { all, fork, put, select, takeEvery } from "redux-saga/effects";
-import { ApplicationState } from "src/store";
-import { ActionType, GenerationStart, actionCreators } from "src/store/actions";
 import { Track } from "src/store/trackStore";
 import { trackGetSimilar } from "../services/lastfm";
+import { ApplicationState } from "../store";
+import { actionCreators, ActionType, GenerationStart } from "../store/actions";
 import { getSeedTracks } from "../store/seedStore";
-import { Settings, getSettings } from "../store/settingsStore";
+import { getSettings, Settings } from "../store/settingsStore";
 
 interface DiscoverTrack extends Track {
     depth: number;

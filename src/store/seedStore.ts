@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
-import { ActionType, SeedAddSong, SeedRemoveSong } from "src/store/actions";
-import { actionReducer, composeReducers, defaultReducer } from "src/store/reducers";
 import { ApplicationState } from ".";
-import { getTracks } from "./trackStore";
+import { getTrack } from '../services/dataContext';
+import { ActionType, SeedAddSong, SeedRemoveSong } from "./actions";
+import { actionReducer, composeReducers, defaultReducer } from "./reducers";
 
 export type SeedState = string[];
 
@@ -13,4 +13,4 @@ export const reducer = composeReducers(
 )
 
 const getSeedTrackIds = (state: ApplicationState) => state.seeds;
-export const getSeedTracks = createSelector([getSeedTrackIds, getTracks], (seedTrackIds, tracks) => seedTrackIds.map(id => tracks[id]));
+export const getSeedTracks = createSelector([getSeedTrackIds], (seedTrackIds) => seedTrackIds.map(getTrack).filter(t => t));

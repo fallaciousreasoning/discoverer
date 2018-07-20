@@ -2,15 +2,15 @@ import { FlatButton, LinearProgress, Paper, RaisedButton, Toolbar, ToolbarTitle 
 import * as React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { createSelector } from 'reselect';
-import { store } from 'src';
-import { Step, StepProps, Stepper } from 'src/components/Stepper';
-import { connect } from 'src/connect';
+import { store } from '..';
+import { connect } from '../connect';
 import { getLinkProgress, getSeedProgress } from '../store';
 import { getGenerationProgress } from '../store/generationStore';
 import Configure from './Configure';
 import Generate from './Generate';
 import Save from './Save';
 import Seed from './Seed';
+import { Step, Stepper, StepProps } from './Stepper';
 
 interface RouteProps {
     step: string;

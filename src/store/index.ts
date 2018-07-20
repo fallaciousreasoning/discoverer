@@ -4,11 +4,8 @@ import * as generationStore from './generationStore';
 import { actionReducer, composeReducers, defaultReducer } from './reducers';
 import * as seedStore from './seedStore';
 import * as settingsStore from './settingsStore';
-import * as trackStore from './trackStore';
 
 export interface ApplicationState {
-    tracks: trackStore.TrackState;
-    
     seeds: seedStore.SeedState;
 
     generated: generationStore.GenerationState;
@@ -23,8 +20,6 @@ export interface ApplicationState {
 }
 
 export const reducer = {
-    tracks: trackStore.reducer,
-
     seeds: seedStore.reducer,
     
     generated: generationStore.reducer,

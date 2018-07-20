@@ -1,8 +1,8 @@
-import { takeEvery, takeLatest, put, all, fork, cancel, take } from 'redux-saga/effects';
-
+import { all, cancel, fork, take } from 'redux-saga/effects';
+import { actionCreators, ActionType } from '../store/actions';
 import generation from './generation';
-import { actionCreators, ActionType } from 'src/store/actions';
 import link from './link';
+
 
 function* rootSaga() {
     yield all([

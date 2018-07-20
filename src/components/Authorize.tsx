@@ -2,7 +2,7 @@ import { Paper, Toolbar, ToolbarTitle } from 'material-ui';
 import * as querystring from 'querystring';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { AuthorizationToken } from 'src/store/authorizationStore';
+import { AuthorizationToken } from '../store/authorizationStore';
 
 const secondsTillClose = 3;
 
