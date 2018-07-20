@@ -34,7 +34,7 @@ const defaultSettings: Settings = {
     limit: 5,
 
     minDepth: 0,
-    maxDepth: 1,
+    maxDepth: 2,
     maxIterations: 1000,
 };
 
