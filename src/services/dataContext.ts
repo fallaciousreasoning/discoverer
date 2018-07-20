@@ -5,13 +5,15 @@ window['localForage'] = localforage;
 
 const trackPrefix = "track";
 
-localforage.config({ 
+localforage.config({
     description: 'Persist information',
     name: 'discoverer',
     driver: [localforage.INDEXEDDB, localforage.LOCALSTORAGE]
 });
 
 const cache = {};
+
+const trackKey = ({ id }: { id: string }) => `${trackPrefix}|${id}`;
 
 async function setItem<T>(key: string, item: T): Promise<T> {
     const itemToCache: T = { ...await getItem(key), ...item as any }
@@ -33,13 +35,21 @@ async function getItem(key: string) {
 }
 
 export async function setTrack(track: Track) {
-    const key = `${trackPrefix} ${track.id}`;
+    const key = trackKey(track);
     return await setItem(key, track);
 }
 
 // Assumes that we've cached the track before calling this.
 // A safe assumption, as we must setTrack before we can get
 export function getTrack(id: string): Track {
-    const key = `${trackPrefix} ${id}`;
+    const key = trackKey({ id });
     return cache[key];
+}
+
+export async function getTracks(ids: string[]): Promise<Track[]> {
+    if (!ids) {
+        return [];
+    }
+    
+    return await Promise.all(ids.map(id => getItem(trackKey({ id }))));
 }
