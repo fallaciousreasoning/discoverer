@@ -4,7 +4,7 @@ import { trackGetSimilar } from "src/services/lastfm";
 import { actionCreators, ActionType, GenerationStart } from "src/store/actions";
 import { getSeedTracks } from "src/store/seedStore";
 import { getSettings, Settings } from "src/store/settingsStore";
-import { getTrack } from "../services/dataContext";
+import { getTrack, setTrack } from "../services/dataContext";
 
 interface DiscoverTrack extends Track {
     depth: number;
@@ -108,11 +108,21 @@ function* generationStart(action: GenerationStart) {
         
         yield add(track);
 
-        let similar = track.similarTracks.map(getTrack).filter(t => t);
+        let similar = (track.similarTracks || []).map(getTrack).filter(t => t);
 
         if (!similar.length) {
+            // Get a list of similar tracks
             similar = yield trackGetSimilar(track);
-            yield put(actionCreators.generationAddSimilar(track, similar));
+
+            // Set the similar ids on the track and update it
+            track.similarTracks = similar.map(t => t.id);
+            yield setTrack(track);
+
+            // For each similar track
+            for (let i = 0; i < similar.length; ++i){
+                // Save it and (potentially) update it from the information we already have
+                similar[i] = yield setTrack(similar[i]);
+            }
         }
         if (!similar || !similar.length) continue;
 

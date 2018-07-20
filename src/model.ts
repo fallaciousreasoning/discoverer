@@ -6,5 +6,5 @@ export interface Track {
     name: string; 
     imageUrl: string; 
  
-    similarTracks: string[]; 
+    similarTracks?: string[]; 
 } 

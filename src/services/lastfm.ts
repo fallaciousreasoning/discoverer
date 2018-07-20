@@ -32,9 +32,8 @@ const artistUrl = (track: LastFmTrack) => track.image[Math.min(track.image.lengt
 const toTrack = (lastFmTrack: LastFmTrack): Track => ({
     artist: getArtistName(lastFmTrack),
     name: lastFmTrack.name,
-    id: `${lastFmTrack.name}|${getArtistName(lastFmTrack)}`,
+    id: `${getArtistName(lastFmTrack)}|${lastFmTrack.name}`,
     imageUrl: artistUrl(lastFmTrack),
-    similarTracks: []
 });
 
 const getArtistName = (track: LastFmTrack) => typeof track.artist === "string" ? track.artist : track.artist.name;

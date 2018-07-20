@@ -1,6 +1,8 @@
 import * as localforage from 'localforage';
 import { Track } from 'src/model';
 
+window['localForage'] = localforage;
+
 const trackPrefix = "track";
 
 localforage.config({ 
@@ -11,8 +13,8 @@ localforage.config({
 
 const cache = {};
 
-async function setItem<T>(key: string, item: T) {
-    const itemToCache = { ...await getItem(key), ...item as any }
+async function setItem<T>(key: string, item: T): Promise<T> {
+    const itemToCache: T = { ...await getItem(key), ...item as any }
 
     cache[key] = itemToCache;
     await localforage.setItem(key, itemToCache);
@@ -37,7 +39,7 @@ export async function setTrack(track: Track) {
 
 // Assumes that we've cached the track before calling this.
 // A safe assumption, as we must setTrack before we can get
-export function getTrack(id: string) {
+export function getTrack(id: string): Track {
     const key = `${trackPrefix} ${id}`;
     return cache[key];
 }
