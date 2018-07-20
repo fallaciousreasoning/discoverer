@@ -1,10 +1,10 @@
 import { all, fork, put, select, takeEvery } from "redux-saga/effects";
-import { Track } from "src/store/trackStore";
-import { trackGetSimilar } from "../services/lastfm";
-import { ApplicationState } from "../store";
-import { actionCreators, ActionType, GenerationStart } from "../store/actions";
-import { getSeedTracks } from "../store/seedStore";
-import { getSettings, Settings } from "../store/settingsStore";
+import { Track } from "src/model";
+import { trackGetSimilar } from "src/services/lastfm";
+import { actionCreators, ActionType, GenerationStart } from "src/store/actions";
+import { getSeedTracks } from "src/store/seedStore";
+import { getSettings, Settings } from "src/store/settingsStore";
+import { getTrack } from "../services/dataContext";
 
 interface DiscoverTrack extends Track {
     depth: number;
@@ -108,7 +108,8 @@ function* generationStart(action: GenerationStart) {
         
         yield add(track);
 
-        let similar = yield select((state: ApplicationState) => track.similarTracks.map(id => state.tracks[id]));
+        let similar = track.similarTracks.map(getTrack).filter(t => t);
+
         if (!similar.length) {
             similar = yield trackGetSimilar(track);
             yield put(actionCreators.generationAddSimilar(track, similar));

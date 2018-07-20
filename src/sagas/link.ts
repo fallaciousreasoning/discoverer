@@ -1,10 +1,10 @@
 import { all, put, select, takeEvery } from "redux-saga/effects";
 import * as Spotify from 'spotify-web-api-js';
-import { Track } from "src/store/trackStore";
-import { getPlaylistName } from "../store";
-import { actionCreators, ActionType, LinkStart } from "../store/actions";
-import { AuthorizationToken, getToken } from "../store/authorizationStore";
-import { getGeneratedTracks } from "../store/generationStore";
+import { Track } from "src/model";
+import { getPlaylistName } from "src/store";
+import { actionCreators, ActionType, LinkStart } from "src/store/actions";
+import { AuthorizationToken, getToken } from "src/store/authorizationStore";
+import { getGeneratedTracks } from "src/store/generationStore";
 
 function* link(action: LinkStart) {
     const generated: Track[] = yield select(getGeneratedTracks);

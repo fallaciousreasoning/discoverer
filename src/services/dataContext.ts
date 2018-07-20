@@ -1,5 +1,5 @@
 import * as localforage from 'localforage';
-import { Track } from 'src/store/trackStore';
+import { Track } from 'src/model';
 
 const trackPrefix = "track";
 

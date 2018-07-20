@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as querystring from 'querystring';
-import { Track } from 'src/store/trackStore';
+import { Track } from 'src/model';
 
 const config = require('config.json');
 const baseUrl = 'https://ws.audioscrobbler.com/2.0/';

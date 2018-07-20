@@ -4,8 +4,6 @@ import Authorize from './components/Authorize';
 import DiscoverStepper from './components/DiscoverStepper';
 import Layout from './components/Layout';
 
-
-
 export default <Layout>
     <Switch>
         <Route path="/authorize" component={Authorize}/>

@@ -1,6 +1,6 @@
+import { Track } from 'src/model';
 import { AuthorizationToken } from './authorizationStore';
 import { Settings } from './settingsStore';
-import { Track } from './trackStore';
 
 export enum ActionType {
     SEED_ADD_SONG = "SEED_ADD_SONG",

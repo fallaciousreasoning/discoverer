@@ -1,8 +1,8 @@
 import { AutoComplete } from 'material-ui';
 import * as React from 'react';
-import { setTrack } from '../services/dataContext';
-import { trackSearch } from '../services/lastfm';
-import { Track } from '../store/trackStore';
+import { Track } from 'src/model';
+import { setTrack } from 'src/services/dataContext';
+import { trackSearch } from 'src/services/lastfm';
 
 interface Props {
     onSelect: (track: Track) => void;
