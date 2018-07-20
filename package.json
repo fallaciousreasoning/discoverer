@@ -56,7 +56,6 @@
     "react-router": "^4.2.0",
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "^4.0.0",
-    "redux-persist": "^5.9.1",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
     "spotify-web-api-js": "^0.24.0",
