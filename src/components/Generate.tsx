@@ -1,9 +1,9 @@
 import { RaisedButton } from 'material-ui';
 import * as React from 'react';
 import { createSelector } from 'reselect';
-import { connect } from 'src/connect';
-import { actionCreators } from 'src/store/actions';
-import { Track } from 'src/store/trackStore';
+import { Track } from 'src/model';
+import { connect } from '../connect';
+import { actionCreators } from '../store/actions';
 import { getGeneratedTracks, getGenerationProgress } from '../store/generationStore';
 import { settingsHash } from '../store/settingsStore';
 import SongList from './SongList';

@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { actionCreators } from 'src/store/actions';
-import { Track } from 'src/store/trackStore';
+import { Track } from 'src/model';
+import { actionCreators } from '../store/actions';
 import { getSeedTracks } from '../store/seedStore';
 import SongFinder from './SongFinder';
 import SongList from './SongList';
-
-
-
 
 interface Props {
     seeds: Track[];
@@ -17,8 +14,6 @@ interface Props {
 }
 
 class Seed extends React.Component<Props> {
-    thing: number = 8;
-
     public render() {
         return <>
             <SongFinder onSelect={this.props.addSong} />

@@ -1,7 +1,7 @@
 import { Avatar, IconButton, List, ListItem } from 'material-ui';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import * as React from 'react';
-import { Track } from 'src/store/trackStore';
+import { Track } from 'src/model';
 
 const Song = (props: { song: Track, remove: (song: Track) => void }) => <ListItem
     leftAvatar={<Avatar src={props.song.imageUrl} />}

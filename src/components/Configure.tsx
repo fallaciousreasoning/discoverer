@@ -1,9 +1,9 @@
+import { List, ListItem, MenuItem, SelectField, Toggle } from 'material-ui';
 import * as React from 'react';
-import { List, ListItem, Toggle, SelectField, MenuItem } from 'material-ui';
-import { Settings } from 'src/store/settingsStore';
 import { connect } from '../connect';
 import { ApplicationState } from '../store';
 import { actionCreators } from '../store/actions';
+import { Settings } from '../store/settingsStore';
 
 interface Props extends Settings {
     updateSettings: (update: Partial<Settings>) => void;

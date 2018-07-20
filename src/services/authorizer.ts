@@ -1,5 +1,5 @@
 import * as querystring from 'querystring';
-import { AuthorizationToken } from 'src/store/authorizationStore';
+import { AuthorizationToken } from '../store/authorizationStore';
 
 const config = require('config');
 const spotifyAuthorizeUrl = "https://accounts.spotify.com/authorize";
@@ -16,6 +16,7 @@ export default class Authorizer {
     isAuthorized = () => !!this.token;
 
     listener = (ev: MessageEvent) => {
+        if (!ev.data.access_token) return;
         this.onAuthorized(ev.data);
         window.removeEventListener('message', this.listener);
     }

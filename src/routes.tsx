@@ -1,10 +1,8 @@
 import * as React from 'react';
-
 import { Route, Switch } from 'react-router';
-
-import Layout from 'src/components/Layout';
-import DiscoverStepper from 'src/components/DiscoverStepper';
-import Authorize from 'src/components/Authorize';
+import Authorize from './components/Authorize';
+import DiscoverStepper from './components/DiscoverStepper';
+import Layout from './components/Layout';
 
 export default <Layout>
     <Switch>

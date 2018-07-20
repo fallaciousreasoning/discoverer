@@ -1,10 +1,10 @@
 import { all, fork, put, select, takeEvery } from "redux-saga/effects";
-import { ApplicationState } from "src/store";
-import { ActionType, GenerationStart, actionCreators } from "src/store/actions";
-import { Track } from "src/store/trackStore";
-import { trackGetSimilar } from "../services/lastfm";
-import { getSeedTracks } from "../store/seedStore";
-import { Settings, getSettings } from "../store/settingsStore";
+import { Track } from "src/model";
+import { trackGetSimilar } from "src/services/lastfm";
+import { actionCreators, ActionType, GenerationStart } from "src/store/actions";
+import { getSeedTracks } from "src/store/seedStore";
+import { getSettings, Settings } from "src/store/settingsStore";
+import { getTracks, setTrack } from "../services/dataContext";
 
 interface DiscoverTrack extends Track {
     depth: number;
@@ -108,10 +108,20 @@ function* generationStart(action: GenerationStart) {
         
         yield add(track);
 
-        let similar = yield select((state: ApplicationState) => track.similarTracks.map(id => state.tracks[id]));
-        if (!similar.length) {
+        let similar = yield getTracks(track.similarTracks);
+        if (!similar.length && track.depth < settings.maxDepth) {
+            // Get a list of similar tracks
             similar = yield trackGetSimilar(track);
-            yield put(actionCreators.generationAddSimilar(track, similar));
+
+            // Set the similar ids on the track and update it
+            track.similarTracks = similar.map(t => t.id);
+            yield setTrack(track);
+
+            // For each similar track
+            for (let i = 0; i < similar.length; ++i){
+                // Save it and (potentially) update it from the information we already have
+                similar[i] = yield setTrack(similar[i]);
+            }
         }
         if (!similar || !similar.length) continue;
 

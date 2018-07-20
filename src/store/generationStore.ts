@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
 import { ApplicationState } from ".";
+import { getTrack } from "../services/dataContext";
 import { ActionType, GenerationAddSong, GenerationRemoveSong } from "./actions";
 import { actionReducer, composeReducers, defaultReducer } from "./reducers";
-import { getTracks } from "./trackStore";
 
 export type GenerationState = string[];
 
@@ -21,5 +21,5 @@ export const reducer = composeReducers(
 );
 
 const getGeneratedTrackIds = (state: ApplicationState) => state.generated;
-export const getGeneratedTracks = createSelector([getGeneratedTrackIds, getTracks], (generatedTrackIds, tracks) => generatedTrackIds.map(id => tracks[id]));
+export const getGeneratedTracks = createSelector([getGeneratedTrackIds], (generatedTrackIds) => generatedTrackIds.map(getTrack).filter(t => t));
 export const getGenerationProgress = (state: ApplicationState) => state.generationProgress;
