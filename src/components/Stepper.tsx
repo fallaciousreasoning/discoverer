@@ -63,7 +63,7 @@ export class Stepper extends React.Component<Props> {
             <MUIStepper activeStep={this.props.activeStep} orientation={this.props.vertical ? 'vertical' : 'horizontal'}>
                 {steps.map(step => step && <MUIStep key={step.props.name}>
                     {step.props.name}
-                    {this.props.vertical ? <>{step}</> : <React.Fragment />}
+                    {this.props.vertical ? <>{step}</> : null}
                 </MUIStep>)}
             </MUIStepper>
             {!this.props.vertical && <this.props.renderHorizontalContentAs {...activeStep.props}>
