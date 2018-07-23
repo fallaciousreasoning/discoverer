@@ -3,14 +3,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import * as React from 'react';
 import { Track } from 'src/model';
 
-const Song = (props: { song: Track, remove: (song: Track) => void }) => <ListItem>
+export const Song = (props: { song: Track, remove?: (song: Track) => void }) => <ListItem>
     <ListItemAvatar>
         <Avatar src={props.song.imageUrl} />
     </ListItemAvatar>
     <ListItemText primary={props.song.name} secondary={`by ${props.song.artist}`} />
-    <ListItemSecondaryAction>
+    {props.remove && <ListItemSecondaryAction>
         <IconButton onClick={() => props.remove(props.song)}><DeleteIcon /></IconButton>
-    </ListItemSecondaryAction>
+    </ListItemSecondaryAction>}
 </ListItem>;
 
 interface Props {

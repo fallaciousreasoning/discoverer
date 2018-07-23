@@ -8,6 +8,7 @@
     "skipDefaultLibCheck": true,
     "noErrorTruncation": true,
     "allowSyntheticDefaultImports": true,
+    "pretty": true,
     "typeRoots": [
       "node_modules/@types"
     ],
