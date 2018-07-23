@@ -4,8 +4,8 @@ import { createSelector } from 'reselect';
 import { Track } from 'src/model';
 import { actionCreators } from '../store/actions';
 import { getSeedTracks } from '../store/seedStore';
+import SongFinder from './SongFinder';
 import SongList from './SongList';
-import SongSearch from './SongSearch';
 
 interface Props {
     seeds: Track[];
@@ -16,8 +16,7 @@ interface Props {
 class Seed extends React.Component<Props> {
     public render() {
         return <>
-            <SongSearch />
-            {/* <SongFinder onSelect={this.props.addSong} /> */}
+            <SongFinder onSelect={this.props.addSong} />
             <SongList songs={this.props.seeds} removeSong={this.props.removeSong} />
         </>;
     }
