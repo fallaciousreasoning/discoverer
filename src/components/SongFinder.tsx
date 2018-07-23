@@ -64,7 +64,7 @@ class SongFinder extends React.Component<Props, State> {
         this.setState({ tracks })
     }
 
-    filterTracks = (query: string) => this.state.tracks.filter(t => `${t.name} ${t.artist}`.includes(query));
+    filterTracks = (query: string) => this.state.tracks.filter(t => new RegExp(query, 'i').test(`${t.name} ${t.artist}`));
 
     public render() {
         return <Downshift onSelect={this.onSelect} onInputValueChange={this.onChange} inputValue={this.state.query}>
