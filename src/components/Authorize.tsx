@@ -32,6 +32,7 @@ export default class Authorize extends React.Component<RouteComponentProps<{}>, 
         this.token = querystring.parse(this.props.location.hash.slice(1));
         this.token.issue_date = new Date(); // Store the issue date so we know when it expires
 
+        console.log(this.token);
         window.opener.postMessage(this.token, '*');
 
         countdown(this.state.secondsTillClose, secondsTillClose => this.setState({ secondsTillClose }));
@@ -39,7 +40,7 @@ export default class Authorize extends React.Component<RouteComponentProps<{}>, 
 
     componentDidUpdate() {
         if (this.state.secondsTillClose <= 0) {
-            window.close();
+            // window.close();
         }
     }
 

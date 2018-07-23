@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as querystring from 'querystring';
-import { Track } from 'src/store/trackStore';
+import { Track } from 'src/model';
 
 const config = require('config.json');
 const baseUrl = 'https://ws.audioscrobbler.com/2.0/';
@@ -32,9 +32,8 @@ const artistUrl = (track: LastFmTrack) => track.image[Math.min(track.image.lengt
 const toTrack = (lastFmTrack: LastFmTrack): Track => ({
     artist: getArtistName(lastFmTrack),
     name: lastFmTrack.name,
-    id: lastFmTrack.mbid || `${lastFmTrack.name}_${getArtistName(lastFmTrack)}`,
+    id: `${getArtistName(lastFmTrack)}|${lastFmTrack.name}`,
     imageUrl: artistUrl(lastFmTrack),
-    similarTracks: []
 });
 
 const getArtistName = (track: LastFmTrack) => typeof track.artist === "string" ? track.artist : track.artist.name;
@@ -63,7 +62,6 @@ export const trackSearch = (track: string) => {
     })
     .then(data => data.results.trackmatches.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }
 
@@ -74,7 +72,6 @@ export const getRecentTracks = (user: string) => {
     })
     .then(data => data.recenttracks.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }
 
@@ -86,7 +83,6 @@ export const trackGetSimilar = (track: Track) => {
     })
     .then(data => data.similartracks.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }
 
@@ -98,6 +94,5 @@ export const trackGetInfo = (track: Track) => {
     })
     .then(data => data.track as LastFmTrack[])
     .then(tracks => tracks
-        .filter(t => t.mbid)
         .map(toTrack));
 }

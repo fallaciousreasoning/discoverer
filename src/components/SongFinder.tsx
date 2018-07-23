@@ -1,7 +1,8 @@
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
+import { Track } from 'src/model';
+import { setTrack } from 'src/services/dataContext';
 import { trackSearch } from 'src/services/lastfm';
-import { Track } from '../store/trackStore';
 
 interface Props {
     onSelect: (track: Track) => void;
@@ -22,7 +23,7 @@ export default class SongFinder extends React.Component<Props, State> {
         suggestions: []
     }
 
-    onSearch = (query: string) => {
+    onSearch = async (query: string) => {
         this.setState({ query });
 
         if (!query) {
@@ -30,13 +31,12 @@ export default class SongFinder extends React.Component<Props, State> {
             return;
         }
 
-        trackSearch(query)
-            .then(tracks => {
-                this.setState({
-                    results: tracks,
-                    suggestions: tracks.map(t => `${t.name} ${t.artist}`)
-                });
-            });
+        const tracks = await trackSearch(query);
+        tracks.forEach(setTrack);
+        this.setState({
+            results: tracks,
+            suggestions: tracks.map(t => `${t.name} ${t.artist}`)
+        });
     }
 
     onNewRequest = (selected: string, index: number) => {

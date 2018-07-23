@@ -1,7 +1,7 @@
 import { Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import * as React from 'react';
-import { Track } from 'src/store/trackStore';
+import { Track } from 'src/model';
 
 const Song = (props: { song: Track, remove: (song: Track) => void }) => <ListItem>
     <ListItemAvatar>
