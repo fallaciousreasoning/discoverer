@@ -39,27 +39,27 @@ class Configure extends React.Component<Props> {
                 primary="Burn Seed Tracks"
                 secondary="Stops tracks used as seeds from appearing in the final playlist"
                 checked={this.props.burnSeedTracks}
-                onChange={event => this.props.updateSettings({ burnSeedTracks: event.target.value })}/>
+                onChange={event => this.props.updateSettings({ burnSeedTracks: event.target.checked })}/>
             <ListToggleEntry
                 primary="Burn Seed Artists"
                 secondary="Stops artists from seed tracks from appearing in the final playlist"
                 checked={this.props.burnSeedArtists}
-                onChange={(event) => this.props.updateSettings({ burnSeedArtists: event.target.value })}/>
+                onChange={(event) => this.props.updateSettings({ burnSeedArtists: event.target.checked })}/>
             <ListToggleEntry
                 primary="Include Seed Tracks"
                 secondary="Adds seed tracks to the final playlist (this overrides burning seed tracks/artists)."
                 checked={this.props.includeSeedTracks}
-                onChange={(event) => this.props.updateSettings({ includeSeedTracks: event.target.value })} />
+                onChange={(event) => this.props.updateSettings({ includeSeedTracks: event.target.checked })} />
             <ListToggleEntry
                 primary="Burn Used Tracks"
                 secondary="Stops tracks from appearing in the final playlist more than once"
                 checked={this.props.burnUsedTracks}
-                onChange={(event) => this.props.updateSettings({ burnUsedTracks: event.target.value })} />
+                onChange={(event) => this.props.updateSettings({ burnUsedTracks: event.target.checked })} />
             <ListToggleEntry
                 primary="Burn Used Artists"
                 secondary="Prevents artists from appearing in the final playlist more than once."
                 checked={this.props.burnUsedArtists}
-                onChange={(event) => this.props.updateSettings({ burnUsedArtists: event.target.value })} />
+                onChange={(event) => this.props.updateSettings({ burnUsedArtists: event.target.checked })} />
             <ListItem>
                 <div>
                     Limit
