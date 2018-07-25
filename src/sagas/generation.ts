@@ -1,9 +1,10 @@
+import { delay } from "redux-saga";
 import { all, fork, put, select, takeEvery } from "redux-saga/effects";
 import { Track } from "src/model";
 import { trackGetSimilar } from "src/services/lastfm";
-import { actionCreators, ActionType, GenerationStart } from "src/store/actions";
+import { ActionType, GenerationStart, actionCreators } from "src/store/actions";
 import { getSeedTracks } from "src/store/seedStore";
-import { getSettings, Settings } from "src/store/settingsStore";
+import { Settings, getSettings } from "src/store/settingsStore";
 import { getTracks, setTrack } from "../services/dataContext";
 
 interface DiscoverTrack extends Track {
@@ -107,6 +108,7 @@ function* generationStart(action: GenerationStart) {
         }
         
         yield add(track);
+        yield delay(1);
 
         let similar = yield getTracks(track.similarTracks);
         if (!similar.length && track.depth < settings.maxDepth) {
