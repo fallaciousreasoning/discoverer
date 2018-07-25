@@ -1,4 +1,4 @@
-import { Input, ListItemText, MenuItem, Paper, withStyles } from "@material-ui/core";
+import { ListItemText, MenuItem, Paper, TextField, withStyles } from "@material-ui/core";
 import Downshift from 'downshift';
 import * as React from "react";
 import { Track } from "../model";
@@ -69,7 +69,7 @@ class SongFinder extends React.Component<Props, State> {
     public render() {
         return <Downshift onSelect={this.onSelect} onInputValueChange={this.onChange} inputValue={this.state.query}>
             {props => <div>
-                <Input {...props.getInputProps()} value={this.state.query} fullWidth />
+                <TextField {...props.getInputProps()} value={this.state.query} fullWidth label='Search for a song' />
                 {props.isOpen && this.state.query && !!this.state.tracks.length &&
                     <Paper square className={this.props.classes.paper}>
                         {this.filterTracks(props.inputValue)
